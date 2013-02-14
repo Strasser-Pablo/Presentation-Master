@@ -4,6 +4,8 @@
 
 \usepackage{tikz}
 \usepackage[francais]{babel}
+\uselanguage{French}
+\languagepath{French}
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
 \usepackage{subcaption}
@@ -22,7 +24,7 @@
 \usetikzlibrary{shapes.multipart}
 \usetikzlibrary{fit}
 
-\newtheorem{property}{Property}
+\newtheorem{property}{Proprieté}
 
 \newcommand{\vect}[1]{ {\boldsymbol {#1}}}
 \newcommand{\eye}{1}
@@ -200,7 +202,7 @@
 
 
 \section{Résultat analytique}
-\subsection{Reformulation de Navier-Stokes}
+\subsection{Reformulation des équations de Navier-Stokes}
 \begin{frame}[<+->]{Reformulation avec projection}
  \begin{block}{Navier-Stokes}
 \begin{align*}
@@ -211,7 +213,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 \end{align*}
  \end{block}
  
- \begin{block}{Réformulation}
+ \begin{block}{Reformulation}
  \begin{align*}
   \partial_t \left(\vect{\nabla}\cdot \vect{v}\right)&=0=\vect{\nabla}\cdot f(\vect{v})-\Delta p\\
   \Delta p&=\vect{\nabla}\cdot f(\vect{v})\\
@@ -270,7 +272,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
   \end{align*}
  \end{block}
 
- \begin{block}{Lagrangian}
+ \begin{block}{Lagrangien}
   \begin{align*}
 \vect{\nabla} \cdot \vect{u}_{\lambda}(t)&=0\\
 \frac{d \vect{u}_{\lambda}(t)}{d t}&=-\vect{\nabla} p(\vect{\xi}_{\lambda}(t),t)+\frac{\vect{F}(\vect{\xi}_{\lambda}(t),t)}{\rho(\vect{x},t)}+\nu \Delta \vect{u}_{\lambda}(t)
@@ -315,7 +317,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
  \end{tikzpicture}
  \shorthandon{:;}
 \end{frame}
-\subsection{Intégration temporel}
+\subsection{Intégration temporelle}
 \begin{frame}[<+->]{Projection}
 \begin{block}{Projection en accélération}
 \begin{equation*}
@@ -513,7 +515,7 @@ g(x)&=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A}x)+\Delta t\tau\\
 (1+\hat{L})\tilde{g}(x)&=(1+\hat{L})\Delta t \hat{f}((1+\hat{L})(\hat{v}_{n}+\hat{A}x)+\tilde{\tau})\\
 &=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A} (1+\hat{L})x+\tilde{\tau})\\
 &=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A} ((1+\hat{L})x+\hat{A}^{-1}\tilde{\tau}))\\
-\intertext{Par definition de $g$ on a:}
+\intertext{Par définition de $g$ on a:}
 &=g((1+\hat{L})x+\hat{A}^{-1}\tilde{\tau})-\Delta t \tau
 \end{align*}
  \end{block}
@@ -573,7 +575,7 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
 \end{block}
 \begin{block}{Derivée centrée}
  \begin{equation*}
-  \partial_x a_i=\frac{a_{i+1}-a{i-1}}{\Delta x}
+  \partial_x a_i=\frac{a_{i+1}-a_{i-1}}{\Delta x}
 \end{equation*}
 \end{block}
 
@@ -688,7 +690,7 @@ v^{j}\partial_{j}v^{i}
  \vspace{-0.7cm}
 	\begin{align*}
 	\vect{v}_{n+1}&=\vect{v}_{n}+\sum_{i=1}^{s}b_{i}\vect{k}_{i}\\
-	k_{i}&=\Delta t (1+P(\vect{T}_{i}))f\left(\vect{v}_{n}+\sum_{j=1}^{s}a_{ij}\vect{k}_{j}\right)
+	\vect{k}_{i}&=\Delta t (1+P(\vect{T}_{i}))f\left(\vect{v}_{n}+\sum_{j=1}^{s}a_{ij}\vect{k}_{j}\right)
 	\end{align*}
 \end{block}
  
@@ -696,7 +698,7 @@ v^{j}\partial_{j}v^{i}
  \vspace{-0.5cm}
 	\begin{align*}
 	\vect{\tilde{v}}_{n+1}&=(1+P(\vect{\tilde{T}}_0))\left(\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}\right)\\
-	\vect{\tilde{k}}_{i}&=\Delta t f\left((1+P(\vect{\tilde{T}}{i}))\left(\vect{\tilde{v}}_{n}+\sum_{j=1}^{s}a_{ij}\vect{\tilde{k}}_{j}\right)\right)
+	\vect{\tilde{k}}_{i}&=\Delta t f\left((1+P(\vect{\tilde{T}}_{i}))\left(\vect{\tilde{v}}_{n}+\sum_{j=1}^{s}a_{ij}\vect{\tilde{k}}_{j}\right)\right)
 	\end{align*}
 \end{block}
 \end{frame}
@@ -727,7 +729,7 @@ v^{j}\partial_{j}v^{i}
 
 \begin{frame}[<+->]{Conclusion partiel}
 
-\begin{block}{Ce que nous avons fait}
+\begin{block}<*>{Ce que nous avons fait}
  \begin{itemize}
   \item<0-> Discrétisation de l'équation sur la grille.
   \item Méthode de projection pour être à divergence nulle.
@@ -735,7 +737,7 @@ v^{j}\partial_{j}v^{i}
  \end{itemize}
 \end{block}
 
-\begin{block}{Ce qu'il reste à faire}
+\begin{block}<*>{Ce qu'il reste à faire}
  \begin{itemize}
   \item Connaître le domaine du problème qui varie au cours du temps.
   \item Déterminer les conditions aux bords.
@@ -747,13 +749,13 @@ v^{j}\partial_{j}v^{i}
 \subsection{Introduction topologie variable}
 \begin{frame}[<+->]{Détermination analytique de la topologie}
 
-\begin{block}{Déplacement de la position}
+\begin{block}<*>{Déplacement de la position}
  \begin{equation*}
   \dot{x}=v
  \end{equation*}
 \end{block}
 
-\begin{block}{Surface libre}
+\begin{block}<*>{Surface libre}
 \uncover<+->{
 \begin{equation*}
 	\sigma_{ij}=-p \delta_{ij}+\nu\left(\frac{\partial v_{i}}{\partial x_{j}}+\frac{\partial v_{j}}{\partial x_{i}}\right)
@@ -854,16 +856,20 @@ Ses points fantômes sont obtenus par des méthodes d'extrapolations.
  \end{enumerate}
  \end{block}
 \begin{block}{Une équation differentielle}
+  \uncover<+->{
  \begin{align*}
   v_{ext}&=Bv_{int}\\
   \dot{v}_{ext}&\approx B\dot{v}_{int}
  \end{align*}
+ }
+ \uncover<+->{
  Problème: $B$ depend de la topologie.
   \begin{align*}
     \dot{\vect{v}_{int}}&=(1+P)f(\vect{v})\\
     \dot{x}&=v_{I}(x)\\
  \dot{v}_{ext}&=B\dot{v}_{int}=B(1+P)f(\vect{v})
   \end{align*}
+  }
 \end{block}
 
 \end{frame}
@@ -1193,7 +1199,7 @@ S'il y a plusieurs plan comme cela on somme.
 \uncover<+->{
   2d:
   \begin{align*}
-	f(x,y)&=c_{11}\frac{x-x_{2}}{x_{1}-x_{2}}\frac{y-y_{2}}{y_{1}-y_{2}}+c_{12}\frac{x-x_(2)}{x_{1}-x_{2}}\frac{y-y_{1}}{y_{2}-y_{1}}
+	f(x,y)&=c_{11}\frac{x-x_{2}}{x_{1}-x_{2}}\frac{y-y_{2}}{y_{1}-y_{2}}+c_{12}\frac{x-x_{2}}{x_{1}-x_{2}}\frac{y-y_{1}}{y_{2}-y_{1}}
 	\\
 	&\qquad+c_{21}\frac{x-x_{1}}{x_{2}-x_{1}}\frac{y-y_{2}}{y_{1}-y_{2}}+c_{22}\frac{x-x_{2}}{x_{1}-x_{2}}\frac{y-y_{2}}{y_{1}-y_{2}}
 \end{align*}
@@ -1325,7 +1331,7 @@ S'il y a plusieurs plan comme cela on somme.
 \end{frame}
 
 \section{Smoothed Particle hydrodynamics}
-
+\subsection{Introduction}
 \begin{frame}{Idée}
 \begin{itemize}
 \item On utilise la version particulaire des équations de Navier-Stokes
@@ -1373,7 +1379,7 @@ S'il y a plusieurs plan comme cela on somme.
 
  
 \end{frame}
-
+\subsection{Discrétisation}
 \begin{frame}{Discrétisation du kernel}
  
  \begin{block}{Discrétisation}
@@ -1507,7 +1513,7 @@ S'il y a plusieurs plan comme cela on somme.
 
 \end{block}
 \end{frame}
-
+\subsection{Incompressibilité}
 \begin{frame}{Equations de Navier-Stokes}
  
 \begin{align*}
@@ -1556,7 +1562,7 @@ S'il y a plusieurs plan comme cela on somme.
  \end{block}
 
 \end{frame}
-
+\subsection{Conservation}
 \begin{frame}[shrink]{Loi de conservation}
 \begin{block}{Quantité de mouvement}
  \begin{align*}
@@ -1581,7 +1587,7 @@ S'il y a plusieurs plan comme cela on somme.
 
  
 \end{frame}
-
+\subsection{Algorithme}
 \begin{frame}[shrink]{Algorithme faiblement incompressible}
 \begin{block}{Créer particule initiale}
 	\begin{enumerate}
@@ -1697,6 +1703,8 @@ S'il y a plusieurs plan comme cela on somme.
 \end{block}
  \end{frame}
 
+ \section{Conclusion}
+ \subsection{Conclusion}
 
 \begin{frame}{Avantage de SPH et MAC}
  
