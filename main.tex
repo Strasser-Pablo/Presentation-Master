@@ -168,7 +168,7 @@
   \vect{v}_{new}&=\vect{v}-\vect{\nabla} p\\
   \Delta p&=\vect{\nabla} \cdot \vect{v}
   \end{align*}
-  \uncover<+->{\begin{proof}
+\begin{block}<+->{Preuve}
   \uncover<+->{
    \begin{equation*}
    \vect{\nabla}\cdot \vect{v}_{new}=\vect{\nabla} \cdot \vect{v}-\vect{\nabla} p=\vect{\nabla} \cdot \vect{v}-\vect{\nabla} \cdot \vect{v}=0
@@ -179,8 +179,7 @@
     \vect{\nabla} \times \vect{v}_{new}=\vect{\nabla} \times \vect{v}-\vect{\nabla}\times \vect{\nabla}p=\vect{\nabla} \times \vect{v}
    \end{equation*}
    }
-  \end{proof}
-}
+ \end{block}
  \end{property}
  
 \end{frame}
@@ -316,9 +315,9 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
  \end{tikzpicture}
  \shorthandon{:;}
 \end{frame}
-\subsection{Integration temporel}
-\begin{frame}{Projection}
-\begin{block}{Projection en acceleration}
+\subsection{Intégration temporel}
+\begin{frame}[<+->]{Projection}
+\begin{block}{Projection en accélération}
 \begin{equation*}
  \partial_t \vect{v}=(1+P)f(\vect{v})
  \end{equation*}
@@ -333,11 +332,11 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
  
 \end{frame}
 
-\begin{frame}{Integration}
- \begin{block}{Runge-Kutta sur l'acceleration}
+\begin{frame}[<+->]{Intégration}
+ \begin{block}{Runge-Kutta sur l'accélération}
    \begin{align*}
 	\vect{v}_{n+1}&=\vect{v}_{n}+\sum_{i=1}^{s}b_{i}\vect{k}_{i}\\
-	k_{i}&=\Delta t (1+P(\vect{T}_{i}))f\left(\vect{v}_{n}+\sum_{j=1}^{s}a_{ij}\vect{k}_{j}\right)
+	\vect{k}_{i}&=\Delta t (1+P(\vect{T}_{i}))f\left(\vect{v}_{n}+\sum_{j=1}^{s}a_{ij}\vect{k}_{j}\right)
 \end{align*}
  \end{block}
  
@@ -348,11 +347,11 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 \end{align*}
  \end{block}
 \end{frame}
-\subsection{Theorem d'équivalence}
-\begin{frame}{Equivalence}
+\subsection{Théorème d'équivalence}
+\begin{frame}{Équivalence}
  \begin{theorem}
-Si $\vect{v}_{n}=\vect{\tilde{v}}_{n}$ et $\vect{v}_n$ sont a divergence nulle alors $\vect{v}_{n+1}=\vect{\tilde{v}}_{n+1}$.
-Et la translation est donné par:
+Si $\vect{v}_{n}=\vect{\tilde{v}}_{n}$ et $\vect{v}_n$ sont à divergence nulle alors $\vect{v}_{n+1}=\vect{\tilde{v}}_{n+1}$.
+Et la translation est donnée par:
 \begin{align*}
   \vect{\tilde{T}}_{i}&=\Delta t\sum_{j}a_{ij}\vect{T}_{j}\\
   \vect{\tilde{T}}_{0}&=\Delta t\sum_{j}b_{j}\vect{T}_{j}
@@ -371,7 +370,8 @@ Alors pour tout $j$ nous avons:
 \begin{block}{Preuve}
 \end{block}
 
- \begin{block}{Vectorisation des $\vect{k}$}
+\begin{block}{Véctorisation des $\vect{k}$}
+\uncover<2->{
  \begin{align*}
 k&=\begin{pmatrix}
     \vect{k}_{1}\\
@@ -384,13 +384,13 @@ k&=\begin{pmatrix}
     \vect{\tilde{k}}_{s}\\
   \end{pmatrix}
 \end{align*}
+}
  \end{block}
-
 
 \end{frame}
 
-\begin{frame}{Preuve du leme clé (suite)}
- \begin{block}{Vectorisation de l'opérateur linéaire}
+\begin{frame}[<+->]{Preuve du lemme clé (suite)}
+ \begin{block}{Véctorisation de l'opérateur linéaire}
  Soit $L$ la partie linéaire de $P$:
 \begin{align*}
 \hat{L}&=\eye_{s}\kron L=\begin{pmatrix}L	&\ldots	&0\\
@@ -408,7 +408,7 @@ k&=\begin{pmatrix}
 \end{frame}
 
 
-\begin{frame}{Preuve du leme clé (suite)}
+\begin{frame}{Preuve du lemme clé (suite)}
 \begin{block}{Translation}
  \begin{align*}
 	\tau_i&=\begin{pmatrix}
@@ -428,47 +428,22 @@ k&=\begin{pmatrix}
 \end{block}
 \end{frame}
 
-\begin{frame}{Preuve du leme clé (suite)}
- \begin{block}{Vectorisation de l'opérateur linéaire}
- Soit $L$ la partie linéaire de $P$:
-\begin{align*}
-\hat{L}&=\eye_{s}\kron L=\begin{pmatrix}L	&\ldots	&0\\
-			\vdots &\ddots 	&\vdots\\
-			0	&\ldots	&L\\
-	\end{pmatrix}
-\end{align*}
-\end{block}
-\begin{block}{Proprieté de la partie linéaire}
-\begin{equation*}
-\hat{L}\hat{v}_{n}=0
+\begin{frame}{Preuve du lemme clé (suite)}
+  
+ \begin{block}{Véctorisation de la matrice $A$}
+  \begin{equation*}
+\hat{A}=\begin{pmatrix}
+    a_{11}	&\ldots	&a_{1s}\\
+    \vdots	&\ddots	&\vdots\\
+    a_{s1}	&\ldots	&a_{ss}\\
+  \end{pmatrix} \kron \eye=A \kron \eye
 \end{equation*}
  \end{block}
 
 \end{frame}
 
-
-\begin{frame}{Preuve du leme clé (suite)}
-\begin{block}{Translation}
- \begin{align*}
-	\tau_i&=\begin{pmatrix}
-			\vect{0}\\
-			\vdots\\
-			\vect{T}_{i}\\
-			\vdots\\
-			\vect{0}\\
-	\end{pmatrix}
-	\\
-	\tau&=\sum_{i}\tau_{i}=\begin{pmatrix}
-			\vect{T}_{1}\\
-			\vdots\\
-			\vect{T}_{s}\\
-	\end{pmatrix}
-\end{align*}
-\end{block}
-\end{frame}
-
-\begin{frame}{Preuve du leme clé (suite)}
-\begin{block}{Definition de la fonction par block}
+\begin{frame}[<+->]{Preuve du lemme clé (suite)}
+\begin{block}{Définition de la fonction par block}
  \begin{align*}
 \hat{f}&=\eye_{s}\kron f=\begin{pmatrix}f	&\ldots	&0\\
 			\vdots &\ddots 	&\vdots\\
@@ -487,8 +462,8 @@ k&=\begin{pmatrix}
 
 \end{frame}
 
-\begin{frame}{Preuve du leme clé (suite)}
- \begin{block}{Vectorisation de $v$}
+\begin{frame}[<+->]{Preuve du lemme clé (suite)}
+ \begin{block}{Véctorisation de $v$}
   \begin{equation*}
 \hat{v}_{n}=\begin{pmatrix}
 	      \vect{v}_{n}\\
@@ -498,7 +473,7 @@ k&=\begin{pmatrix}
 \end{equation*}
  \end{block}
  
- \begin{block}{Comutativité de $\hat{L}$ et $\hat{f}$}
+ \begin{block}{Commutativité de $\hat{L}$ et $\hat{f}$}
   \begin{align*}
 \hat{A}\hat{L}&=\left(A\kron \eye \right)
   \left(\eye_{s}\kron L\right)=
@@ -513,22 +488,8 @@ k&=\begin{pmatrix}
 
 \end{frame}
 
-\begin{frame}{Preuve du leme clé (suite)}
-  
- \begin{block}{Vectorisation de la matrice $A$}
-  \begin{equation*}
-\hat{A}=\begin{pmatrix}
-    a_{11}	&\ldots	&a_{1s}\\
-    \vdots	&\ddots	&\vdots\\
-    a_{s1}	&\ldots	&a_{ss}\\
-  \end{pmatrix} \kron \eye=A \kron \eye
-\end{equation*}
- \end{block}
-
-\end{frame}
-
-\begin{frame}{Preuve du leme clé (suite)}
- \begin{block}{Reécriture des étages}
+\begin{frame}[<+->]{Preuve du lemme clé (suite)}
+ \begin{block}{Réécriture des étages}
   \begin{align*}
 k&=(1+\hat{L})\Delta t\hat{f}(\hat{v}_{n}+\hat{A}k)+\Delta t\tau\\
 \tilde{k}&=\Delta t \hat{f}((1+\hat{L})(\hat{v}_{n}+\hat{A}k)+\tilde{\tau})
@@ -546,7 +507,7 @@ g(x)&=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A}x)+\Delta t\tau\\
 
 \end{frame}
 
-\begin{frame}{Preuve du leme clé (suite)}
+\begin{frame}{Preuve du lemme clé (suite)}
   \begin{block}{Calcul}
   \begin{align*}
 (1+\hat{L})\tilde{g}(x)&=(1+\hat{L})\Delta t \hat{f}((1+\hat{L})(\hat{v}_{n}+\hat{A}x)+\tilde{\tau})\\
@@ -558,7 +519,7 @@ g(x)&=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A}x)+\Delta t\tau\\
  \end{block}
 \end{frame}
 
-\begin{frame}{Preuve du leme clé (suite)}
+\begin{frame}{Preuve du lemme clé (suite)}
   \begin{block}{Calcul}
   \begin{align*}
 (1+\hat{L})\tilde{g}(\tilde{k})&=g((1+\hat{L})\tilde{k}+\hat{A}^{-1}\tilde{\tau})-\Delta t \tau\\
@@ -567,18 +528,18 @@ g(x)&=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A}x)+\Delta t\tau\\
 (1+\hat{L})\tilde{k}+\Delta t \tau&=g((1+\hat{L})\tilde{k}+\hat{A}^{-1}\tilde{\tau})\\
 \intertext{Si}
 \tilde{\tau}=\Delta t \hat{A}\tau
-\intertext{Alor}
+\intertext{Alors}
 (1+\hat{L})\tilde{k}+\Delta t \tau&=g((1+\hat{L})\tilde{k}+\Delta t \tau)
 \end{align*}
  \end{block}
 \end{frame}
 
-\begin{frame}{Preuve du leme clé (fin)}
+\begin{frame}{Preuve du lemme clé (fin)}
   \begin{block}{Fin de la preuve}
   \begin{equation*}
 (1+\hat{L})\tilde{k}+\Delta t \tau=g((1+\hat{L})\tilde{k}+\Delta t \tau)
 \end{equation*}
-$(1+\hat{L})\tilde{k}+\Delta t \tau$ est un point fixe de $g$ mais par definition 
+$(1+\hat{L})\tilde{k}+\Delta t \tau$ est un point fixe de $g$ mais par définition 
 les points fixes de $g$ sont $k$.
 Après renommage, cela donne directement le resultat pour $k^{j}$ la $j$ième solution:
 \begin{equation*}
@@ -588,7 +549,7 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
  \end{block}
 \end{frame}
 
-\begin{frame}{Preuve de la fin du théoreme}
+\begin{frame}{Preuve de la fin du théorème}
 
 \begin{block}{Fin de la preuve}
  \begin{align*}
@@ -596,7 +557,7 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
 \vect{\tilde{v}}_{n+1}&=\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}+L\left(\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}\right)+\vect{\tilde{T}}_0\\
 &=\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\left(\eye+L\right)\vect{\tilde{k}}_{i}+\vect{\tilde{T}}_0\\
 \vect{\tilde{T}}_0&=\Delta t\sum_{i=1}^{s}b_{i}\vect{T}_{i}\\
-\intertext{Using that $\vect{v}_{n}=\tilde{\vect{v}}_{n}$}
+\intertext{En utilisant que $\vect{v}_{n}=\tilde{\vect{v}}_{n}$}
 \vect{v}_{n+1}&=\vect{\tilde{v}}_{n+1}
 \end{align*}
 \qed
