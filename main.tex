@@ -798,15 +798,15 @@ Nous allons considérer des inflows fixe.
 
 \end{frame}
 \subsection{Discrétisation des particules}
-\begin{frame}{Discretisation}
+\begin{frame}[<+->][shrink]{Discrétisation}
 
-\begin{block}{Chose necessaire:}
+\begin{block}{Chose nécessaire}
  \begin{itemize}
-  \item Résoudre:
+  \item<0-> Résoudre:
   \begin{equation*}
    \dot{x}=v
   \end{equation*}
-  \item Imposer les conditions de bord variable:
+  \item Imposer les conditions aux bords variable:
    \begin{align*}
  p_{surf}&=Av_{int}\\
  v_{surf}&=Bv_{int}
@@ -816,15 +816,15 @@ Nous allons considérer des inflows fixe.
 \end{block}
 
 \begin{block}{Particule}
- On discretise l'équation avec des particules.
- Et on interpole la vitesse de la grille sur les particules pour resoudre:
+ On discrétise l'équation avec des particules.
+ Et on interpole la vitesse de la grille sur les particules pour résoudre:
    \begin{equation*}
    \dot{x}=v_{I}(x)
   \end{equation*}
 \end{block}
 \begin{block}{Imposition des conditions aux bords}
-On calcul des points fantômes hors du domaine pour imposer les conditions de bords.
-Ses points fantômes sont obtenus par des methodes d'extrapolations.
+On calcul des points fantômes hors du domaine pour imposer les conditions aux bords.
+Ses points fantômes sont obtenus par des méthodes d'extrapolations.
 \begin{align*}
  p_{ext}&=Av_{int}\\
  v_{ext}&=Bv_{int}
@@ -833,7 +833,7 @@ Ses points fantômes sont obtenus par des methodes d'extrapolations.
 
 \end{frame}
 
-\begin{frame}[shrink]{Integration}
+\begin{frame}[<+->][shrink]{Intégration}
  \begin{block}{Équations}
   \begin{align*}
     \dot{\vect{v}}_{int}&=(1+P)f(\vect{v})\\
@@ -843,7 +843,7 @@ Ses points fantômes sont obtenus par des methodes d'extrapolations.
   \end{align*}
  \end{block}
  \begin{block}{Splitting}
- \begin{enumerate}
+ \begin{enumerate}[<*>]
   \item \begin{equation*}
          \dot{\vect{v}}=(1+P)f(\vect{v})
         \end{equation*}
@@ -868,7 +868,7 @@ Ses points fantômes sont obtenus par des methodes d'extrapolations.
 
 \end{frame}
 
-\begin{frame}[fragile]{Shéma de l'algorithms}
+\begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
  \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
@@ -876,10 +876,10 @@ Ses points fantômes sont obtenus par des methodes d'extrapolations.
   \node[below= of runginit,draw](extrap) {Extrapolation};
   \node[below= of extrap,draw](gravity) {Gravité};
    \node[below= of gravity,draw](conv) {Convection};
-   \node[below= of conv,draw](viscosity) {viscosity};
-   \node[below= of viscosity,draw](projection) {projection};
-   \node[left= of gravity,draw,red](part){Mouvements particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{acceleration}}}](accel) {};
+   \node[below= of conv,draw](viscosity) {Viscosité};
+   \node[below= of viscosity,draw](projection) {Projection};
+   \node[left= of gravity,draw,red](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
    \node[draw,fit=(accel) (part) (runginit),label={below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
@@ -893,23 +893,18 @@ Ses points fantômes sont obtenus par des methodes d'extrapolations.
 \end{frame}
 
 \begin{frame}{Cas ou le $\delta$ de Dirac est important}
+
+
 \begin{figure}
-\centering
-\subcaptionbox{$t_0$}{%
-\includegraphics[scale=0.5]{multiple_part_error_1}%
+\only<1>{\subcaptionbox*{$t_0$}{%
+\includegraphics[scale=0.6]{multiple_part_error_1}%
  }
-\subcaptionbox{$t_1$}{%
-\includegraphics[scale=0.5]{multiple_part_error_2}%
- }
-\subcaptionbox{$t_2$}{%
-\includegraphics[scale=0.5]{multiple_part_error_3}%
- }
-\subcaptionbox{}{
-\scalebox{0.5}{
+ \subcaptionbox*{}{
+\scalebox{0.6}{
 \begin{tikzpicture}
   \begin{axis}[xtick=\empty,ytick=\empty, extra x ticks={0.5,1,1.5,2,2.5},
 extra x tick style={grid=major},
-extra x tick labels={$t_0$,$t_{int}$,$t_1$,$t_{f}$,$t_2$ },
+extra x tick labels={\alert{$t_0$},$t_{int}$,$t_1$,$t_{f}$,$t_2$ },
 xlabel={$t$},
 ylabel={$v$}
 ]
@@ -923,7 +918,53 @@ ylabel={$v$}
  \end{tikzpicture}
  }
 }
-\label{topo:mult_part_error}
+}
+\only<2>{\subcaptionbox*{$t_1$}{%
+\includegraphics[scale=0.6]{multiple_part_error_2}%
+ }
+ \subcaptionbox*{}{
+\scalebox{0.6}{
+\begin{tikzpicture}
+  \begin{axis}[xtick=\empty,ytick=\empty, extra x ticks={0.5,1,1.5,2,2.5},
+extra x tick style={grid=major},
+extra x tick labels={$t_0$,$t_{int}$,\alert{$t_1$},$t_{f}$,$t_2$ },
+xlabel={$t$},
+ylabel={$v$}
+]
+   \addplot[domain=0:1,red] {x^3};
+   \addplot[domain=1:2] {-(x-2)^2+3};
+   \addplot[domain=1:2,red] {-(x-2)^2+2};
+   \addplot[domain=2:3,red] {3*x-4+(x-2)^2};
+   \addplot[domain=2:3] {3*x-3+(x-2)^2};
+  \end{axis}
+
+ \end{tikzpicture}
+ }
+}
+}
+\only<3>{\subcaptionbox*{$t_2$}{%
+\includegraphics[scale=0.6]{multiple_part_error_3}%
+ }
+\subcaptionbox*{}{
+\scalebox{0.6}{
+\begin{tikzpicture}
+  \begin{axis}[xtick=\empty,ytick=\empty, extra x ticks={0.5,1,1.5,2,2.5},
+extra x tick style={grid=major},
+extra x tick labels={$t_0$,$t_{int}$,$t_1$,$t_{f}$,\alert{$t_2$} },
+xlabel={$t$},
+ylabel={$v$}
+]
+   \addplot[domain=0:1,red] {x^3};
+   \addplot[domain=1:2] {-(x-2)^2+3};
+   \addplot[domain=1:2,red] {-(x-2)^2+2};
+   \addplot[domain=2:3,red] {3*x-4+(x-2)^2};
+   \addplot[domain=2:3] {3*x-3+(x-2)^2};
+  \end{axis}
+
+ \end{tikzpicture}
+ }
+}
+}
 \end{figure}
 \end{frame}
 \subsection{Extrapolation}
