@@ -968,17 +968,17 @@ ylabel={$v$}
 \end{figure}
 \end{frame}
 \subsection{Extrapolation}
-\begin{frame}{Éxtrapolation}
+\begin{frame}[<+->]{Extrapolation}
  
- \begin{block}{Méthode}
+ \begin{block}<*>{Méthode}
   \begin{itemize}
    \item On extrapole par les conditions aux bords.
-   \item On extrapole par une methode generique pour le reste.
+   \item On extrapole par une méthode générique pour le reste.
   \end{itemize}
 
  \end{block}
  
- \begin{block}{Conditions aux bords en 2d}
+ \begin{block}<*>{Conditions aux bords en 2d}
   \begin{itemize}
    \item Plan vertical ou horizontal.
    \item Plan diagonal.
@@ -986,7 +986,7 @@ ylabel={$v$}
 
  \end{block}
  
- \begin{block}{Conditions aux bords en 3d}
+ \begin{block}<*>{Conditions aux bords en 3d}
   \begin{itemize}
    \item Plan vertical ou horizontal.
    \item Plan diagonal sur 2 axes.
@@ -1000,7 +1000,7 @@ ylabel={$v$}
 
 \begin{frame}{En 2d plan vertical ou horizontal}
 
-\begin{block}{Shema}
+\begin{block}{Schéma}
 \vspace{-1cm}
 \directlua{dofile('plane_extrapolation.lua')}
 \end{block}
@@ -1020,7 +1020,7 @@ ylabel={$v$}
 \end{frame}
 
 \begin{frame}{En 2d plan diagonal}
- \begin{block}{Shema}
+ \begin{block}{Schéma}
 \vspace{-1cm}
 \directlua{dofile('plane_45_extrapolation.lua')}
 \end{block}
@@ -1106,26 +1106,26 @@ ylabel={$v$}
 \end{equation*}
 \end{frame}
 
-\begin{frame}[shrink]{Extrapolations}
-\begin{block}{Extrapolations à la surface}
+\begin{frame}[<+->][shrink]{Extrapolations}
+\begin{block}<*>{Extrapolations à la surface}
 
 \begin{enumerate}
- \item On met les vitesses à la surface et à l'exterieur à NAN.
- \item On extrapole le plus possible avec les cas vu précédement.
- \item On extrapole avec une methode generique les valeurs encore à NAN jusqu'a une certaine profondeur.
+ \item On met les vitesses à la surface et à l'extérieur à NAN.
+ \item On extrapole le plus possible avec les cas vu précédemment.
+ \item On extrapole avec une méthode générique les valeurs encore à NAN jusqu'à une certaine profondeur.
 \end{enumerate}
 
 \end{block}
-\begin{block}{Extrapolation generique pour la surface}
+\begin{block}<*>{Extrapolation generique pour la surface}
 \begin{enumerate}
- \item On extrapole les vitesses inconnu de la surface par moyenne des vitesses interieur voisine.
- \item On calcul la divergence et on la partage avec toutes les vitesses inconnu.
+ \item On extrapole les vitesses inconnues de la surface par moyenne des vitesses intérieur voisine.
+ \item On calcul la divergence et on la partage avec toutes les vitesses inconnues.
 \end{enumerate}
 \end{block}
 
-\begin{block}{Extrapolation generique pour plus loin}
+\begin{block}<*>{Extrapolation generique pour plus loin}
 \begin{enumerate}
- \item On calcul une variable nommé layer qui indique la distance de la surface.
+ \item On calcul une variable nommée layer qui indique la distance à la surface.
  \item On extrapole par vitesse moyenne plus proche de la surface (layer plus petit).
 \end{enumerate}
 
@@ -1134,7 +1134,7 @@ ylabel={$v$}
  
 \end{frame}
 
-\begin{frame}{Conditions aux bords pour la presion}
+\begin{frame}{Conditions aux bords pour la pression}
  \begin{block}{Méthode}
   On impose les conditions aux bords de façon centré.
   \begin{equation*}
@@ -1152,7 +1152,7 @@ S'il y a plusieurs plan comme cela on somme.
 
 \end{frame}
 
-\begin{frame}[fragile]{Shéma de l'algorithms}
+\begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
  \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
@@ -1160,10 +1160,10 @@ S'il y a plusieurs plan comme cela on somme.
   \node[below= of runginit,draw,red](extrap) {Extrapolation};
   \node[below= of extrap,draw](gravity) {Gravité};
    \node[below= of gravity,draw](conv) {Convection};
-   \node[below= of conv,draw](viscosity) {viscosity};
-   \node[below= of viscosity,draw](projection) {projection};
-   \node[left= of gravity,draw](part){Mouvements particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{acceleration}}}](accel) {};
+   \node[below= of conv,draw](viscosity) {Viscosité};
+   \node[below= of viscosity,draw](projection) {Projection};
+   \node[left= of gravity,draw](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
    \node[draw,fit=(accel) (part) (runginit),label={below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
@@ -1178,33 +1178,37 @@ S'il y a plusieurs plan comme cela on somme.
 
 \subsection{Interpolation}
 
-\begin{frame}{Interpolation}
+\begin{frame}[<+->]{Interpolation}
 \begin{block}{Raison}
- Necessaire pour connaitre la vitesse à la position des particules.
+ Nécessaire pour connaître la vitesse à la position des particules.
 \end{block}
 
- \begin{block}{$n$-linéaire}
+ \begin{block}<*>{$n$-linéaire}
+ \uncover<+->{
   1d:
   \begin{equation*}
 	f(x,y)=c_2\frac{x-x_{1}}{x_{2}-x_{1}}+c_1\frac{x-x_{2}}{x_{1}-x_{2}}
 \end{equation*}
+}
+\uncover<+->{
   2d:
   \begin{align*}
 	f(x,y)&=c_{11}\frac{x-x_{2}}{x_{1}-x_{2}}\frac{y-y_{2}}{y_{1}-y_{2}}+c_{12}\frac{x-x_(2)}{x_{1}-x_{2}}\frac{y-y_{1}}{y_{2}-y_{1}}
 	\\
 	&\qquad+c_{21}\frac{x-x_{1}}{x_{2}-x_{1}}\frac{y-y_{2}}{y_{1}-y_{2}}+c_{22}\frac{x-x_{2}}{x_{1}-x_{2}}\frac{y-y_{2}}{y_{1}-y_{2}}
 \end{align*}
+}
  \end{block}
 
 \end{frame}
 
 \subsection{Initialisation}
 
-\begin{frame}[shrink]{Initialisation}
+\begin{frame}[<+->][shrink]{Initialisation}
  
  \begin{block}{But}
-  Obtenir la nouvel topologie de la position des particules.
-  On uttilise une variable  nommé layer pour indiquer la distance de la surface.
+  Obtenir la nouvelle topologie de la position des particules.
+  On utilise une variable  nommée layer pour indiquer la distance de la surface.
  \end{block}
  \begin{block}{Mise à zero}
   La variable layer est mise à $-1$ partout.
@@ -1215,7 +1219,7 @@ S'il y a plusieurs plan comme cela on somme.
  \end{block}
  
   \begin{block}{Création de particule supplémentaire}
-  Création de particule supplémentaire si necessaire.
+  Création de particule supplémentaire si nécessaire.
  \end{block}
  
  \begin{block}{Enlever le flag fluide}
@@ -1223,18 +1227,18 @@ S'il y a plusieurs plan comme cela on somme.
  \end{block}
  
  \begin{block}{Étendre la variable layer}
-  On crée une couche d'une certaine distance autour du fluide et indiquant dans la variable layer la distance.
+  On crée une couche d'une certaine distance autour du fluide et indiquons dans la variable layer la distance.
  \end{block}
 
- \begin{block}{Supression}
-  On suprime les cellules non uttilisé.
+ \begin{block}{Suppression}
+  On supprime les cellules non utilisées.
  \end{block}
 
- \begin{block}{Pas de temps ideal}
-  On calcul le pas de temps ideal tel qu'une particule ne peut se déplacer que d'une fraction de la distance total.
+ \begin{block}{Pas de temps idéal}
+  On calcul le pas de temps idéal tel qu'une particule ne peut se déplacer que d'une fraction de la distance totale.
  \end{block}
 \begin{block}{Variante}
- On demande des particules qu'a la surface du fluide pas à l'interieur.
+ On demande des particules qu'à la surface du fluide pas à l'intérieur.
 \end{block}
 
 
@@ -1243,7 +1247,7 @@ S'il y a plusieurs plan comme cela on somme.
 
 
 \subsection{Conclusion}
-\begin{frame}{Resumée de la methode}
+\begin{frame}{Resumé de la methode}
  \begin{block}{Initialisation avant methode de Runge-Kutta}
   \begin{enumerate}
    \item On trouve les cellules qui ont une particule en eux.
