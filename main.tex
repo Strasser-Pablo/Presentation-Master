@@ -293,7 +293,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
  \end{itemize}
 
 \end{frame}
-\begin{frame}[fragile]{Shéma de l'algorithms}
+\begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
  \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
@@ -301,10 +301,10 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
   \node[below= of runginit,draw](extrap) {Extrapolation};
   \node[below= of extrap,draw](gravity) {Gravité};
    \node[below= of gravity,draw](conv) {Convection};
-   \node[below= of conv,draw](viscosity) {viscosity};
-   \node[below= of viscosity,draw](projection) {projection};
-   \node[left= of gravity,draw](part){Mouvements particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{acceleration}}}](accel) {};
+   \node[below= of conv,draw](viscosity) {Viscosité};
+   \node[below= of viscosity,draw](projection) {Projection};
+   \node[left= of gravity,draw](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
    \node[draw,fit=(accel) (part) (runginit),label={below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
