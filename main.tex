@@ -564,8 +564,8 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
 \end{block}
 
 \end{frame}
-\subsection{Discretisation}
-\begin{frame}{Discretisation non  ``staggered grid''}
+\subsection{Discrétisation}
+\begin{frame}{Discrétisation non  ``staggered grid''}
 \begin{block}{Position des variables}
 \shorthandoff{;:} 
 \directlua{dofile('unstaggered.lua')}
@@ -585,13 +585,13 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
 \end{frame}
 
 \begin{frame}{Problème damier}
-\begin{block}{Divergence nulle!}
+\begin{block}{\alert{Divergence nulle!!!!}}
  \directlua{dofile('unstaggered_div2.lua')}
 \end{block}
 
-\begin{block}{Correction}
- \begin{itemize}
-  \item Changer la discretisation.
+\begin{block}<+->{Correction}
+ \begin{itemize}[<+->]
+  \item Changer la discrétisation.
   \item Changer la grille.
   \item Ajouter un filtre.
  \end{itemize}
@@ -601,7 +601,7 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
  
 \end{frame}
 
-\begin{frame}{Discretisation ``staggered grid''}
+\begin{frame}{Discrétisation ``staggered grid''}
 \begin{block}{Position des variables}
 \shorthandoff{;:} 
  \directlua{dofile('staggered.lua')}
@@ -669,12 +669,12 @@ v^{j}\partial_{j}v^{i}
 
 \end{frame}
 \subsection{Conclusion topologie fixe}
-\begin{frame}[shrink]{Algorithme en topologie fixe}
+\begin{frame}[<+->][shrink]{Algorithme en topologie fixe}
  \begin{block}{Principe}
   \begin{itemize}
-   \item Uttiliser une methode de Runge-Kutta de notre choix.
+   \item<1-> Utiliser une methode de Runge-Kutta de notre choix.
    \item Evaluer l'acceleration sur une ``staggered grid''.
-   \item Projeter chaque acceleration ou chaque vitesse.
+   \item Projeter chaque accélération ou chaque vitesse.
   \end{itemize}
  \end{block}
  \begin{block}{Fonction $f$}
