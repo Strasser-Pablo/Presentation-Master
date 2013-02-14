@@ -701,7 +701,7 @@ v^{j}\partial_{j}v^{i}
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Shéma de l'algorithms}
+\begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
  \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
@@ -709,10 +709,10 @@ v^{j}\partial_{j}v^{i}
   \node[below= of runginit,draw,gray](extrap) {Extrapolation};
   \node[below= of extrap,draw,red](gravity) {Gravité};
    \node[below= of gravity,draw,red](conv) {Convection};
-   \node[below= of conv,draw,red](viscosity) {viscosity};
-   \node[below= of viscosity,draw,red](projection) {projection};
-   \node[left= of gravity,draw,gray](part){Mouvements particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={[red]180:{\rotatebox{90}{acceleration}}},red](accel) {};
+   \node[below= of conv,draw,red](viscosity) {Viscosité};
+   \node[below= of viscosity,draw,red](projection) {Projection};
+   \node[left= of gravity,draw,gray](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={[red]180:{\rotatebox{90}{Accélération}}},red](accel) {};
    \node[draw,red,fit=(accel) (part) (runginit),label={[red]below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
@@ -725,27 +725,27 @@ v^{j}\partial_{j}v^{i}
  \shorthandon{:;}
 \end{frame}
 
-\begin{frame}{Conclusion partiel}
+\begin{frame}[<+->]{Conclusion partiel}
 
 \begin{block}{Ce que nous avons fait}
  \begin{itemize}
-  \item Discretisation de l'équations sur la grille.
-  \item Methode de projection pour être à divergence nulle.
-  \item Methode d'integration.
+  \item<0-> Discrétisation de l'équation sur la grille.
+  \item Méthode de projection pour être à divergence nulle.
+  \item Méthode d'intégration.
  \end{itemize}
 \end{block}
 
 \begin{block}{Ce qu'il reste à faire}
  \begin{itemize}
-  \item Connaître le domaine du problème qui varie au cours du temp.
-  \item Determiner les conditions de bord.
+  \item Connaître le domaine du problème qui varie au cours du temps.
+  \item Déterminer les conditions aux bords.
  \end{itemize}
 
 \end{block}
 
 \end{frame}
 \subsection{Introduction topologie variable}
-\begin{frame}{Determination analytique de la topologie}
+\begin{frame}[<+->]{Détermination analytique de la topologie}
 
 \begin{block}{Déplacement de la position}
  \begin{equation*}
@@ -754,6 +754,7 @@ v^{j}\partial_{j}v^{i}
 \end{block}
 
 \begin{block}{Surface libre}
+\uncover<+->{
 \begin{equation*}
 	\sigma_{ij}=-p \delta_{ij}+\nu\left(\frac{\partial v_{i}}{\partial x_{j}}+\frac{\partial v_{j}}{\partial x_{i}}\right)
 \end{equation*}
@@ -762,34 +763,41 @@ v^{j}\partial_{j}v^{i}
 	\sum_{i,j}\sigma_{ij}t^{1}_{i}n_{j}&=0\\
 	\sum_{i,j}\sigma_{ij}t^{2}_{i}n_{j}&=0\\
 \end{align*}
+}
+\uncover<+->{
 \begin{align*}
  p_{surf}&=Av_{int}\\
  v_{surf}&=Bv_{int}
 \end{align*}
-
+}
 \end{block}
  
 \end{frame}
 
-\begin{frame}{Determination analytique de la topologie (suite)}
+\begin{frame}{Détermination analytique de la topologie (suite)}
  \begin{block}{Inflow}
+ \uncover<+->{
  \begin{align*}
 \nabla p(\vect{x},t)&=f(\vect{v}(\vect{x},t))\\
 \partial_t \vect{v}&=f(\vect{v})-\vect{\nabla}p=0
 \end{align*}
-Autre methode:
+}
+\uncover<+->{
+Autre méthode:
 \begin{align*}
  \nabla p(\vect{x},t)&=0\\
  \partial_t \vect{v}&=0
 \end{align*}
-
+}
 \end{block}
 \begin{block}{Remarque}
-Nous allons considerer des inflows fixe.
+\uncover<+->{
+Nous allons considérer des inflows fixe.
+}
 \end{block}
 
 \end{frame}
-\subsection{Discretisation particule}
+\subsection{Discrétisation des particules}
 \begin{frame}{Discretisation}
 
 \begin{block}{Chose necessaire:}
