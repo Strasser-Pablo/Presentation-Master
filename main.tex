@@ -28,7 +28,8 @@
 \newcommand{\eye}{1}
 \newcommand{\kron}{\bigotimes}
 
- \beamerdefaultoverlayspecification{<+->}
+ \beamerdefaultoverlayspecification{}
+\setbeamercovered{transparent}
 
 \newenvironment{plusenv}{\alt{\setbeamertemplate{itemize item}{$\textcolor{green}{\oplus}$}}
 {\setbeamertemplate{itemize item}{$\textcolor{gray}{\oplus}$}}}{}
@@ -77,7 +78,7 @@
 \begin{document}
 \setlength{\belowdisplayskip}{0pt}%
 \setlength{\abovedisplayskip}{0pt}%
-\begin{frame}[<*>]
+\begin{frame}
   \titlepage
 \end{frame}
 
