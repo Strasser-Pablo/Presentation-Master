@@ -1247,11 +1247,11 @@ S'il y a plusieurs plan comme cela on somme.
 
 
 \subsection{Conclusion}
-\begin{frame}{Resumé de la methode}
+\begin{frame}{Resumé de la méthode}
  \begin{block}{Initialisation avant methode de Runge-Kutta}
   \begin{enumerate}
    \item On trouve les cellules qui ont une particule en eux.
-   \item On genère des cellules vides autour du fluide pour stocker les vitesses d'extrapolations.
+   \item On génére des cellules vides autour du fluide pour stocker les vitesses d'extrapolations.
    \item On crée une variable layer pour connaître la distance hors du fluide.
    \item On calcule le pas de temps optimal
   \end{enumerate}
@@ -1261,7 +1261,7 @@ S'il y a plusieurs plan comme cela on somme.
   \begin{block}{Initialisation avant itération de Runge-Kutta}
   \begin{enumerate}
    \item On trouve les cellules qui ont une particule en eux.
-   \item On genère des cellules vides autour du fluide pour stocker les vitesses d'extrapolations.
+   \item On génére des cellules vides autour du fluide pour stocker les vitesses d'extrapolations.
    \item On crée une variable layer pour connaître la distance hors du fluide.
   \end{enumerate}
 
@@ -1270,17 +1270,17 @@ S'il y a plusieurs plan comme cela on somme.
  
 \end{frame}
 
-\begin{frame}{Resumée de la methode (suite)}
+\begin{frame}{Resumé de la méthode (suite)}
  \begin{block}{Extrapolation}
   \begin{enumerate}
-   \item On éxtrapole les conditions de bords.
-   \item On éxtrapole à l'exterieur du fluide.
+   \item On extrapole les conditions aux bords.
+   \item On extrapole à l'extérieur du fluide.
   \end{enumerate}
 
  \end{block}
  \begin{block}{Calcul de l'acceleration}
   \begin{enumerate}
-   \item On calcul l'acceleration par la discretisation.
+   \item On calcul l'accélération par la discrétisation.
    \item On projete pour être à divergence nulle.
   \end{enumerate}
 
@@ -1290,7 +1290,7 @@ S'il y a plusieurs plan comme cela on somme.
 \end{frame}
 
 
-\begin{frame}[fragile]{Shéma de l'algorithms}
+\begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
  \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
@@ -1298,10 +1298,10 @@ S'il y a plusieurs plan comme cela on somme.
   \node[below= of runginit,draw](extrap) {Extrapolation};
   \node[below= of extrap,draw](gravity) {Gravité};
    \node[below= of gravity,draw](conv) {Convection};
-   \node[below= of conv,draw](viscosity) {viscosity};
-   \node[below= of viscosity,draw](projection) {projection};
-   \node[left= of gravity,draw](part){Mouvements particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{acceleration}}}](accel) {};
+   \node[below= of conv,draw](viscosity) {Viscosité};
+   \node[below= of viscosity,draw](projection) {Projection};
+   \node[left= of gravity,draw](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
    \node[draw,fit=(accel) (part) (runginit),label={below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
@@ -1324,19 +1324,19 @@ S'il y a plusieurs plan comme cela on somme.
  
 \end{frame}
 
-\section{Smooth Particle Hydrodynamiques}
+\section{Smoothed Particle hydrodynamics}
 
 \begin{frame}{Idée}
 \begin{itemize}
-\item On uttilise la version particulaire des équations de Navier-Stoke
+\item On utilise la version particulaire des équations de Navier-Stokes
   \begin{align*}
 \vect{\nabla} \cdot \vect{u}_{\lambda}(t)&=0\\
 \frac{d \vect{u}_{\lambda}(t)}{d t}&=-\vect{\nabla} p(\vect{\xi}_{\lambda}(t),t)+\frac{\vect{F}(\vect{\xi}_{\lambda}(t),t)}{\rho(\vect{x},t)}+\nu \Delta \vect{u}_{\lambda}(t)
  \end{align*}
- \item On discretise la vitesse sur les particules.
+ \item On discrétise la vitesse sur les particules.
  \item C'est basé sur la théorie des interpolants.
  \item On peut résoudre un système linéaire pour l'incompressibilité.
- \item On peut uttiliser un ansatz pour la pression.
+ \item On peut utiliser un ansatz pour la pression.
 \end{itemize}
  
 \end{frame}
@@ -1354,7 +1354,7 @@ S'il y a plusieurs plan comme cela on somme.
  \end{equation*}
 \end{block}
 
-\begin{block}{Precision}
+\begin{block}{Précision}
  \begin{align*}
   A(r')&=A(r)+(r'-r)\nabla A(r)+O(|r-r'|^2)\\
   <A(r)>&=A(r)\int_{\Omega}w_{h}(r-r',h)dr'+\nabla A(r)\int_{\Omega}(r'-r)w_{h}(r-r')dr'+O(|r-r'|^2)\\
@@ -1367,16 +1367,16 @@ S'il y a plusieurs plan comme cela on somme.
 \begin{itemize}
  \item Converge vers $\delta$.
  \item Normalisé.
- \item Symetrie spherique.
+ \item Symétrie sphérique.
 \end{itemize}
 \end{block}
 
  
 \end{frame}
 
-\begin{frame}{Discretisation du kernel}
+\begin{frame}{Discrétisation du kernel}
  
- \begin{block}{Discretisation}
+ \begin{block}{Discrétisation}
  \begin{equation*}
   A(r)=\sum _{b}V_{b}A_bw_{h}(r-r_b)+O(h)
   \end{equation*}
@@ -1388,7 +1388,7 @@ S'il y a plusieurs plan comme cela on somme.
  \end{equation*}
  \end{block}
  
- \begin{block}{Density}
+ \begin{block}{Densitée}
   \begin{equation*}
    \rho(r)=\sum_b \frac{m_b}{\rho_{b}}\rho_{b}w_{h}(r-r_b)=\sum_b m_bw_{h}(r-r_b)
   \end{equation*}
@@ -1416,7 +1416,7 @@ S'il y a plusieurs plan comme cela on somme.
    \end{equation*}
 \end{block}
 \end{frame}
-\begin{frame}{Image de kernel}
+\begin{frame}{Plot du kernel}
  \includegraphics[width=\textwidth]{kernel.png}
 \end{frame}
 
@@ -1427,7 +1427,7 @@ S'il y a plusieurs plan comme cela on somme.
   &=-\int_{\Omega} A(r')\nabla w_{h}(r-r')dr'+O(h^2)
  \end{align*}
 \end{block}
-\begin{block}{Discretisation}
+\begin{block}{Discrétisation}
 \begin{equation*}
  \nabla A(r_a)=\sum_{b}A_b\frac{m_b}{\rho_b}\nabla_a w_{h}(r_a-r_b)
  \end{equation*}
@@ -1452,7 +1452,7 @@ S'il y a plusieurs plan comme cela on somme.
   On obtient les formules pour la divergence de façon similaire que pour le gradient.
  \end{block}
 
- \begin{block}{Laplacien}
+ \begin{block}{Gradient variante}
  \begin{equation*}
   \nabla \phi_{i}=\sum_{j}\frac{e_{ij}}{r_{ij}}\left(\phi_{i}-\phi_{j}\right)
   \end{equation*}
@@ -1485,7 +1485,7 @@ S'il y a plusieurs plan comme cela on somme.
  \end{equation*}
 \end{block}
 
-\begin{block}{Masse initial}
+\begin{block}{Masse initiale}
 \begin{equation*}
  m=\frac{\rho_0}{\sigma}
 \end{equation*}
@@ -1508,14 +1508,14 @@ S'il y a plusieurs plan comme cela on somme.
 \end{block}
 \end{frame}
 
-\begin{frame}{Equations de Navier-Stoke}
+\begin{frame}{Equations de Navier-Stokes}
  
 \begin{align*}
 \vect{\nabla} \cdot \vect{u}_{\lambda}(t)&=0\\
 \rho\frac{d \vect{u}_{\lambda}(t)}{d t}&=-\vect{\nabla} p(\vect{\xi}_{\lambda}(t),t)+\vect{F}(\vect{\xi}_{\lambda}(t),t)+\mu \Delta \vect{u}_{\lambda}(t)
 \end{align*}
 
-\begin{block}{Faible compressible}
+\begin{block}{Faiblement compressible}
 \begin{align*}
  p&=B\left(\left(\frac{\rho}{\rho_{0}}\right)^\gamma-1\right)\\
  \gamma&=7\\
@@ -1525,8 +1525,8 @@ S'il y a plusieurs plan comme cela on somme.
 
 \begin{block}{Exactement incompressible}
  \begin{enumerate}
-  \item Projecter la vitesse pour être à divergence nulle.
-  \item Obtenir une densité égual à la densité voulue $\rho_0$.
+  \item Projeter la vitesse pour être à divergence nulle.
+  \item Obtenir une densité égal à la densitée voulue $\rho_0$.
  \end{enumerate}
 \begin{equation*}
  \frac{\dot{\rho}}{\rho}=\nabla \cdot v
@@ -1563,7 +1563,7 @@ S'il y a plusieurs plan comme cela on somme.
   P&=\sum_{i} m_iv_{i}\\
   \dot{P}&=\sum_{i} m_ia_{i}\\
   &=\sum_{i}m_{i} \left(-\frac{1}{\rho_{i}}\nabla p+\nu \Delta v\right)\\
-  \intertext{Antisymetrie}
+  \intertext{Antisymétrie}
   &=0
  \end{align*}
 
@@ -1582,36 +1582,36 @@ S'il y a plusieurs plan comme cela on somme.
  
 \end{frame}
 
-\begin{frame}[shrink]{Algorithm faible incompressible}
-\begin{block}{Crée particule initial:}
+\begin{frame}[shrink]{Algorithme faiblement incompressible}
+\begin{block}{Créer particule initiale}
 	\begin{enumerate}
-		\item Placer des particules avec position et vitesse initial.
-		\item Choisire la masse des particules de sorte que la densité soit bonne.
+		\item Placer des particules avec position et vitesse initiale.
+		\item Choisir la masse des particules de sorte que la densitée soit bonne.
 		\begin{enumerate}
-			\item La densité est donnée par:
+			\item La densitée est donnée par:
 			\begin{equation*}
 			\Sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
-			\item La masse est donné par:
+			\item La masse est donnée par:
 			\begin{equation*}
 			m_a=\frac{\rho_{0}}{\Sigma_{a}}
 			\end{equation*}
 		\end{enumerate}
 	\end{enumerate}
 \end{block}
-\begin{block}{Pour tout pas de temps:}
+\begin{block}{Pour tout pas de temps}
 	\begin{enumerate}
-		\item Integrée les équations de Navier-Stoke. Pour chaque étage:
+		\item Intégrer les équations de Navier-Stokes. Pour chaque étage:
 		\begin{enumerate}
-			\item Calculez la densité:
+			\item Calculer la densitée:
 			\begin{equation*}
 			\Sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
-			\item Calculez la presion:
+			\item Calculer la pression:
 			\begin{equation*}
 			p=B \left[\left(\frac{m_{a}\sigma_{a}}{\rho_{0}}\right)^{\gamma}-1\right]
 			\end{equation*}
-			\item Calculez l'acceleration:
+			\item Calculer l'accélération:
 			\begin{equation*}
 			a_a=-\frac{\nabla p}{m_{a}\sigma_{a}}+g+\nu \Delta v_{a}
 			\end{equation*}
@@ -1625,32 +1625,32 @@ S'il y a plusieurs plan comme cela on somme.
 \end{block}
 \end{frame}
  
- \begin{frame}[shrink]{Algorithm incompressible}
-\begin{block}{Crée particule initial:}
+ \begin{frame}[shrink]{Algorithme incompressible}
+\begin{block}{Créer particule initiale}
 	\begin{enumerate}
-		\item Placer des particules avec position et vitesse initial.
-		\item Choisire la masse des particules de sorte que la densité soit bonne.
+		\item Placer des particules avec position et vitesse initiale.
+		\item Choisir la masse des particules de sorte que la densitée soit bonne.
 		\begin{enumerate}
-			\item La densité est donnée par:
+			\item La densitée est donnée par:
 			\begin{equation*}
 			\Sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
-			\item La masse est donné par:
+			\item La masse est donnée par:
 			\begin{equation*}
 			m_a=\frac{\rho_{0}}{\Sigma_{a}}
 			\end{equation*}
 		\end{enumerate}
 	\end{enumerate}
 \end{block}
-\begin{block}{Pour tout pas de temps:}
+\begin{block}{Pour tout pas de temps}
 	\begin{enumerate}
-		\item Integrer les équations de Navier-Stokes sans presion.  Pour chaque étage:
+		\item Intégrer les équations de Navier-Stokes sans pression.  Pour chaque étage:
 		\begin{enumerate}
-			\item Calculez la densité:
+			\item Calculer la densité:
 			\begin{equation*}
 			\Sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
-			\item Calculez l'acceleration:
+			\item Calculer l'accélération:
 			\begin{equation*}
 			a_a=-\frac{\nabla p}{m_{a}\sigma_{a}}+g+\nu \Delta v_{a}
 			\end{equation*}
@@ -1660,15 +1660,15 @@ S'il y a plusieurs plan comme cela on somme.
 			v^{n+1}_{a}&=v^{n}_{a}+a^{n}_{a}\Delta t
 			\end{align*}
 		\end{enumerate}
-		\item Corrigez la vitesse et la position.
+		\item Corriger la vitesse et la position.
 		\begin{enumerate}
-			\item Calculez la densité:
+			\item Calculer la densitée:
 			\begin{equation*}
 			\Sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
-			\item Corrigez la position:
+			\item Corriger la position:
 			\begin{enumerate}[<*>]
-				\item Resoudre $p$ dans l'équation linéaire:
+				\item Résoudre $p$ dans l'équation linéaire:
 				\begin{equation*}
 				\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{1}{r_{ab}}\frac{p_a-p_b}{m_a\sigma_{a}-m_{b}\sigma_{b}} =\frac{1}{2}\frac{\rho^{0}-m_{a}\sigma_{a}}{\rho_{0}\sigma_{a}}
 				\end{equation*}
@@ -1676,18 +1676,18 @@ S'il y a plusieurs plan comme cela on somme.
 				\begin{equation*}
 				x^{n+1}_{a}=x^{*n+1}_{a}-\frac{1}{m_a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{\rho_{a}p_{b}+\rho_{b}p_{a}}{\rho_a+\rho_b}e_{ab}
 				\end{equation*}
-				\item Calculez la densité:
+				\item Calculer la densitée:
 				\begin{equation*}
 				\Sigma_{a}=\sum_{b}w_{ab}
 				\end{equation*}
 			\end{enumerate}
-			\item Corrigez la vitesse:
+			\item Corriger la vitesse:
 			\begin{enumerate}[<*>]
-				\item Resoudre $p$ dans l'équation linéaire:
+				\item Résoudre $p$ dans l'équation linéaire:
 				\begin{equation*}
 				\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{1}{r_{ab}}\frac{p_a-p_b}{m_a\sigma_{a}-m_{b}\sigma_{b}} =\frac{1}{4}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\left(v_{a}+v_b\right)\cdot e_{ab}
 				\end{equation*}
-				\item Corrigez la vitesse:
+				\item Corriger la vitesse:
 				\begin{equation*}
 				v^{n+1}_{a}=v^{*n+1}_{a}-\frac{1}{m_a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{\rho_{a}p_{b}+\rho_{b}p_{a}}{\rho_a+\rho_b}e_{ab}
 				\end{equation*}
@@ -1703,10 +1703,10 @@ S'il y a plusieurs plan comme cela on somme.
  \begin{block}{SPH}
   \begin{itemize}
    \plusitem Terme de convection exact.
-   \moinsitem Correction de presion plus dure à faire exactement.
-   \plusitem Loi de conservation interessante.
+   \moinsitem Correction de pression plus dure à faire exactement.
+   \plusitem Loi de conservation intéressante.
    \moinsitem Justification et preuve de convergence plus dure.
-   \moinsitem Système linéaire difficil a résoudre.
+   \moinsitem Système linéaire difficil à résoudre.
    \moinsitem Plus de voisin à traiter.
   \end{itemize}
 
@@ -1714,8 +1714,8 @@ S'il y a plusieurs plan comme cela on somme.
 
  \begin{block}{MAC}
   \begin{itemize}
-   \plusitem Methode de discretisation bien connu.
-   \plusitem Système linéaire facil a résoudre.
+   \plusitem Méthode de discrétisation bien connu.
+   \plusitem Système linéaire facil à résoudre.
    \moinsitem Terme convectif plus dure.
    \plusitem Moins de voisin à traiter.
   \end{itemize}
