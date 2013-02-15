@@ -173,7 +173,7 @@
 \begin{block}<+->{Preuve}
   \uncover<+->{
    \begin{equation*}
-   \vect{\nabla}\cdot \vect{v}_{new}=\vect{\nabla} \cdot \vect{v}-\vect{\nabla} p=\vect{\nabla} \cdot \vect{v}-\vect{\nabla} \cdot \vect{v}=0
+   \vect{\nabla}\cdot \vect{v}_{new}=\vect{\nabla} \cdot \vect{v}-\Delta p=\vect{\nabla} \cdot \vect{v}-\vect{\nabla} \cdot \vect{v}=0
    \end{equation*}
    }
    \uncover<+->{
@@ -304,8 +304,9 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
    \node[below= of gravity,draw](conv) {Convection};
    \node[below= of conv,draw](viscosity) {Viscosité};
    \node[below= of viscosity,draw](projection) {Projection};
-   \node[left= of gravity,draw](part){Mouvements des particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
+   \node[below= of projection,draw](extrapolation) {Extrapolation};
+   \node[left= 1.5 of gravity,draw](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection) (extrapolation),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
    \node[draw,fit=(accel) (part) (runginit),label={below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
@@ -313,6 +314,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
    \draw[->] (gravity)--(conv);
    \draw[->](conv)--(viscosity);
    \draw[->](viscosity)--(projection);
+   \draw[->] (projection)--(extrapolation);
    \draw[->] (extrap)--(part);
  \end{tikzpicture}
  \shorthandon{:;}
@@ -475,7 +477,7 @@ k&=\begin{pmatrix}
 \end{equation*}
  \end{block}
  
- \begin{block}{Commutativité de $\hat{L}$ et $\hat{f}$}
+ \begin{block}{Commutativité de $\hat{L}$ et $\hat{A}$}
   \begin{align*}
 \hat{A}\hat{L}&=\left(A\kron \eye \right)
   \left(\eye_{s}\kron L\right)=
@@ -713,8 +715,9 @@ v^{j}\partial_{j}v^{i}
    \node[below= of gravity,draw,red](conv) {Convection};
    \node[below= of conv,draw,red](viscosity) {Viscosité};
    \node[below= of viscosity,draw,red](projection) {Projection};
-   \node[left= of gravity,draw,gray](part){Mouvements des particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={[red]180:{\rotatebox{90}{Accélération}}},red](accel) {};
+   \node[below= of projection,draw](extrapolation) {Extrapolation};
+   \node[left= 1.5 of gravity,draw,gray](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection) (extrapolation),label={[red]180:{\rotatebox{90}{Accélération}}},red](accel) {};
    \node[draw,red,fit=(accel) (part) (runginit),label={[red]below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
@@ -722,6 +725,7 @@ v^{j}\partial_{j}v^{i}
    \draw[->] (gravity)--(conv);
    \draw[->](conv)--(viscosity);
    \draw[->](viscosity)--(projection);
+   \draw[->](projection)--(extrapolation);
    \draw[->] (extrap)--(part);
  \end{tikzpicture}
  \shorthandon{:;}
@@ -731,7 +735,7 @@ v^{j}\partial_{j}v^{i}
 
 \begin{block}<*>{Ce que nous avons fait}
  \begin{itemize}
-  \item<0-> Discrétisation de l'équation sur la grille.
+  \item Discrétisation de l'équation sur la grille.
   \item Méthode de projection pour être à divergence nulle.
   \item Méthode d'intégration.
  \end{itemize}
@@ -749,9 +753,9 @@ v^{j}\partial_{j}v^{i}
 \subsection{Introduction topologie variable}
 \begin{frame}[<+->]{Détermination analytique de la topologie}
 
-\begin{block}<*>{Déplacement de la position}
+\begin{block}{Déplacement de la position}
  \begin{equation*}
-  \dot{x}=v
+  \dot{\vect{x}}=\vect{v}
  \end{equation*}
 \end{block}
 
@@ -768,8 +772,8 @@ v^{j}\partial_{j}v^{i}
 }
 \uncover<+->{
 \begin{align*}
- p_{surf}&=Av_{int}\\
- v_{surf}&=Bv_{int}
+ p_{surf}&=A\vect{v}_{int}\\
+ \vect{v}_{surf}&=B\vect{v}_{int}
 \end{align*}
 }
 \end{block}
@@ -806,12 +810,12 @@ Nous allons considérer des inflows fixe.
  \begin{itemize}
   \item<0-> Résoudre:
   \begin{equation*}
-   \dot{x}=v
+   \dot{\vect{x}}=\vect{v}
   \end{equation*}
   \item Imposer les conditions aux bords variable:
    \begin{align*}
- p_{surf}&=Av_{int}\\
- v_{surf}&=Bv_{int}
+ p_{surf}&=A\vect{v}_{int}\\
+ \vect{v}_{surf}&=B\vect{v}_{int}
 \end{align*}
  \end{itemize}
 
@@ -821,15 +825,15 @@ Nous allons considérer des inflows fixe.
  On discrétise l'équation avec des particules.
  Et on interpole la vitesse de la grille sur les particules pour résoudre:
    \begin{equation*}
-   \dot{x}=v_{I}(x)
+   \dot{\vect{x}}=\vect{v}_{I}(\vect{x})
   \end{equation*}
 \end{block}
 \begin{block}{Imposition des conditions aux bords}
 On calcul des points fantômes hors du domaine pour imposer les conditions aux bords.
 Ses points fantômes sont obtenus par des méthodes d'extrapolations.
 \begin{align*}
- p_{ext}&=Av_{int}\\
- v_{ext}&=Bv_{int}
+ p_{ext}&=A\vect{v}_{int}\\
+ \vect{v}_{ext}&=B\vect{v}_{int}
 \end{align*}
 \end{block}
 
@@ -839,9 +843,9 @@ Ses points fantômes sont obtenus par des méthodes d'extrapolations.
  \begin{block}{Équations}
   \begin{align*}
     \dot{\vect{v}}_{int}&=(1+P)f(\vect{v})\\
-    \dot{x}&=v_{I}(x)\\
-     p_{ext}&=Av_{int}\\
- v_{ext}&=Bv_{int}
+    \dot{\vect{x}}&=\vect{v}_{I}(\vect{x})\\
+     p_{ext}&=A\vect{v}_{int}\\
+ \vect{v}_{ext}&=B\vect{v}_{int}
   \end{align*}
  \end{block}
  \begin{block}{Splitting}
@@ -851,23 +855,23 @@ Ses points fantômes sont obtenus par des méthodes d'extrapolations.
         \end{equation*}
 \item 
 	\begin{equation*}
-	\dot{x}=v_{I}(x)
+	\dot{\vect{x}}=\vect{v}_{I}(\vect{x})
 	\end{equation*}
  \end{enumerate}
  \end{block}
-\begin{block}{Une équation differentielle}
+\begin{block}<*>{Une équation differentielle}
   \uncover<+->{
  \begin{align*}
-  v_{ext}&=Bv_{int}\\
-  \dot{v}_{ext}&\approx B\dot{v}_{int}
+  \vect{v}_{ext}&=B\vect{v}_{int}\\
+  \dot{\vect{v}}_{ext}&\approx B\dot{\vect{v}}_{int}
  \end{align*}
  }
  \uncover<+->{
  Problème: $B$ depend de la topologie.
   \begin{align*}
-    \dot{\vect{v}_{int}}&=(1+P)f(\vect{v})\\
-    \dot{x}&=v_{I}(x)\\
- \dot{v}_{ext}&=B\dot{v}_{int}=B(1+P)f(\vect{v})
+    \dot{\vect{v}}_{int}&=(1+P)f(\vect{v})\\
+    \dot{\vect{x}}&=\vect{v}_{I}(\vect{x})\\
+ \dot{\vect{v}}_{ext}&=B\dot{\vect{v}}_{int}=B(1+P)f(\vect{v})
   \end{align*}
   }
 \end{block}
@@ -884,8 +888,9 @@ Ses points fantômes sont obtenus par des méthodes d'extrapolations.
    \node[below= of gravity,draw](conv) {Convection};
    \node[below= of conv,draw](viscosity) {Viscosité};
    \node[below= of viscosity,draw](projection) {Projection};
-   \node[left= of gravity,draw,red](part){Mouvements des particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
+   \node[below= of projection,draw](extrapolation) {Extrapolation};
+   \node[left= 1.5 of gravity,draw,red](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection) (extrapolation),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
    \node[draw,fit=(accel) (part) (runginit),label={below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
@@ -893,6 +898,7 @@ Ses points fantômes sont obtenus par des méthodes d'extrapolations.
    \draw[->] (gravity)--(conv);
    \draw[->](conv)--(viscosity);
    \draw[->](viscosity)--(projection);
+   \draw[->](projection)--(extrapolation);
    \draw[->] (extrap)--(part);
  \end{tikzpicture}
  \shorthandon{:;}
@@ -1168,8 +1174,9 @@ S'il y a plusieurs plan comme cela on somme.
    \node[below= of gravity,draw](conv) {Convection};
    \node[below= of conv,draw](viscosity) {Viscosité};
    \node[below= of viscosity,draw](projection) {Projection};
-   \node[left= of gravity,draw](part){Mouvements des particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
+   \node[below= of projection,draw,red](extrapolation) {Extrapolation};
+   \node[left=1.5 of gravity,draw](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection) (extrapolation),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
    \node[draw,fit=(accel) (part) (runginit),label={below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
@@ -1177,6 +1184,7 @@ S'il y a plusieurs plan comme cela on somme.
    \draw[->] (gravity)--(conv);
    \draw[->](conv)--(viscosity);
    \draw[->](viscosity)--(projection);
+   \draw[->] (projection)--(extrapolation);
    \draw[->] (extrap)--(part);
  \end{tikzpicture}
  \shorthandon{:;}
@@ -1306,8 +1314,9 @@ S'il y a plusieurs plan comme cela on somme.
    \node[below= of gravity,draw](conv) {Convection};
    \node[below= of conv,draw](viscosity) {Viscosité};
    \node[below= of viscosity,draw](projection) {Projection};
-   \node[left= of gravity,draw](part){Mouvements des particules};
-   \node[draw,fit=(conv) (gravity) (viscosity) (projection),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
+   \node[below= of projection,draw](extrapolation) {Extrapolation};
+   \node[left=1.5 of gravity,draw](part){Mouvements des particules};
+   \node[draw,fit=(conv) (gravity) (viscosity) (projection) (extrapolation),label={180:{\rotatebox{90}{Accélération}}}](accel) {};
    \node[draw,fit=(accel) (part) (runginit),label={below:Runge-Kutta}] {};
    \draw[->] (init)--(runginit);
    \draw[->] (runginit)--(extrap);
@@ -1315,6 +1324,7 @@ S'il y a plusieurs plan comme cela on somme.
    \draw[->] (gravity)--(conv);
    \draw[->](conv)--(viscosity);
    \draw[->](viscosity)--(projection);
+   \draw[->](projection)--(extrapolation);
    \draw[->] (extrap)--(part);
  \end{tikzpicture}
  \shorthandon{:;}
@@ -1332,7 +1342,7 @@ S'il y a plusieurs plan comme cela on somme.
 
 \section{Smoothed Particle hydrodynamics}
 \subsection{Introduction}
-\begin{frame}{Idée}
+\begin{frame}[<+->]{Idée}
 \begin{itemize}
 \item On utilise la version particulaire des équations de Navier-Stokes
   \begin{align*}
@@ -1347,29 +1357,29 @@ S'il y a plusieurs plan comme cela on somme.
  
 \end{frame}
 
-\begin{frame}[shrink]{Théorie des interpolants}
+\begin{frame}[<+->][shrink]{Théorie des interpolants}
 \begin{block}{Proprieté de $\delta$}
   \begin{equation*}
- A(r)=\int_{\Omega} A(r')\delta(r-r')dr'
+ A(\vect{r})=\int_{\Omega} A(\vect{r}')\delta(\vect{r}-\vect{r}')d\vect{r}'
  \end{equation*}
 \end{block}
 
 \begin{block}{Approximation}
 \begin{equation*}
- <A(r)>=\int_{\Omega} A(r')W_h(r-r')dr'
+ <A(\vect{r})>=\int_{\Omega} A(\vect{r}')W_h(\vect{r}-\vect{r}')d\vect{r}'
  \end{equation*}
 \end{block}
 
 \begin{block}{Précision}
  \begin{align*}
-  A(r')&=A(r)+(r'-r)\nabla A(r)+O(|r-r'|^2)\\
-  <A(r)>&=A(r)\int_{\Omega}w_{h}(r-r',h)dr'+\nabla A(r)\int_{\Omega}(r'-r)w_{h}(r-r')dr'+O(|r-r'|^2)\\
-  &=A(r)\int_{\Omega} w_{h}(|r-r'|)dr'+O(h^2)\\
-  &=A(r)+O(h^2)\\
+  A(\vect{r}')&=A(\vect{r})+(\vect{r}'-\vect{r})\nabla A(\vect{r})+O(||\vect{r}-\vect{r}'||^2)\\
+  <A(\vect{r})>&=A(\vect{r})\int_{\Omega}w_{h}(\vect{r}-\vect{r}',h)d\vect{r}'+\nabla A(\vect{r})\int_{\Omega}(\vect{r}'-\vect{r})w_{h}(\vect{r}-\vect{r}')d\vect{r}'+O(|\vect{r}-\vect{r}'|^2)\\
+  &=A(\vect{r})\int_{\Omega} w_{h}(|\vect{r}-\vect{r}'|)d\vect{r}'+O(h^2)\\
+  &=A(\vect{r})+O(h^2)\\
  \end{align*}
 \end{block}
 
-\begin{block}{Condition de $w$}
+\begin{block}<*>{Condition de $w$}
 \begin{itemize}
  \item Converge vers $\delta$.
  \item Normalisé.
@@ -1380,11 +1390,11 @@ S'il y a plusieurs plan comme cela on somme.
  
 \end{frame}
 \subsection{Discrétisation}
-\begin{frame}{Discrétisation du kernel}
+\begin{frame}[<+->]{Discrétisation du kernel}
  
  \begin{block}{Discrétisation}
  \begin{equation*}
-  A(r)=\sum _{b}V_{b}A_bw_{h}(r-r_b)+O(h)
+  A(\vect{r})=\sum _{b}V_{b}A_bw_{h}(\vect{r}-\vect{r}_b)+O(h)
   \end{equation*}
  \end{block}
 
@@ -1396,22 +1406,22 @@ S'il y a plusieurs plan comme cela on somme.
  
  \begin{block}{Densitée}
   \begin{equation*}
-   \rho(r)=\sum_b \frac{m_b}{\rho_{b}}\rho_{b}w_{h}(r-r_b)=\sum_b m_bw_{h}(r-r_b)
+   \rho(\vect{r})=\sum_b \frac{m_b}{\rho_{b}}\rho_{b}w_{h}(\vect{r}-\vect{r}_b)=\sum_b m_bw_{h}(\vect{r}-\vect{r}_b)
   \end{equation*}
  \end{block}
 
 \end{frame}
 
-\begin{frame}{Choix du kernel}
+\begin{frame}[<+->]{Choix du kernel}
 \begin{block}{Gausienne}
 \begin{equation*}
- \frac{1}{(\sqrt{\pi} h)^3}e^{-9\frac{||v||^2}{h^2}}
+ \frac{1}{(\sqrt{\pi} h)^3}e^{-9\frac{||\vect{v}||^2}{h^2}}
 \end{equation*}
 \end{block}
 
 \begin{block}{Spline d'ordre 5}
 \begin{equation*}
-     s=3\left|\left|\frac{v}{h}\right|\right|
+     s=3\left|\left|\frac{\vect{v}}{h}\right|\right|
 \end{equation*}
 \small
 \begin{equation*}
@@ -1426,26 +1436,26 @@ S'il y a plusieurs plan comme cela on somme.
  \includegraphics[width=\textwidth]{kernel.png}
 \end{frame}
 
-\begin{frame}{Derivée}
+\begin{frame}[<+->]{Derivée}
  \begin{block}{Intégration par partie}
  \begin{align*}
-  <\nabla A(r)>&=\int_{\Omega} \nabla A(r')w_{h}(r-r')dr'+O(h^2)\\
-  &=-\int_{\Omega} A(r')\nabla w_{h}(r-r')dr'+O(h^2)
+  <\vect{\nabla} A(\vect{r})>&=\int_{\Omega} \nabla A(\vect{r}')w_{h}(\vect{r}-\vect{r}')d\vect{r}'+O(h^2)\\
+  &=-\int_{\Omega} A(\vect{r}')\nabla w_{h}(\vect{r}-\vect{r}')dr'+O(h^2)
  \end{align*}
 \end{block}
 \begin{block}{Discrétisation}
 \begin{equation*}
- \nabla A(r_a)=\sum_{b}A_b\frac{m_b}{\rho_b}\nabla_a w_{h}(r_a-r_b)
+ \vect{\nabla} A(\vect{r}_a)=\sum_{b}A_b\frac{m_b}{\rho_b}\nabla_a w_{h}(\vect{r}_a-\vect{r}_b)
  \end{equation*}
 \end{block}
 \begin{block}{Variante}
  \begin{align*}
-  \rho\nabla A&=\nabla(\rho A)-A\nabla \rho\\
-  \nabla A(r_a)&=\frac{1}{\rho_a}\sum_{b}m_b \left(A_b-A_a\right) \nabla_a w_{h}(r_a-r_b)
+  \rho\vect{\nabla} A&=\vect{\nabla}(\rho A)-A\vect{\nabla} \rho\\
+  \vect{\nabla} A(\vect{r}_a)&=\frac{1}{\rho_a}\sum_{b}m_b \left(A_b-A_a\right) \vect{\nabla}_a w_{h}(\vect{r}_a-\vect{r}_b)
  \end{align*}
 \begin{align*}
- \nabla A&=\rho\nabla(\frac{A}{\rho})+\frac{1}{\rho}A\nabla \frac{1}{\rho}\\
- \nabla A(r_a)&=\rho_a\sum_{b} m_b\left(\frac{A_b}{\rho_b^2}+\frac{A_a}{\rho_a^2}\right) \nabla_a w_{h}(r_a-r_b)
+ \vect{\nabla} A&=\rho\vect{\nabla}(\frac{A}{\rho})+\frac{1}{\rho}A\vect{\nabla} \frac{1}{\rho}\\
+ \vect{\nabla} A(\vect{r}_a)&=\rho_a\sum_{b} m_b\left(\frac{A_b}{\rho_b^2}+\frac{A_a}{\rho_a^2}\right) \vect{\nabla}_a w_{h}(\vect{r}_a-\vect{r}_b)
 \end{align*}
 
 \end{block}
@@ -1453,34 +1463,34 @@ S'il y a plusieurs plan comme cela on somme.
 
 \end{frame}
 
-\begin{frame}{Autre derivée}
+\begin{frame}[<+->]{Autre derivée}
  \begin{block}{Divergence}
   On obtient les formules pour la divergence de façon similaire que pour le gradient.
  \end{block}
 
  \begin{block}{Gradient variante}
  \begin{equation*}
-  \nabla \phi_{i}=\sum_{j}\frac{e_{ij}}{r_{ij}}\left(\phi_{i}-\phi_{j}\right)
+  \vect{\nabla} \phi_{i}=\sum_{j}\frac{\vect{e}_{ij}}{r_{ij}}\left(\phi_{i}-\phi_{j}\right)
   \end{equation*}
  \end{block}
 
 \end{frame}
 
-\begin{frame}{Smoothing function}
+\begin{frame}[<+->]{Smoothing function}
  \begin{block}{Definition}
  \begin{equation*}
-  \xi(r)=\frac{w(r-r_{i},h)}{\sum_{b} w(r-r_b)}=\frac{w_{i}(r)}{\sigma(r)}
+  \xi(\vect{r})=\frac{w(\vect{r}-\vect{r}_{i},h)}{\sum_{b} w(\vect{r}-\vect{r}_b)}=\frac{w_{i}(\vect{r})}{\sigma(\vect{r})}
   \end{equation*}
  \end{block}
 \begin{block}{Volume}
  \begin{equation*}
-  V_{i}=\int \xi_{i}(r) dr=\int \frac{1}{\sigma(r)}w(r-r_i)dr\approx \frac{1}{\sigma_i}
+  V_{i}=\int \xi_{i}(\vect{r}) d\vect{r}=\int \frac{1}{\sigma(\vect{r})}w(\vect{r}-\vect{r}_i)dr\approx \frac{1}{\sigma_i}
  \end{equation*}
 
 \end{block}
 \begin{block}{Moyenne}
  \begin{equation*}
-  <A(r)>=\frac{1}{V}\int \xi_{i}(r)A(r)dr\approx \sigma_{i}\int \xi_{i}(r)A(r)dr
+  <A(\vect{r})>=\frac{1}{V}\int \xi_{i}(\vect{r})A(\vect{r})d\vect{r}\approx \sigma_{i}\int \xi_{i}(\vect{r})A(\vect{r})d\vect{r}
  \end{equation*}
 
 \end{block}
@@ -1498,10 +1508,10 @@ S'il y a plusieurs plan comme cela on somme.
 \end{block}
 \end{frame}
 
-\begin{frame}{Derivée en smoothing function}
+\begin{frame}[<+->]{Derivée en smoothing function}
 \begin{block}{Gradient}
  \begin{equation*}
-  \nabla A=\sigma_{a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{1}{2}\left(A_a+A_b\right)\nabla w
+  \vect{\nabla} A=\sigma_{a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{1}{2}\left(A_a+A_b\right)\vect{\nabla} w
  \end{equation*}
 
 \end{block}
@@ -1514,14 +1524,14 @@ S'il y a plusieurs plan comme cela on somme.
 \end{block}
 \end{frame}
 \subsection{Incompressibilité}
-\begin{frame}{Equations de Navier-Stokes}
+\begin{frame}[<+->]{Equations de Navier-Stokes}
  
 \begin{align*}
 \vect{\nabla} \cdot \vect{u}_{\lambda}(t)&=0\\
 \rho\frac{d \vect{u}_{\lambda}(t)}{d t}&=-\vect{\nabla} p(\vect{\xi}_{\lambda}(t),t)+\vect{F}(\vect{\xi}_{\lambda}(t),t)+\mu \Delta \vect{u}_{\lambda}(t)
 \end{align*}
 
-\begin{block}{Faiblement compressible}
+\begin{block}<2->{Faiblement compressible}
 \begin{align*}
  p&=B\left(\left(\frac{\rho}{\rho_{0}}\right)^\gamma-1\right)\\
  \gamma&=7\\
@@ -1529,21 +1539,22 @@ S'il y a plusieurs plan comme cela on somme.
  \end{align*}
 \end{block}
 
-\begin{block}{Exactement incompressible}
+\begin{block}<*>{Exactement incompressible}
  \begin{enumerate}
-  \item Projeter la vitesse pour être à divergence nulle.
-  \item Obtenir une densité égal à la densitée voulue $\rho_0$.
+  \item<3-> Projeter la vitesse pour être à divergence nulle.
+  \item<4-> Obtenir une densité égal à la densitée voulue $\rho_0$.
  \end{enumerate}
+ \uncover<5->{
 \begin{equation*}
- \frac{\dot{\rho}}{\rho}=\nabla \cdot v
+ \frac{\dot{\rho}}{\rho}=\nabla \cdot \vect{u}
 \end{equation*}
-
+}
 \end{block}
 
 \end{frame}
 
-\begin{frame}{Avantage et defaut}
- \begin{block}{Faiblement compressible}
+\begin{frame}[<+->]{Avantage et defaut}
+ \begin{block}<*>{Faiblement compressible}
   \begin{itemize}
    \plusitem Pas de système linéaire à résoudre.
    \moinsitem Convergence depend de l'intégrateur en temps et des paramêtres.
@@ -1552,7 +1563,7 @@ S'il y a plusieurs plan comme cela on somme.
 
  \end{block}
  
- \begin{block}{Exactement incompressible}
+ \begin{block}<*>{Exactement incompressible}
  \begin{itemize}
   \plusitem Divergence nulle exact.
   \moinsitem Système linéaire à résoudre.
@@ -1563,12 +1574,12 @@ S'il y a plusieurs plan comme cela on somme.
 
 \end{frame}
 \subsection{Conservation}
-\begin{frame}[shrink]{Loi de conservation}
+\begin{frame}[<+->][shrink]{Loi de conservation}
 \begin{block}{Quantité de mouvement}
  \begin{align*}
-  P&=\sum_{i} m_iv_{i}\\
-  \dot{P}&=\sum_{i} m_ia_{i}\\
-  &=\sum_{i}m_{i} \left(-\frac{1}{\rho_{i}}\nabla p+\nu \Delta v\right)\\
+  \vect{P}&=\sum_{i} m_i\vect{v}_{i}\\
+  \dot{\vect{P}}&=\sum_{i} m_i\vect{a}_{i}\\
+  &=\sum_{i}m_{i} \left(-\frac{1}{\rho_{i}}\vect{\nabla} p+\nu \Delta \vect{v}\right)\\
   \intertext{Antisymétrie}
   &=0
  \end{align*}
@@ -1577,10 +1588,10 @@ S'il y a plusieurs plan comme cela on somme.
 
 \begin{block}{Moment cinétique}
  \begin{align*}
-  M&=\sum_{i}x_{i}\times m_{i}v_{i}\\
-  \dot{M}&=\sum_{i}\left(v_{i}\times m_{i}v_{i}+x_{i}\times m_{i}a_{i}\right)\\
-  &=\sum_{i}x_{i}\times m_{i}\left(-\frac{1}{\rho_{i}}\nabla p+\nu \Delta v\right)\\
-  &=\sum_{a,b}\left(x_{a}-x_{b}\right)\times A_{ab}
+  \vect{M}&=\sum_{i}\vect{x}_{i}\times m_{i}\vect{v}_{i}\\
+  \dot{\vect{M}}&=\sum_{i}\left(\vect{v}_{i}\times m_{i}\vect{v}_{i}+x_{i}\times m_{i}\vect{a}_{i}\right)\\
+  &=\sum_{i}\vect{x}_{i}\times m_{i}\left(-\frac{1}{\rho_{i}}\vect{\nabla} p+\nu \Delta \vect{v}\right)\\
+  &=\sum_{a,b}\left(\vect{x}_{a}-\vect{x}_{b}\right)\times \vect{A}_{ab}
  \end{align*}
 
 \end{block}
@@ -1588,19 +1599,19 @@ S'il y a plusieurs plan comme cela on somme.
  
 \end{frame}
 \subsection{Algorithme}
-\begin{frame}[shrink]{Algorithme faiblement incompressible}
+\begin{frame}[<+->][shrink]{Algorithme faiblement incompressible}
 \begin{block}{Créer particule initiale}
 	\begin{enumerate}
-		\item Placer des particules avec position et vitesse initiale.
-		\item Choisir la masse des particules de sorte que la densitée soit bonne.
+		\item<+-> Placer des particules avec position et vitesse initiale.
+		\item<+-> Choisir la masse des particules de sorte que la densitée soit bonne.
 		\begin{enumerate}
 			\item La densitée est donnée par:
 			\begin{equation*}
-			\Sigma_{a}=\sum_{b}w_{ab}
+			\sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
 			\item La masse est donnée par:
 			\begin{equation*}
-			m_a=\frac{\rho_{0}}{\Sigma_{a}}
+			m_a=\frac{\rho_{0}}{\sigma_{a}}
 			\end{equation*}
 		\end{enumerate}
 	\end{enumerate}
@@ -1611,7 +1622,7 @@ S'il y a plusieurs plan comme cela on somme.
 		\begin{enumerate}
 			\item Calculer la densitée:
 			\begin{equation*}
-			\Sigma_{a}=\sum_{b}w_{ab}
+			\sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
 			\item Calculer la pression:
 			\begin{equation*}
@@ -1619,19 +1630,19 @@ S'il y a plusieurs plan comme cela on somme.
 			\end{equation*}
 			\item Calculer l'accélération:
 			\begin{equation*}
-			a_a=-\frac{\nabla p}{m_{a}\sigma_{a}}+g+\nu \Delta v_{a}
+			\vect{a}_a=-\frac{\vect{\nabla} p}{m_{a}\sigma_{a}}+\vect{g}+\nu \Delta \vect{v}_{a}
 			\end{equation*}
 			\item Aller au prochain pas de temps avec par exemple:
 			\begin{align*}
-			x^{n+1}_{a}&=x^{n}_{a}+v^{n}_a\Delta t\\
-			v^{n+1}_{a}&=v^{n}_{a}+a^{n}_{a}\Delta t
+			\vect{x}^{n+1}_{a}&=\vect{x}^{n}_{a}+\vect{v}^{n}_a\Delta t\\
+			\vect{v}^{n+1}_{a}&=\vect{v}^{n}_{a}+\vect{a}^{n}_{a}\Delta t
 			\end{align*}
 		\end{enumerate}
 	\end{enumerate}
 \end{block}
 \end{frame}
  
- \begin{frame}[shrink]{Algorithme incompressible}
+ \begin{frame}[<*>][shrink]{Algorithme incompressible}
 \begin{block}{Créer particule initiale}
 	\begin{enumerate}
 		\item Placer des particules avec position et vitesse initiale.
@@ -1639,63 +1650,66 @@ S'il y a plusieurs plan comme cela on somme.
 		\begin{enumerate}
 			\item La densitée est donnée par:
 			\begin{equation*}
-			\Sigma_{a}=\sum_{b}w_{ab}
+			\sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
 			\item La masse est donnée par:
 			\begin{equation*}
-			m_a=\frac{\rho_{0}}{\Sigma_{a}}
+			m_a=\frac{\rho_{0}}{\sigma_{a}}
 			\end{equation*}
 		\end{enumerate}
 	\end{enumerate}
 \end{block}
+\end{frame}
+
+ \begin{frame}[<*>][shrink]{Algorithme incompressible (suite)}
 \begin{block}{Pour tout pas de temps}
 	\begin{enumerate}
 		\item Intégrer les équations de Navier-Stokes sans pression.  Pour chaque étage:
 		\begin{enumerate}
 			\item Calculer la densité:
 			\begin{equation*}
-			\Sigma_{a}=\sum_{b}w_{ab}
+			\sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
 			\item Calculer l'accélération:
 			\begin{equation*}
-			a_a=-\frac{\nabla p}{m_{a}\sigma_{a}}+g+\nu \Delta v_{a}
+			\vect{a}_a=\vect{g}+\nu \Delta v_{a}
 			\end{equation*}
 			\item Aller au prochain pas de temps avec par exemple:
 			\begin{align*}
-			x^{n+1}_{a}&=x^{n}_{a}+v^{n}_a\Delta t\\
-			v^{n+1}_{a}&=v^{n}_{a}+a^{n}_{a}\Delta t
+			\vect{x}^{n+1}_{a}&=\vect{x}^{n}_{a}+\vect{v}^{n}_a\Delta t\\
+			\vect{v}^{n+1}_{a}&=\vect{v}^{n}_{a}+\vect{a}^{n}_{a}\Delta t
 			\end{align*}
 		\end{enumerate}
 		\item Corriger la vitesse et la position.
 		\begin{enumerate}
 			\item Calculer la densitée:
 			\begin{equation*}
-			\Sigma_{a}=\sum_{b}w_{ab}
+			\sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
 			\item Corriger la position:
-			\begin{enumerate}[<*>]
+			\begin{enumerate}
 				\item Résoudre $p$ dans l'équation linéaire:
 				\begin{equation*}
 				\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{1}{r_{ab}}\frac{p_a-p_b}{m_a\sigma_{a}-m_{b}\sigma_{b}} =\frac{1}{2}\frac{\rho^{0}-m_{a}\sigma_{a}}{\rho_{0}\sigma_{a}}
 				\end{equation*}
 				\item Correction à:
 				\begin{equation*}
-				x^{n+1}_{a}=x^{*n+1}_{a}-\frac{1}{m_a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{\rho_{a}p_{b}+\rho_{b}p_{a}}{\rho_a+\rho_b}e_{ab}
-				\end{equation*}
-				\item Calculer la densitée:
-				\begin{equation*}
-				\Sigma_{a}=\sum_{b}w_{ab}
+				\vect{x}^{n+1}_{a}=\vect{x}^{*n+1}_{a}-\frac{1}{m_a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{\rho_{a}p_{b}+\rho_{b}p_{a}}{\rho_a+\rho_b}\vect{e}_{ab}
 				\end{equation*}
 			\end{enumerate}
+			\item Calculer la densitée:
+				\begin{equation*}
+				\sigma_{a}=\sum_{b}w_{ab}
+				\end{equation*}
 			\item Corriger la vitesse:
-			\begin{enumerate}[<*>]
+			\begin{enumerate}
 				\item Résoudre $p$ dans l'équation linéaire:
 				\begin{equation*}
-				\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{1}{r_{ab}}\frac{p_a-p_b}{m_a\sigma_{a}-m_{b}\sigma_{b}} =\frac{1}{4}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\left(v_{a}+v_b\right)\cdot e_{ab}
+				\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{1}{r_{ab}}\frac{p_a-p_b}{m_a\sigma_{a}-m_{b}\sigma_{b}} =\frac{1}{4}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\left(v_{a}+v_b\right)\cdot \vect{e}_{ab}
 				\end{equation*}
 				\item Corriger la vitesse:
 				\begin{equation*}
-				v^{n+1}_{a}=v^{*n+1}_{a}-\frac{1}{m_a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{\rho_{a}p_{b}+\rho_{b}p_{a}}{\rho_a+\rho_b}e_{ab}
+				\vect{v}^{n+1}_{a}=\vect{v}^{*n+1}_{a}-\frac{1}{m_a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{\rho_{a}p_{b}+\rho_{b}p_{a}}{\rho_a+\rho_b}\vect{e}_{ab}
 				\end{equation*}
 			\end{enumerate}
 		\end{enumerate}
@@ -1706,9 +1720,9 @@ S'il y a plusieurs plan comme cela on somme.
  \section{Conclusion}
  \subsection{Conclusion}
 
-\begin{frame}{Avantage de SPH et MAC}
+\begin{frame}[<+->]{Avantage de SPH et MAC}
  
- \begin{block}{SPH}
+ \begin{block}<*>{SPH}
   \begin{itemize}
    \plusitem Terme de convection exact.
    \moinsitem Correction de pression plus dure à faire exactement.
@@ -1716,16 +1730,18 @@ S'il y a plusieurs plan comme cela on somme.
    \moinsitem Justification et preuve de convergence plus dure.
    \moinsitem Système linéaire difficil à résoudre.
    \moinsitem Plus de voisin à traiter.
+   \plusitem Indépendant du choix des axes.
   \end{itemize}
 
  \end{block}
 
- \begin{block}{MAC}
+ \begin{block}<*>{MAC}
   \begin{itemize}
    \plusitem Méthode de discrétisation bien connu.
    \plusitem Système linéaire facil à résoudre.
    \moinsitem Terme convectif plus dure.
    \plusitem Moins de voisin à traiter.
+   \moinsitem Dépendant du choix des axes.
   \end{itemize}
 
  \end{block}
