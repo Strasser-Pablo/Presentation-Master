@@ -52,7 +52,7 @@
 
 \pgfplotsset{compat=1.6}
 
-\title[Navier-Stokes]{Simulation du Jet D'Eau de A à Y:\\ Algorithme numérique pour résoudre les équations de Navier-Stokes incompressible}
+\title[Navier-Stokes]{Simulation du Jet D'Eau de A à Y:\\ Algorithme numérique pour résoudre les équations de Navier-Stokes incompressibles}
 
 
 \author{Pablo Strasser}
@@ -84,13 +84,13 @@
   \titlepage
 \end{frame}
 
-\begin{frame}[shrink]{Resumé}
+\begin{frame}[shrink]{Résumé}
   \tableofcontents[pausesections]
 \end{frame}
 
 \section{Notation et proprieté basique}
 \subsection{Notation}
-\begin{frame}{Vecteur et derivée}
+\begin{frame}{Vecteur et dérivée}
  
  \begin{block}{Vecteur}
   \begin{equation*}
@@ -115,7 +115,7 @@
 \end{frame}
 
 
-\begin{frame}{Operateur différentielle}
+\begin{frame}{Opérateur différentielle}
 
 \begin{block}{Gradient}
 \begin{equation*}
@@ -148,7 +148,7 @@
 
 
 \end{frame}
-\begin{frame}[<+->]{Proprieté des operateurs différentiels}
+\begin{frame}[<+->]{Proprieté des opérateurs différentiels}
  \begin{property}{Divergence d'un rotationnel}
   \begin{equation*}
   \nabla \cdot \nabla \times \vect{v}=0
@@ -165,7 +165,7 @@
 \begin{frame}{Projection}
  
  \begin{property}
- Pour chaque vecteur $\vect{v}$ on peut \emph{projeter} dans un espace à \emph{divergence} nulle sans changer le \emph{rotationnel} en resolvant:
+ Pour chaque vecteur $\vect{v}$ on peut \emph{projeter} dans un espace à \emph{divergence} nulle sans changer le \emph{rotationnel} en résolvant:
   \begin{align*}
   \vect{v}_{new}&=\vect{v}-\vect{\nabla} p\\
   \Delta p&=\vect{\nabla} \cdot \vect{v}
@@ -224,7 +224,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 
 \end{frame}
 
-\begin{frame}[<+->]{Definition lagrangienne}
+\begin{frame}[<+->]{Définition lagrangienne}
  \begin{block}{Caracteristique}
 \begin{align*}
  \partial_t \vect{\xi}_{\lambda}(t)&=\vect{v}(\vect{\xi}_{\lambda}(t),t)\\
@@ -238,7 +238,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 \end{equation*}
 \end{block}
 
-\begin{block}{Derivée materiel}
+\begin{block}{Dérivée materiel}
 \begin{align*}
 \frac{d \vect{u}_{\lambda}(t)}{d t}&=\frac{d \vect{v}(\xi_{\lambda},t)}{d t}=\partial_t \vect{v}+\left(\frac{\partial \vect{\xi}_{\lambda}(t)}{\partial t}\cdot\vect{\nabla}\right)\vect{v}\\
 \frac{d \vect{u}_{\lambda}(t)}{d t}&=\partial_t \vect{v}+\left(\vect{v} \cdot\vect{\nabla}\right)\vect{v}
@@ -257,7 +257,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 \end{frame}
 
 
-\begin{frame}[<+->]{Differentes version de Navier-Stokes}
+\begin{frame}[<+->]{Différentes versions des équations de Navier-Stokes}
  \begin{block}{Original}
  \begin{align*}
   \vect{\nabla} \cdot \vect{v}(\vect{x} ,t)&=0\\
@@ -286,11 +286,11 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 \subsection{Introduction}
 \begin{frame}[<+->]{Idée}
  \begin{itemize}
-  \item Vitesse et pression sont discretisé sur une grille.
-  \item Les équations de Navier-Stokes sont resolu sur la grille.
+  \item Vitesse et pression sont discretisées sur une grille.
+  \item Les équations de Navier-Stokes sont résolues sur la grille.
   \item Mais la topologie est determinée par la position des particules.
   \item Les particules se déplacent par la vitesse donnée par interpolation de la grille.
-  \item Les conditions aux bords sont imposés en créant des points fantômes en vitesse et pression
+  \item Les conditions aux bords sont imposées en créant des points fantômes en vitesse et pression
  \end{itemize}
 
 \end{frame}
@@ -374,7 +374,7 @@ Alors pour tout $j$ nous avons:
 \begin{block}{Preuve}
 \end{block}
 
-\begin{block}{Véctorisation des $\vect{k}$}
+\begin{block}{Vectorisation des $\vect{k}$}
 \uncover<2->{
  \begin{align*}
 k&=\begin{pmatrix}
@@ -394,7 +394,7 @@ k&=\begin{pmatrix}
 \end{frame}
 
 \begin{frame}[<+->]{Preuve du lemme clé (suite)}
- \begin{block}{Véctorisation de l'opérateur linéaire}
+ \begin{block}{Vectorisation de l'opérateur linéaire}
  Soit $L$ la partie linéaire de $P$:
 \begin{align*}
 \hat{L}&=\eye_{s}\kron L=\begin{pmatrix}L	&\ldots	&0\\
@@ -434,7 +434,7 @@ k&=\begin{pmatrix}
 
 \begin{frame}{Preuve du lemme clé (suite)}
   
- \begin{block}{Véctorisation de la matrice $A$}
+ \begin{block}{Vectorisation de la matrice $A$}
   \begin{equation*}
 \hat{A}=\begin{pmatrix}
     a_{11}	&\ldots	&a_{1s}\\
@@ -467,7 +467,7 @@ k&=\begin{pmatrix}
 \end{frame}
 
 \begin{frame}[<+->]{Preuve du lemme clé (suite)}
- \begin{block}{Véctorisation de $v$}
+ \begin{block}{Vectorisation de $v$}
   \begin{equation*}
 \hat{v}_{n}=\begin{pmatrix}
 	      \vect{v}_{n}\\
@@ -545,7 +545,7 @@ g(x)&=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A}x)+\Delta t\tau\\
 \end{equation*}
 $(1+\hat{L})\tilde{k}+\Delta t \tau$ est un point fixe de $g$ mais par définition 
 les points fixes de $g$ sont $k$.
-Après renommage, cela donne directement le resultat pour $k^{j}$ la $j$ième solution:
+Après renommage, cela donne directement le résultat pour $k^{j}$ la $j$ième solution:
 \begin{equation*}
 k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
 \end{equation*}
@@ -561,7 +561,7 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
 \vect{\tilde{v}}_{n+1}&=\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}+L\left(\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}\right)+\vect{\tilde{T}}_0\\
 &=\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\left(\eye+L\right)\vect{\tilde{k}}_{i}+\vect{\tilde{T}}_0\\
 \vect{\tilde{T}}_0&=\Delta t\sum_{i=1}^{s}b_{i}\vect{T}_{i}\\
-\intertext{En utilisant que $\vect{v}_{n}=\tilde{\vect{v}}_{n}$}
+\intertext{En utilisant $\vect{v}_{n}=\tilde{\vect{v}}_{n}$}
 \vect{v}_{n+1}&=\vect{\tilde{v}}_{n+1}
 \end{align*}
 \qed
@@ -575,7 +575,7 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
 \directlua{dofile('unstaggered.lua')}
 \shorthandon{:;}
 \end{block}
-\begin{block}{Derivée centrée}
+\begin{block}{Dérivée centrée}
  \begin{equation*}
   \partial_x a_i=\frac{a_{i+1}-a_{i-1}}{\Delta x}
 \end{equation*}
@@ -615,7 +615,7 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
  
 \end{frame}
 
-\begin{frame}{Derivée sur ``staggered grid''}
+\begin{frame}{Dérivée sur ``staggered grid''}
 \begin{block}{Gradient}
  \begin{equation*}
   \vect{\nabla}p_{ij}=\begin{pmatrix}
@@ -653,13 +653,13 @@ v^{j}\partial_{j}v^{i}
 \end{frame}
 
 \begin{frame}{Terme convectif sur ``staggered grid'' (suite)}
-\begin{block}{Derivée centrée}
+\begin{block}{Dérivée centrée}
  \begin{equation*}
 \left(v^{j}\partial_{j}v^{i}\right)^{i}_{\vect{k}}={v^{ji}}_{\vect{k}}\frac{{v^{i}}_{\vect{k}+\vect{e}_j}-{v^{i}}_{\vect{k}-\vect{e}_j}}{2\Delta x_{j}}
 \end{equation*}
 \end{block}
 
-\begin{block}{Derivée upwind}
+\begin{block}{Dérivée upwind}
 %\vspace{-1.2cm}
  \begin{align*}
 \intertext{si ${v^{ji}}_{\vect{k}}<0$}
@@ -676,8 +676,8 @@ v^{j}\partial_{j}v^{i}
 \begin{frame}[<+->][shrink]{Algorithme en topologie fixe}
  \begin{block}{Principe}
   \begin{itemize}
-   \item<1-> Utiliser une methode de Runge-Kutta de notre choix.
-   \item Evaluer l'acceleration sur une ``staggered grid''.
+   \item<1-> Utiliser une méthode de Runge-Kutta de notre choix.
+   \item Evaluer l'accéleration sur une ``staggered grid''.
    \item Projeter chaque accélération ou chaque vitesse.
   \end{itemize}
  \end{block}
@@ -731,7 +731,7 @@ v^{j}\partial_{j}v^{i}
  \shorthandon{:;}
 \end{frame}
 
-\begin{frame}[<+->]{Conclusion partiel}
+\begin{frame}[<+->]{Conclusion partielle}
 
 \begin{block}<*>{Ce que nous avons fait}
  \begin{itemize}
@@ -812,7 +812,7 @@ Nous allons considérer des inflows fixe.
   \begin{equation*}
    \dot{\vect{x}}=\vect{v}
   \end{equation*}
-  \item Imposer les conditions aux bords variable:
+  \item Imposer les conditions aux bords variables:
    \begin{align*}
  p_{surf}&=A\vect{v}_{int}\\
  \vect{v}_{surf}&=B\vect{v}_{int}
@@ -830,7 +830,7 @@ Nous allons considérer des inflows fixe.
 \end{block}
 \begin{block}{Imposition des conditions aux bords}
 On calcul des points fantômes hors du domaine pour imposer les conditions aux bords.
-Ses points fantômes sont obtenus par des méthodes d'extrapolations.
+ces points fantômes sont obtenus par des méthodes d'extrapolations.
 \begin{align*}
  p_{ext}&=A\vect{v}_{int}\\
  \vect{v}_{ext}&=B\vect{v}_{int}
@@ -859,7 +859,7 @@ Ses points fantômes sont obtenus par des méthodes d'extrapolations.
 	\end{equation*}
  \end{enumerate}
  \end{block}
-\begin{block}<*>{Une équation differentielle}
+\begin{block}<*>{Une équation différentielle}
   \uncover<+->{
  \begin{align*}
   \vect{v}_{ext}&=B\vect{v}_{int}\\
@@ -867,7 +867,7 @@ Ses points fantômes sont obtenus par des méthodes d'extrapolations.
  \end{align*}
  }
  \uncover<+->{
- Problème: $B$ depend de la topologie.
+ Problème: $B$ dépend de la topologie.
   \begin{align*}
     \dot{\vect{v}}_{int}&=(1+P)f(\vect{v})\\
     \dot{\vect{x}}&=\vect{v}_{I}(\vect{x})\\
@@ -1123,19 +1123,19 @@ ylabel={$v$}
 
 \begin{enumerate}
  \item On met les vitesses à la surface et à l'extérieur à NAN.
- \item On extrapole le plus possible avec les cas vu précédemment.
+ \item On extrapole le plus possible avec les cas vus précédemment.
  \item On extrapole avec une méthode générique les valeurs encore à NAN jusqu'à une certaine profondeur.
 \end{enumerate}
 
 \end{block}
-\begin{block}<*>{Extrapolation generique pour la surface}
+\begin{block}<*>{Extrapolation générique pour la surface}
 \begin{enumerate}
- \item On extrapole les vitesses inconnues de la surface par moyenne des vitesses intérieur voisine.
+ \item On extrapole les vitesses inconnues de la surface par moyennes des vitesses intérieures voisines.
  \item On calcul la divergence et on la partage avec toutes les vitesses inconnues.
 \end{enumerate}
 \end{block}
 
-\begin{block}<*>{Extrapolation generique pour plus loin}
+\begin{block}<*>{Extrapolation générique pour plus loin}
 \begin{enumerate}
  \item On calcul une variable nommée layer qui indique la distance à la surface.
  \item On extrapole par vitesse moyenne plus proche de la surface (layer plus petit).
@@ -1148,7 +1148,7 @@ ylabel={$v$}
 
 \begin{frame}{Conditions aux bords pour la pression}
  \begin{block}{Méthode}
-  On impose les conditions aux bords de façon centré.
+  On impose les conditions aux bords de façon centrée.
   \begin{equation*}
 	\vect{n}=\begin{pmatrix}
 			1\\
@@ -1158,7 +1158,7 @@ ylabel={$v$}
 \begin{equation*}
  p=2\nu\frac{\partial v_{1}}{\partial x_{1}}
 \end{equation*}
-S'il y a plusieurs plan comme cela on somme.
+S'il y a plusieurs plans comme cela on somme.
 
  \end{block}
 
@@ -1228,8 +1228,8 @@ S'il y a plusieurs plan comme cela on somme.
   La variable layer est mise à $-1$ partout.
  \end{block}
  
- \begin{block}{Detections des cellules de fluide}
-  La cellule dans lequel se trouve chaque particule est calculé. La cellule est indiqué comme fluide et son layer mit à $0$.
+ \begin{block}{Détections des cellules de fluide}
+  La cellule dans laquelle se trouve chaque particule est calculée. La cellule est indiquée comme fluide et son layer mis à $0$.
  \end{block}
  
   \begin{block}{Création de particule supplémentaire}
@@ -1261,10 +1261,10 @@ S'il y a plusieurs plan comme cela on somme.
 
 
 \subsection{Conclusion}
-\begin{frame}{Resumé de la méthode}
- \begin{block}{Initialisation avant methode de Runge-Kutta}
+\begin{frame}{Résumé de la méthode}
+ \begin{block}{Initialisation avant méthode de Runge-Kutta}
   \begin{enumerate}
-   \item On trouve les cellules qui ont une particule en eux.
+   \item On trouve les cellules qui ont une particule en elles.
    \item On génére des cellules vides autour du fluide pour stocker les vitesses d'extrapolations.
    \item On crée une variable layer pour connaître la distance hors du fluide.
    \item On calcule le pas de temps optimal
@@ -1274,7 +1274,7 @@ S'il y a plusieurs plan comme cela on somme.
 
   \begin{block}{Initialisation avant itération de Runge-Kutta}
   \begin{enumerate}
-   \item On trouve les cellules qui ont une particule en eux.
+   \item On trouve les cellules qui ont une particule en elles.
    \item On génére des cellules vides autour du fluide pour stocker les vitesses d'extrapolations.
    \item On crée une variable layer pour connaître la distance hors du fluide.
   \end{enumerate}
@@ -1284,7 +1284,7 @@ S'il y a plusieurs plan comme cela on somme.
  
 \end{frame}
 
-\begin{frame}{Resumé de la méthode (suite)}
+\begin{frame}{Résumé de la méthode (suite)}
  \begin{block}{Extrapolation}
   \begin{enumerate}
    \item On extrapole les conditions aux bords.
@@ -1292,10 +1292,10 @@ S'il y a plusieurs plan comme cela on somme.
   \end{enumerate}
 
  \end{block}
- \begin{block}{Calcul de l'acceleration}
+ \begin{block}{Calcul de l'accéleration}
   \begin{enumerate}
    \item On calcul l'accélération par la discrétisation.
-   \item On projete pour être à divergence nulle.
+   \item On projette pour être à divergence nulle.
   \end{enumerate}
 
  \end{block}
@@ -1332,7 +1332,7 @@ S'il y a plusieurs plan comme cela on somme.
 
 \subsection{Résultat numérique}
 
-\begin{frame}{Jet lateral}
+\begin{frame}{Jet latéral}
  
 \end{frame}
 
@@ -1398,13 +1398,13 @@ S'il y a plusieurs plan comme cela on somme.
   \end{equation*}
  \end{block}
 
- \begin{block}{Densitée et masse}
+ \begin{block}{Densité et masse}
  \begin{equation*}
   V_{b}=\frac{m_{b}}{\rho_{b}}
  \end{equation*}
  \end{block}
  
- \begin{block}{Densitée}
+ \begin{block}{Densité}
   \begin{equation*}
    \rho(\vect{r})=\sum_b \frac{m_b}{\rho_{b}}\rho_{b}w_{h}(\vect{r}-\vect{r}_b)=\sum_b m_bw_{h}(\vect{r}-\vect{r}_b)
   \end{equation*}
@@ -1436,7 +1436,7 @@ S'il y a plusieurs plan comme cela on somme.
  \includegraphics[width=\textwidth]{kernel.png}
 \end{frame}
 
-\begin{frame}[<+->]{Derivée}
+\begin{frame}[<+->]{Dérivée}
  \begin{block}{Intégration par partie}
  \begin{align*}
   <\vect{\nabla} A(\vect{r})>&=\int_{\Omega} \nabla A(\vect{r}')w_{h}(\vect{r}-\vect{r}')d\vect{r}'+O(h^2)\\
@@ -1463,7 +1463,7 @@ S'il y a plusieurs plan comme cela on somme.
 
 \end{frame}
 
-\begin{frame}[<+->]{Autre derivée}
+\begin{frame}[<+->]{Autre dérivée}
  \begin{block}{Divergence}
   On obtient les formules pour la divergence de façon similaire que pour le gradient.
  \end{block}
@@ -1477,7 +1477,7 @@ S'il y a plusieurs plan comme cela on somme.
 \end{frame}
 
 \begin{frame}[<+->]{Smoothing function}
- \begin{block}{Definition}
+ \begin{block}{Définition}
  \begin{equation*}
   \xi(\vect{r})=\frac{w(\vect{r}-\vect{r}_{i},h)}{\sum_{b} w(\vect{r}-\vect{r}_b)}=\frac{w_{i}(\vect{r})}{\sigma(\vect{r})}
   \end{equation*}
@@ -1495,7 +1495,7 @@ S'il y a plusieurs plan comme cela on somme.
 
 \end{block}
 
-\begin{block}{Densitée}
+\begin{block}{Densité}
  \begin{equation*}
   \rho=\frac{m}{V}=m\sigma
  \end{equation*}
@@ -1508,7 +1508,7 @@ S'il y a plusieurs plan comme cela on somme.
 \end{block}
 \end{frame}
 
-\begin{frame}[<+->]{Derivée en smoothing function}
+\begin{frame}[<+->]{Dérivée en smoothing function}
 \begin{block}{Gradient}
  \begin{equation*}
   \vect{\nabla} A=\sigma_{a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{1}{2}\left(A_a+A_b\right)\vect{\nabla} w
@@ -1524,7 +1524,7 @@ S'il y a plusieurs plan comme cela on somme.
 \end{block}
 \end{frame}
 \subsection{Incompressibilité}
-\begin{frame}[<+->]{Equations de Navier-Stokes}
+\begin{frame}[<+->]{Équations de Navier-Stokes}
  
 \begin{align*}
 \vect{\nabla} \cdot \vect{u}_{\lambda}(t)&=0\\
@@ -1542,7 +1542,7 @@ S'il y a plusieurs plan comme cela on somme.
 \begin{block}<*>{Exactement incompressible}
  \begin{enumerate}
   \item<3-> Projeter la vitesse pour être à divergence nulle.
-  \item<4-> Obtenir une densité égal à la densitée voulue $\rho_0$.
+  \item<4-> Obtenir une densité égal à la densité voulue $\rho_0$.
  \end{enumerate}
  \uncover<5->{
 \begin{equation*}
@@ -1553,21 +1553,21 @@ S'il y a plusieurs plan comme cela on somme.
 
 \end{frame}
 
-\begin{frame}[<+->]{Avantage et defaut}
+\begin{frame}[<+->]{Avantage et défaut}
  \begin{block}<*>{Faiblement compressible}
   \begin{itemize}
    \plusitem Pas de système linéaire à résoudre.
-   \moinsitem Convergence depend de l'intégrateur en temps et des paramêtres.
-   \moinsitem Le choix des paramêtres depend du problème.
+   \moinsitem Convergence dépend de l'intégrateur en temps et des paramêtres.
+   \moinsitem Le choix des paramètres depend du problème.
   \end{itemize}
 
  \end{block}
  
  \begin{block}<*>{Exactement incompressible}
  \begin{itemize}
-  \plusitem Divergence nulle exact.
+  \plusitem Divergence nulle exacte.
   \moinsitem Système linéaire à résoudre.
-  \moinsitem Système linéaire en general pas symétrique ni defini positif.
+  \moinsitem Système linéaire en general pas symétrique ni défini positif.
  \end{itemize}
   
  \end{block}
@@ -1603,9 +1603,9 @@ S'il y a plusieurs plan comme cela on somme.
 \begin{block}{Créer particule initiale}
 	\begin{enumerate}
 		\item<+-> Placer des particules avec position et vitesse initiale.
-		\item<+-> Choisir la masse des particules de sorte que la densitée soit bonne.
+		\item<+-> Choisir la masse des particules de sorte que la densité soit bonne.
 		\begin{enumerate}
-			\item La densitée est donnée par:
+			\item La densité est donnée par:
 			\begin{equation*}
 			\sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
@@ -1620,7 +1620,7 @@ S'il y a plusieurs plan comme cela on somme.
 	\begin{enumerate}
 		\item Intégrer les équations de Navier-Stokes. Pour chaque étage:
 		\begin{enumerate}
-			\item Calculer la densitée:
+			\item Calculer la densité:
 			\begin{equation*}
 			\sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
@@ -1646,9 +1646,9 @@ S'il y a plusieurs plan comme cela on somme.
 \begin{block}{Créer particule initiale}
 	\begin{enumerate}
 		\item Placer des particules avec position et vitesse initiale.
-		\item Choisir la masse des particules de sorte que la densitée soit bonne.
+		\item Choisir la masse des particules de sorte que la densité soit bonne.
 		\begin{enumerate}
-			\item La densitée est donnée par:
+			\item La densité est donnée par:
 			\begin{equation*}
 			\sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
@@ -1682,7 +1682,7 @@ S'il y a plusieurs plan comme cela on somme.
 		\end{enumerate}
 		\item Corriger la vitesse et la position.
 		\begin{enumerate}
-			\item Calculer la densitée:
+			\item Calculer la densité:
 			\begin{equation*}
 			\sigma_{a}=\sum_{b}w_{ab}
 			\end{equation*}
@@ -1697,7 +1697,7 @@ S'il y a plusieurs plan comme cela on somme.
 				\vect{x}^{n+1}_{a}=\vect{x}^{*n+1}_{a}-\frac{1}{m_a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{\rho_{a}p_{b}+\rho_{b}p_{a}}{\rho_a+\rho_b}\vect{e}_{ab}
 				\end{equation*}
 			\end{enumerate}
-			\item Calculer la densitée:
+			\item Calculer la densité:
 				\begin{equation*}
 				\sigma_{a}=\sum_{b}w_{ab}
 				\end{equation*}
@@ -1727,7 +1727,7 @@ S'il y a plusieurs plan comme cela on somme.
    \plusitem Terme de convection exact.
    \moinsitem Correction de pression plus dure à faire exactement.
    \plusitem Loi de conservation intéressante.
-   \moinsitem Justification et preuve de convergence plus dure.
+   \moinsitem Justification et preuve de convergence plus dures.
    \moinsitem Système linéaire difficil à résoudre.
    \moinsitem Plus de voisin à traiter.
    \plusitem Indépendant du choix des axes.
@@ -1739,10 +1739,63 @@ S'il y a plusieurs plan comme cela on somme.
   \begin{itemize}
    \plusitem Méthode de discrétisation bien connu.
    \plusitem Système linéaire facil à résoudre.
-   \moinsitem Terme convectif plus dure.
+   \moinsitem Terme convectif plus dur.
    \plusitem Moins de voisin à traiter.
    \moinsitem Dépendant du choix des axes.
   \end{itemize}
+
+ \end{block}
+
+ 
+\end{frame}
+
+\begin{frame}[<+->]{Amelioration possible}
+ 
+ \begin{block}<*>{MAC}
+  \begin{itemize}
+   \item Écrire une version parallèle du code.
+   \item Solveur specialisé pour changement de topologie sans tout recalculer.
+   \item Éviter l'effet escalier aux bords.
+   \item Utiliser une autre forme de topologie que les particules.
+   \item Ordre supérieur de discrétisation.
+   \item Éviter le problème de saut dans les conditions aux bords.
+  \end{itemize}
+  \end{block}
+
+\begin{block}{SPH}
+\begin{itemize}
+ \item Reconcillier vitesse et précision.
+ \item Rendre plus rigoureux la méthode.
+ \item Écrire une version parallèle du code.
+ \end{itemize}
+\end{block}
+
+ 
+\end{frame}
+
+\begin{frame}{Remerciments}
+
+\begin{block}{Personne}
+
+\begin{description}
+ \item[Prof. Martin Gander:] Pour m'avoir suivi dans ce travail ainsi que pour son cours d'analyse numérique.
+ \item[Dr. Felix Kwok:] Pour m'avoir suivi dans ce travail et pour les tps et exercices.
+ \item[Prof. Peter Wittwer:] Pour les cours de mathématiques et physique.
+ \item[Reto, Norma, Roland, Tamara:] Pour me soutenir et les bon moment passés ensemble.
+\end{description}
+ \end{block}
+ 
+ \begin{block}{Logiciel}
+  \begin{description}
+   \item [lua\LaTeX:] Pour l'écriture du rapport.
+   \item [gcc:] Pour compiler mon code c++11.
+   \item [valgrind:] Pour la détection des fuites memoires et autre érreurs memoire.
+   \item [vtk:] Pour l'exportation des données.
+   \item [Paraview:] Pour la visualisation des données.
+   \item [Umfpacks:] Comme solveur linéaire directe.
+   \item [Pyamg:] Comme solveur linéaire itératif.
+   \item [Boost:] Pour contenir des librairies utils comme Boost-Python utilisé comme binding avec Pyamg.
+  \end{description}
 
  \end{block}
 
