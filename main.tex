@@ -830,7 +830,7 @@ Nous allons considérer des inflows fixes.
 \end{block}
 \begin{block}{Imposition des conditions aux bords}
 On calcul des points fantômes hors du domaine pour imposer les conditions aux bords.
-ces points fantômes sont obtenus par des méthodes d'extrapolations.
+Ces points fantômes sont obtenus par des méthodes d'extrapolations.
 \begin{align*}
  p_{ext}&=A\vect{v}_{int}\\
  \vect{v}_{ext}&=B\vect{v}_{int}
@@ -1333,7 +1333,30 @@ S'il y a plusieurs plans comme cela on somme.
 \subsection{Résultat numérique}
 
 \begin{frame}{Jet latéral}
- 
+\begin{block}{Particulaire}
+ \begin{align*}
+	v_{x}&=v_{0}\\
+	v_{y}&=-\frac{g}{2}(t-t_0)^2
+\end{align*}
+\end{block}
+
+\begin{block}{Trajectoire}
+\begin{align*}
+	x&=v_{0}(t-t_0)\\
+	y&=y_0-\frac{g}{2}(t-t_0)^2
+\end{align*}
+
+\begin{equation*}
+	t-t_{0}=\frac{x}{v_{0}}
+\end{equation*}
+\end{block}
+
+\begin{block}{Cartesienne}
+\begin{align*}
+	v_{x}&=v_{0}\\
+	v_{y}&=-\frac{g}{2}\frac{x^2}{v_{0}}
+\end{align*}
+\end{block}
 \end{frame}
 
 \begin{frame}{Jet d'eau}
@@ -1436,7 +1459,7 @@ S'il y a plusieurs plans comme cela on somme.
  \includegraphics[width=\textwidth]{kernel.png}
 \end{frame}
 
-\begin{frame}[<+->]{Dérivée}
+\begin{frame}[<+->][shrink]{Dérivée}
  \begin{block}{Intégration par partie}
  \begin{align*}
   <\vect{\nabla} A(\vect{r})>&=\int_{\Omega} \nabla A(\vect{r}')w_{h}(\vect{r}-\vect{r}')d\vect{r}'+O(h^2)\\
