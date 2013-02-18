@@ -24,7 +24,7 @@
 \usetikzlibrary{shapes.multipart}
 \usetikzlibrary{fit}
 
-\newtheorem{property}{Proprieté}
+\newtheorem{property}{Propriété}
 
 \newcommand{\vect}[1]{ {\boldsymbol {#1}}}
 \newcommand{\eye}{1}
@@ -88,7 +88,7 @@
   \tableofcontents[pausesections]
 \end{frame}
 
-\section{Notation et proprieté basique}
+\section{Notation et propriété basique}
 \subsection{Notation}
 \begin{frame}{Vecteur et dérivée}
  
@@ -115,7 +115,7 @@
 \end{frame}
 
 
-\begin{frame}{Opérateur différentielle}
+\begin{frame}{Opérateur différentiel}
 
 \begin{block}{Gradient}
 \begin{equation*}
@@ -148,7 +148,7 @@
 
 
 \end{frame}
-\begin{frame}[<+->]{Proprieté des opérateurs différentiels}
+\begin{frame}[<+->]{Propriété des opérateurs différentiels}
  \begin{property}{Divergence d'un rotationnel}
   \begin{equation*}
   \nabla \cdot \nabla \times \vect{v}=0
@@ -238,7 +238,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 \end{equation*}
 \end{block}
 
-\begin{block}{Dérivée materiel}
+\begin{block}{Dérivée matérielle}
 \begin{align*}
 \frac{d \vect{u}_{\lambda}(t)}{d t}&=\frac{d \vect{v}(\xi_{\lambda},t)}{d t}=\partial_t \vect{v}+\left(\frac{\partial \vect{\xi}_{\lambda}(t)}{\partial t}\cdot\vect{\nabla}\right)\vect{v}\\
 \frac{d \vect{u}_{\lambda}(t)}{d t}&=\partial_t \vect{v}+\left(\vect{v} \cdot\vect{\nabla}\right)\vect{v}
@@ -286,7 +286,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 \subsection{Introduction}
 \begin{frame}[<+->]{Idée}
  \begin{itemize}
-  \item Vitesse et pression sont discretisées sur une grille.
+  \item Vitesse et pression sont discrétisées sur une grille.
   \item Les équations de Navier-Stokes sont résolues sur la grille.
   \item Mais la topologie est determinée par la position des particules.
   \item Les particules se déplacent par la vitesse donnée par interpolation de la grille.
@@ -403,7 +403,7 @@ k&=\begin{pmatrix}
 	\end{pmatrix}
 \end{align*}
 \end{block}
-\begin{block}{Proprieté de la partie linéaire}
+\begin{block}{Propriété de la partie linéaire}
 \begin{equation*}
 \hat{L}\hat{v}_{n}=0
 \end{equation*}
@@ -688,7 +688,7 @@ v^{j}\partial_{j}v^{i}
   \end{equation*}
  \end{block}
 
-\begin{block}{Runge-Kutta sur l'acceleration}
+\begin{block}{Runge-Kutta sur l'accélération}
  \vspace{-0.7cm}
 	\begin{align*}
 	\vect{v}_{n+1}&=\vect{v}_{n}+\sum_{i=1}^{s}b_{i}\vect{k}_{i}\\
@@ -798,7 +798,7 @@ Autre méthode:
 \end{block}
 \begin{block}{Remarque}
 \uncover<+->{
-Nous allons considérer des inflows fixe.
+Nous allons considérer des inflows fixes.
 }
 \end{block}
 
@@ -1130,7 +1130,7 @@ ylabel={$v$}
 \end{block}
 \begin{block}<*>{Extrapolation générique pour la surface}
 \begin{enumerate}
- \item On extrapole les vitesses inconnues de la surface par moyennes des vitesses intérieures voisines.
+ \item On extrapole les vitesses inconnues de la surface par moyenne des vitesses intérieures voisines.
  \item On calcul la divergence et on la partage avec toutes les vitesses inconnues.
 \end{enumerate}
 \end{block}
@@ -1358,7 +1358,7 @@ S'il y a plusieurs plans comme cela on somme.
 \end{frame}
 
 \begin{frame}[<+->][shrink]{Théorie des interpolants}
-\begin{block}{Proprieté de $\delta$}
+\begin{block}{Propriété de $\delta$}
   \begin{equation*}
  A(\vect{r})=\int_{\Omega} A(\vect{r}')\delta(\vect{r}-\vect{r}')d\vect{r}'
  \end{equation*}
@@ -1542,7 +1542,7 @@ S'il y a plusieurs plans comme cela on somme.
 \begin{block}<*>{Exactement incompressible}
  \begin{enumerate}
   \item<3-> Projeter la vitesse pour être à divergence nulle.
-  \item<4-> Obtenir une densité égal à la densité voulue $\rho_0$.
+  \item<4-> Obtenir une densité égale à la densité voulue $\rho_0$.
  \end{enumerate}
  \uncover<5->{
 \begin{equation*}
@@ -1557,8 +1557,8 @@ S'il y a plusieurs plans comme cela on somme.
  \begin{block}<*>{Faiblement compressible}
   \begin{itemize}
    \plusitem Pas de système linéaire à résoudre.
-   \moinsitem Convergence dépend de l'intégrateur en temps et des paramêtres.
-   \moinsitem Le choix des paramètres depend du problème.
+   \moinsitem Convergence dépend de l'intégrateur en temps et des paramètres.
+   \moinsitem Le choix des paramètres dépend du problème.
   \end{itemize}
 
  \end{block}
@@ -1567,7 +1567,7 @@ S'il y a plusieurs plans comme cela on somme.
  \begin{itemize}
   \plusitem Divergence nulle exacte.
   \moinsitem Système linéaire à résoudre.
-  \moinsitem Système linéaire en general pas symétrique ni défini positif.
+  \moinsitem Système linéaire en général pas symétrique ni défini positif.
  \end{itemize}
   
  \end{block}
@@ -1749,7 +1749,7 @@ S'il y a plusieurs plans comme cela on somme.
  
 \end{frame}
 
-\begin{frame}[<+->]{Amelioration possible}
+\begin{frame}[<+->]{Amélioration possible}
  
  \begin{block}<*>{MAC}
   \begin{itemize}
@@ -1764,7 +1764,7 @@ S'il y a plusieurs plans comme cela on somme.
 
 \begin{block}{SPH}
 \begin{itemize}
- \item Reconcillier vitesse et précision.
+ \item Réconcilier vitesse et précision.
  \item Rendre plus rigoureux la méthode.
  \item Écrire une version parallèle du code.
  \end{itemize}
@@ -1773,7 +1773,7 @@ S'il y a plusieurs plans comme cela on somme.
  
 \end{frame}
 
-\begin{frame}{Remerciments}
+\begin{frame}[shrink]{Remerciements}
 
 \begin{block}{Personne}
 
@@ -1781,20 +1781,20 @@ S'il y a plusieurs plans comme cela on somme.
  \item[Prof. Martin Gander:] Pour m'avoir suivi dans ce travail ainsi que pour son cours d'analyse numérique.
  \item[Dr. Felix Kwok:] Pour m'avoir suivi dans ce travail et pour les tps et exercices.
  \item[Prof. Peter Wittwer:] Pour les cours de mathématiques et physique.
- \item[Reto, Norma, Roland, Tamara:] Pour me soutenir et les bon moment passés ensemble.
+ \item[Reto, Norma, Roland, Tamara:] Pour me soutenir et les bons moments passés ensemble.
 \end{description}
  \end{block}
  
  \begin{block}{Logiciel}
   \begin{description}
-   \item [lua\LaTeX:] Pour l'écriture du rapport.
-   \item [gcc:] Pour compiler mon code c++11.
-   \item [valgrind:] Pour la détection des fuites memoires et autre érreurs memoire.
-   \item [vtk:] Pour l'exportation des données.
-   \item [Paraview:] Pour la visualisation des données.
-   \item [Umfpacks:] Comme solveur linéaire directe.
-   \item [Pyamg:] Comme solveur linéaire itératif.
-   \item [Boost:] Pour contenir des librairies utils comme Boost-Python utilisé comme binding avec Pyamg.
+   \item[lua\LaTeX:] Pour l'écriture du rapport.
+   \item[gcc:] Pour compiler mon code c++11.
+   \item[valgrind:] Pour la détection des fuites memoires et autre érreurs de memoire.
+   \item[vtk:] Pour l'exportation des données.
+   \item[Paraview:] Pour la visualisation des données.
+   \item[Umfpacks:] Comme solveur linéaire directe.
+   \item[Pyamg:] Comme solveur linéaire itératif.
+   \item[Boost:] Pour contenir des librairies utiles comme Boost-Python utilisé comme binding avec Pyamg.
   \end{description}
 
  \end{block}
