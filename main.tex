@@ -44,11 +44,11 @@
 {\setbeamertemplate{itemize item}{$\textcolor{gray}{\pm}$}}}{}
 \def\pmitem{\item<+-| pm@+-| handout:pm@0-> }
 
-\setbeamercolor{section in toc}{fg=red}
-\setbeamercolor{section in toc shaded}{fg=blue}
-
-\setbeamercolor{subsection in toc}{fg=red}
-\setbeamercolor{subsection in toc shaded}{fg=blue}
+% \setbeamercolor{section in toc}{fg=red}
+% \setbeamercolor{section in toc shaded}{fg=blue}
+% 
+% \setbeamercolor{subsection in toc}{fg=red}
+% \setbeamercolor{subsection in toc shaded}{fg=blue}
 
 \pgfplotsset{compat=1.6}
 
@@ -69,14 +69,6 @@
 \subject{Navier-Stokes}
 
 
-\AtBeginSubsection[]
-{
-  \begin{frame}<beamer>[shrink]{Résumé}
-    \tableofcontents[ sectionstyle=show/shaded,currentsubsection]
-  \end{frame}
-}
-
-
 \begin{document}
 \setlength{\belowdisplayskip}{0pt}%
 \setlength{\abovedisplayskip}{0pt}%
@@ -89,47 +81,17 @@
 \end{frame}
 
 \section{Notation et propriété basique}
-\subsection{Notation}
-\begin{frame}{Vecteur et dérivée}
- 
- \begin{block}{Vecteur}
-  \begin{equation*}
-   \vect{v}
-  \end{equation*}
-
-  \begin{equation*}
-   \vect{v}_{i}
-  \end{equation*}
-
- \end{block}
-
-\begin{block}{Nabla}
- \begin{equation*}
-  \vect{\nabla}=\begin{pmatrix}
-                 \partial_1\\
-                 \vdots \\
-                 \partial_n
-                \end{pmatrix}
- \end{equation*}
-\end{block}
-\end{frame}
-
 
 \begin{frame}{Opérateur différentiel}
-
-\begin{block}{Gradient}
+Gradient:
 \begin{equation*}
- \vect{\nabla}p=\sum_{i}\partial_{i}p_{i}
+ \vect{\nabla}p=\sum_{i}\partial_{i}p
 \end{equation*}
-\end{block}
-
-\begin{block}{Divergence}
+Divergence:
 \begin{equation*}
  \vect{\nabla}\cdot \vect{v}=\sum_{i}\partial_{i}\vect{v}_{i}
 \end{equation*}
-\end{block}
-
-\begin{block}{Rotationel}
+Rotationnel
 \begin{equation*}
  \vect{\nabla} \times \vect{v}=\begin{pmatrix}
                                 \partial_{2}\vect{v}_{3}-\partial_{3}\vect{v}_{2}\\
@@ -137,15 +99,11 @@
                                 \partial_{1}\vect{v}_{2}-\partial_{2}\vect{v}_{1}\\
                                \end{pmatrix}
  \end{equation*}
-\end{block}
 
-
-\begin{block}{Convection}
+Convection
 \begin{equation*}
  \left(\vect{v}\cdot \vect{\nabla}\right)\vect{v}=\sum_{i} \vect{v}_{i}\partial_{i} \vect{v}
  \end{equation*}
-\end{block}
-
 
 \end{frame}
 \begin{frame}[<+->]{Propriété des opérateurs différentiels}
@@ -161,7 +119,7 @@
   \end{equation*}
  \end{property}
 \end{frame}
-\subsection{Projection}
+
 \begin{frame}{Projection}
  
  \begin{property}
@@ -171,43 +129,32 @@
   \Delta p&=\vect{\nabla} \cdot \vect{v}
   \end{align*}
 \begin{block}<+->{Preuve}
-  \uncover<+->{
-   \begin{equation*}
-   \vect{\nabla}\cdot \vect{v}_{new}=\vect{\nabla} \cdot \vect{v}-\Delta p=\vect{\nabla} \cdot \vect{v}-\vect{\nabla} \cdot \vect{v}=0
-   \end{equation*}
-   }
+  
+   \begin{align*}
+   \uncover<.->{\vect{\nabla}\cdot \vect{v}_{new}}&\uncover<.->{=\vect{\nabla} \cdot \vect{v}-\Delta p=\vect{\nabla} \cdot \vect{v}-\vect{\nabla} \cdot \vect{v}=0
+   }\\
    \uncover<+->{
-   \begin{equation*}
-    \vect{\nabla} \times \vect{v}_{new}=\vect{\nabla} \times \vect{v}-\vect{\nabla}\times \vect{\nabla}p=\vect{\nabla} \times \vect{v}
-   \end{equation*}
-   }
+    \vect{\nabla} \times \vect{v}_{new}}&\uncover<.->{=\vect{\nabla} \times \vect{v}-\vect{\nabla}\times \vect{\nabla}p=\vect{\nabla} \times \vect{v}
+    }
+   \end{align*}
  \end{block}
  \end{property}
- 
-\end{frame}
 
-\begin{frame}[<+->]{Projection (suite)}
-  \begin{definition}{Projecteur linéaire}
+  \begin{definition}<+->[Projecteur]
   \begin{equation*}
-   P\vect{v}=-\vect{\nabla}\Delta^{-1}\vect{\nabla}\cdot \vect{v}
+   P\vect{v}=\vect{\nabla}\Delta^{-1}\vect{\nabla}\cdot \vect{v}
   \end{equation*}
  \end{definition}
  
-  \begin{definition}{Projecteur affine}
-  \begin{equation*}
-   P(\vect{T})\vect{v}=-\vect{\nabla}\Delta^{-1}\vect{\nabla}\cdot \vect{v}+\vect{T}
-  \end{equation*}
- \end{definition}
 \end{frame}
 
 
-\section{Résultat analytique}
-\subsection{Reformulation des équations de Navier-Stokes}
+\section{Navier-Stokes}
 \begin{frame}[<+->]{Reformulation avec projection}
  \begin{block}{Navier-Stokes}
 \begin{align*}
 \vect{\nabla} \cdot \vect{v}(\vect{x} ,t)&=0\\
-\partial_t \vect{v}(\vect{x} ,t)&=f(\vect{v}(\vect{x},t))-\vect{\nabla}p
+\partial_t \vect{v}(\vect{x} ,t)&=\underbrace{f(\vect{v}(\vect{x},t))-\vect{\nabla}p}_{\text{Accélération}}
 \intertext{Où}
 f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}{\rho}+\nu \Delta \vect{v}
 \end{align*}
@@ -217,7 +164,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
  \begin{align*}
   \partial_t \left(\vect{\nabla}\cdot \vect{v}\right)&=0=\vect{\nabla}\cdot f(\vect{v})-\Delta p\\
   \Delta p&=\vect{\nabla}\cdot f(\vect{v})\\
-  \partial_t \vect{v}&=(1+P)f(\vect{v})
+  \partial_t \vect{v}&=(1-P)f(\vect{v})
   \end{align*}
  \end{block}
 
@@ -258,18 +205,18 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 
 
 \begin{frame}[<+->]{Différentes versions des équations de Navier-Stokes}
- \begin{block}{Original}
+ \setlength{\abovedisplayskip}{0pt}
+ \setlength{\abovedisplayshortskip}{0pt}
+ \begin{block}{Eulerien}
  \begin{align*}
   \vect{\nabla} \cdot \vect{v}(\vect{x} ,t)&=0\\
 \partial_t \vect{v}(\vect{x} ,t)&=f(\vect{v}(\vect{x},t))-\vect{\nabla}p
 \end{align*}
  \end{block}
  \begin{block}{Projection}
- \begin{align*}
-    \partial_t \left(\vect{\nabla}\cdot \vect{v}\right)&=0=\vect{\nabla}\cdot f(\vect{v})-\Delta p\\
-  \Delta p&=\vect{\nabla}\cdot f(\vect{v})\\
-  \partial_t \vect{v}&=(1+P)f(\vect{v})
-  \end{align*}
+ \begin{equation*}
+  \partial_t \vect{v}=(1-P)f(\vect{v})
+  \end{equation*}
  \end{block}
 
  \begin{block}{Lagrangien}
@@ -282,8 +229,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 
 \end{frame}
 
-\section{Marker And Cell}
-\subsection{Introduction}
+\section{Projection}
 \begin{frame}[<+->]{Idée}
  \begin{itemize}
   \item Vitesse et pression sont discrétisées sur une grille.
