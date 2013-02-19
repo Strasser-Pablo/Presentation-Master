@@ -1,8 +1,9 @@
 \usepackage{amsmath,amssymb}
 \usepackage{amsthm}
 
-
+\usepackage{setspace}
 \usepackage{tikz}
+\usepackage{mathtools}
 \usepackage[francais]{babel}
 \uselanguage{French}
 \languagepath{French}
@@ -242,7 +243,7 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
 \end{frame}
 \begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
- \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
+ \begin{tikzpicture}[scale=1,node distance=4mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
   \node[below= of init,draw](runginit) {Initialisation};
   \node[below= of runginit,draw](extrap) {Extrapolation};
@@ -265,18 +266,17 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
  \end{tikzpicture}
  \shorthandon{:;}
 \end{frame}
-\subsection{Intégration temporelle}
 \begin{frame}[<+->]{Projection}
 \begin{block}{Projection en accélération}
 \begin{equation*}
- \partial_t \vect{v}=(1+P)f(\vect{v})
+ \partial_t \vect{v}=(1-P)f(\vect{v})
  \end{equation*}
 \end{block}
 
 \begin{block}{Projection en vitesse}
 \begin{align*}
  \partial_t \vect{\tilde{v}}&=f(\vect{v})\\
- \vect{v}&=(1+P)\vect{\tilde{v}}
+ \vect{v}&=(1-P)\vect{\tilde{v}}
  \end{align*}
 \end{block}
  
@@ -286,272 +286,57 @@ f(\vect{v}(\vect{x},t))&=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}
  \begin{block}{Runge-Kutta sur l'accélération}
    \begin{align*}
 	\vect{v}_{n+1}&=\vect{v}_{n}+\sum_{i=1}^{s}b_{i}\vect{k}_{i}\\
-	\vect{k}_{i}&=\Delta t (1+P(\vect{T}_{i}))f\left(\vect{v}_{n}+\sum_{j=1}^{s}a_{ij}\vect{k}_{j}\right)
+	\vect{k}_{i}&=\Delta t (1-P)f\left(\vect{v}_{n}+\sum_{j=1}^{s}a_{ij}\vect{k}_{j}\right)
 \end{align*}
  \end{block}
  
   \begin{block}{Runge-Kutta sur la vitesse}
    \begin{align*}
-\vect{\tilde{v}}_{n+1}&=(1+P(\vect{\tilde{T}}_0))\left(\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}\right)\\
-\vect{\tilde{k}}_{i}&=\Delta t f\left((1+P(\vect{\tilde{T}}{i}))\left(\vect{\tilde{v}}_{n}+\sum_{j=1}^{s}a_{ij}\vect{\tilde{k}}_{j}\right)\right)
+\vect{\tilde{v}}_{n+1}&=(1-P)\left(\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}\right)\\
+\vect{\tilde{k}}_{i}&=\Delta t f\left((1-P)\left(\vect{\tilde{v}}_{n}+\sum_{j=1}^{s}a_{ij}\vect{\tilde{k}}_{j}\right)\right)
 \end{align*}
  \end{block}
 \end{frame}
-\subsection{Théorème d'équivalence}
 \begin{frame}{Équivalence}
  \begin{theorem}
 Si $\vect{v}_{n}=\vect{\tilde{v}}_{n}$ et $\vect{v}_n$ sont à divergence nulle alors $\vect{v}_{n+1}=\vect{\tilde{v}}_{n+1}$.
-Et la translation est donnée par:
-\begin{align*}
-  \vect{\tilde{T}}_{i}&=\Delta t\sum_{j}a_{ij}\vect{T}_{j}\\
-  \vect{\tilde{T}}_{0}&=\Delta t\sum_{j}b_{j}\vect{T}_{j}
-\end{align*}
  \end{theorem}
-\end{frame}
-
-\begin{frame}{Lemme clé}
-\begin{lemma}
- Après renommage sur $j$ en notant $\vect{k}_{i}^{j}$ la $j$ième solution de $\vect{k}_{i}$.
-Alors pour tout $j$ nous avons:
-\begin{equation*}
-  \vect{k}_{i}^{j}=\vect{\tilde{k}}_{i}^{j}+P(\vect{\tilde{k}}_{i}^{j},\Delta t \vect{T}_{i})
-\end{equation*}
-\end{lemma}
-\begin{block}{Preuve}
-\end{block}
-
-\begin{block}{Vectorisation des $\vect{k}$}
-\uncover<2->{
- \begin{align*}
-k&=\begin{pmatrix}
-    \vect{k}_{1}\\
-    \vdots\\
-    \vect{k}_{s}\\
-  \end{pmatrix}\\
-\tilde{k}&=\begin{pmatrix}
-    \vect{\tilde{k}}_{1}\\
-    \vdots\\
-    \vect{\tilde{k}}_{s}\\
-  \end{pmatrix}
-\end{align*}
-}
- \end{block}
-
-\end{frame}
-
-\begin{frame}[<+->]{Preuve du lemme clé (suite)}
- \begin{block}{Vectorisation de l'opérateur linéaire}
- Soit $L$ la partie linéaire de $P$:
-\begin{align*}
-\hat{L}&=\eye_{s}\kron L=\begin{pmatrix}L	&\ldots	&0\\
-			\vdots &\ddots 	&\vdots\\
-			0	&\ldots	&L\\
-	\end{pmatrix}
-\end{align*}
-\end{block}
-\begin{block}{Propriété de la partie linéaire}
-\begin{equation*}
-\hat{L}\hat{v}_{n}=0
-\end{equation*}
- \end{block}
-
-\end{frame}
-
-
-\begin{frame}{Preuve du lemme clé (suite)}
-\begin{block}{Translation}
- \begin{align*}
-	\tau_i&=\begin{pmatrix}
-			\vect{0}\\
-			\vdots\\
-			\vect{T}_{i}\\
-			\vdots\\
-			\vect{0}\\
-	\end{pmatrix}
-	\\
-	\tau&=\sum_{i}\tau_{i}=\begin{pmatrix}
-			\vect{T}_{1}\\
-			\vdots\\
-			\vect{T}_{s}\\
-	\end{pmatrix}
-\end{align*}
-\end{block}
-\end{frame}
-
-\begin{frame}{Preuve du lemme clé (suite)}
-  
- \begin{block}{Vectorisation de la matrice $A$}
-  \begin{equation*}
-\hat{A}=\begin{pmatrix}
-    a_{11}	&\ldots	&a_{1s}\\
-    \vdots	&\ddots	&\vdots\\
-    a_{s1}	&\ldots	&a_{ss}\\
-  \end{pmatrix} \kron \eye=A \kron \eye
-\end{equation*}
- \end{block}
-
-\end{frame}
-
-\begin{frame}[<+->]{Preuve du lemme clé (suite)}
-\begin{block}{Définition de la fonction par block}
- \begin{align*}
-\hat{f}&=\eye_{s}\kron f=\begin{pmatrix}f	&\ldots	&0\\
-			\vdots &\ddots 	&\vdots\\
-			0	&\ldots	&f\\
-	\end{pmatrix}
-\end{align*}
-\end{block}
-\begin{block}{Notation d'appel de fonction}
- \begin{equation*}
- \hat{f}\left(k\right)=\begin{pmatrix}f(\vect{k}_1)\\
-			\vdots\\
-			f(\vect{k}_n)\\
-	\end{pmatrix}
-\end{equation*}
-\end{block}
-
-\end{frame}
-
-\begin{frame}[<+->]{Preuve du lemme clé (suite)}
- \begin{block}{Vectorisation de $v$}
-  \begin{equation*}
-\hat{v}_{n}=\begin{pmatrix}
-	      \vect{v}_{n}\\
-	      \vdots\\
-	      \vect{v}_{n}
-	      \end{pmatrix}
-\end{equation*}
- \end{block}
  
- \begin{block}{Commutativité de $\hat{L}$ et $\hat{A}$}
-  \begin{align*}
-\hat{A}\hat{L}&=\left(A\kron \eye \right)
-  \left(\eye_{s}\kron L\right)=
-	A\kron L\\
-    %
-    \hat{L}\hat{A}&=
-  \left(\eye_{s}\kron L\right)
-	\left(A \kron \eye \right)=
-	A\kron L
-\end{align*}
- \end{block}
-
+\begin{corollary}
+En résolvant l'équation de Navier-Stokes par une méthode de Runge-Kutta, on est éxactement à divergence nulle.
+\end{corollary}
 \end{frame}
 
-\begin{frame}[<+->]{Preuve du lemme clé (suite)}
- \begin{block}{Réécriture des étages}
-  \begin{align*}
-k&=(1+\hat{L})\Delta t\hat{f}(\hat{v}_{n}+\hat{A}k)+\Delta t\tau\\
-\tilde{k}&=\Delta t \hat{f}((1+\hat{L})(\hat{v}_{n}+\hat{A}k)+\tilde{\tau})
-\end{align*}
- \end{block}
- 
- \begin{block}{Fonction de points fixes}
-  \begin{align*}
-k&=g(k)\\
-\tilde{k}&=\tilde{g}(\tilde{k})\\
-g(x)&=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A}x)+\Delta t\tau\\
-\tilde{g}(x)&=\Delta t \hat{f}((1+\hat{L})(\hat{v}_{n}+\hat{A}x)+\tilde{\tau})
-\end{align*}
- \end{block}
 
-\end{frame}
-
-\begin{frame}{Preuve du lemme clé (suite)}
-  \begin{block}{Calcul}
-  \begin{align*}
-(1+\hat{L})\tilde{g}(x)&=(1+\hat{L})\Delta t \hat{f}((1+\hat{L})(\hat{v}_{n}+\hat{A}x)+\tilde{\tau})\\
-&=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A} (1+\hat{L})x+\tilde{\tau})\\
-&=(1+\hat{L})\Delta t \hat{f}(\hat{v}_{n}+\hat{A} ((1+\hat{L})x+\hat{A}^{-1}\tilde{\tau}))\\
-\intertext{Par définition de $g$ on a:}
-&=g((1+\hat{L})x+\hat{A}^{-1}\tilde{\tau})-\Delta t \tau
-\end{align*}
- \end{block}
-\end{frame}
-
-\begin{frame}{Preuve du lemme clé (suite)}
-  \begin{block}{Calcul}
-  \begin{align*}
-(1+\hat{L})\tilde{g}(\tilde{k})&=g((1+\hat{L})\tilde{k}+\hat{A}^{-1}\tilde{\tau})-\Delta t \tau\\
-\intertext{$\tilde{k}$ est un point fixe de $\tilde{g}$}
-(1+\hat{L})\tilde{k}&=g((1+\hat{L})\tilde{k}+\hat{A}^{-1}\tilde{\tau})-\Delta t \tau\\
-(1+\hat{L})\tilde{k}+\Delta t \tau&=g((1+\hat{L})\tilde{k}+\hat{A}^{-1}\tilde{\tau})\\
-\intertext{Si}
-\tilde{\tau}=\Delta t \hat{A}\tau
-\intertext{Alors}
-(1+\hat{L})\tilde{k}+\Delta t \tau&=g((1+\hat{L})\tilde{k}+\Delta t \tau)
-\end{align*}
- \end{block}
-\end{frame}
-
-\begin{frame}{Preuve du lemme clé (fin)}
-  \begin{block}{Fin de la preuve}
-  \begin{equation*}
-(1+\hat{L})\tilde{k}+\Delta t \tau=g((1+\hat{L})\tilde{k}+\Delta t \tau)
-\end{equation*}
-$(1+\hat{L})\tilde{k}+\Delta t \tau$ est un point fixe de $g$ mais par définition 
-les points fixes de $g$ sont $k$.
-Après renommage, cela donne directement le résultat pour $k^{j}$ la $j$ième solution:
-\begin{equation*}
-k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
-\end{equation*}
-\qed
- \end{block}
-\end{frame}
-
-\begin{frame}{Preuve de la fin du théorème}
-
-\begin{block}{Fin de la preuve}
- \begin{align*}
-\vect{v}_{n+1}&=\vect{v}_{n}+\sum_{i=1}^{s}b_{i}\left(\left(\eye+L\right)\vect{\tilde{k}}_i+\Delta t \vect{T}_{i}\right)\\
-\vect{\tilde{v}}_{n+1}&=\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}+L\left(\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}\right)+\vect{\tilde{T}}_0\\
-&=\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\left(\eye+L\right)\vect{\tilde{k}}_{i}+\vect{\tilde{T}}_0\\
-\vect{\tilde{T}}_0&=\Delta t\sum_{i=1}^{s}b_{i}\vect{T}_{i}\\
-\intertext{En utilisant $\vect{v}_{n}=\tilde{\vect{v}}_{n}$}
-\vect{v}_{n+1}&=\vect{\tilde{v}}_{n+1}
-\end{align*}
-\qed
-\end{block}
-
-\end{frame}
-\subsection{Discrétisation}
-\begin{frame}{Discrétisation non  ``staggered grid''}
+\section{Discrétisation spatial}
+\begin{frame}{Discrétisation ``standard''}
 \begin{block}{Position des variables}
 \shorthandoff{;:} 
 \directlua{dofile('unstaggered.lua')}
 \shorthandon{:;}
 \end{block}
-\begin{block}{Dérivée centrée}
- \begin{equation*}
-  \partial_x a_i=\frac{a_{i+1}-a_{i-1}}{\Delta x}
-\end{equation*}
-\end{block}
-
-\begin{block}{Divergence}
-\begin{equation*}
-  \vect{\nabla} \cdot \vect{v}_{i,j}=\frac{v^{x}_{i+1,j}-v^{x}_{i-1,j}}{\Delta x}+\frac{v^{y}_{i+1,j}-v^{y}_{i-1,j}}{\Delta y}
-\end{equation*}
+\begin{block}{Dérivée}
+ \begin{align*}
+  \partial_x a_i&=\frac{a_{i+1}-a_{i-1}}{\Delta x}
+  \vect{\nabla} \cdot \vect{v}_{i,j}&=\frac{v^{x}_{i+1,j}-v^{x}_{i-1,j}}{\Delta x}+\frac{v^{y}_{i+1,j}-v^{y}_{i-1,j}}{\Delta y}
+\end{align*}
 \end{block}
 \end{frame}
 
 \begin{frame}{Problème damier}
-\begin{block}{\alert{Divergence nulle!!!!}}
+\begin{alertblock}{Divergence nulle!!!!}
  \directlua{dofile('unstaggered_div2.lua')}
+\end{alertblock}
+
+\begin{block}{Solution:}
+ Changer la grille.
 \end{block}
 
-\begin{block}<+->{Correction}
- \begin{itemize}[<+->]
-  \item Changer la discrétisation.
-  \item Changer la grille.
-  \item Ajouter un filtre.
- \end{itemize}
-
-\end{block}
 
  
 \end{frame}
 
-\begin{frame}{Discrétisation ``staggered grid''}
+\begin{frame}{Discrétisation sur grille décalée}
 \begin{block}{Position des variables}
 \shorthandoff{;:} 
  \directlua{dofile('staggered.lua')}
@@ -561,7 +346,7 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
  
 \end{frame}
 
-\begin{frame}{Dérivée sur ``staggered grid''}
+\begin{frame}{Dérivée sur grill décalée}
 \begin{block}{Gradient}
  \begin{equation*}
   \vect{\nabla}p_{ij}=\begin{pmatrix}
@@ -586,19 +371,19 @@ k^{j}=(1+\hat{L})\tilde{k}^{j}+\Delta t \tau
  
 \end{frame}
 
-\begin{frame}{Terme convectif sur ``staggered grid''}
+\begin{frame}{Terme convectif sur grille décalée}
 \begin{block}{Sorte de terme}
  \begin{equation*}
 v^{j}\partial_{j}v^{i}
 \end{equation*}
 \end{block}
-\begin{block}{Problème}
+\begin{alertblock}{Problème:}
  \directlua{dofile('staggered_convection_upwind.lua')}
-\end{block}
+\end{alertblock}
 
 \end{frame}
 
-\begin{frame}{Terme convectif sur ``staggered grid'' (suite)}
+\begin{frame}{Terme convectif sur grille décalée (suite)}
 \begin{block}{Dérivée centrée}
  \begin{equation*}
 \left(v^{j}\partial_{j}v^{i}\right)^{i}_{\vect{k}}={v^{ji}}_{\vect{k}}\frac{{v^{i}}_{\vect{k}+\vect{e}_j}-{v^{i}}_{\vect{k}-\vect{e}_j}}{2\Delta x_{j}}
@@ -606,20 +391,23 @@ v^{j}\partial_{j}v^{i}
 \end{block}
 
 \begin{block}{Dérivée upwind}
-%\vspace{-1.2cm}
+ \setlength{\abovedisplayskip}{-1pt}
+ \setlength{\abovedisplayshortskip}{-1pt}
+  \setlength{\belowdisplayskip}{-1pt}
+ \setlength{\belowdisplayshortskip}{-1pt}
  \begin{align*}
-\intertext{si ${v^{ji}}_{\vect{k}}<0$}
+\shortintertext{si ${v^{ji}}_{\vect{k}}<0$}
 \left(v^{j}\partial_{j}v^{i}\right)^{i}_{\vect{k}}&={v^{ji}}_{\vect{k}}\frac{{v^{i}}_{\vect{k}+\vect{e}_j}-{v^{i}}_{\vect{k}}}{\Delta x_{j}}\\
-\intertext{si ${v^{ji}}_{\vect{k}}>0$}
+\shortintertext{si ${v^{ji}}_{\vect{k}}>0$}
 \left(v^{j}\partial_{j}v^{i}\right)^{i}_{\vect{k}}&={v^{ji}}_{\vect{k}}\frac{{v^{i}}_{\vect{k}}-{v^{i}}_{\vect{k}-\vect{e}_j}}{\Delta x_{j}}\\
-\intertext{si ${v^{ji}}_{\vect{k}}=0$}
+\shortintertext{si ${v^{ji}}_{\vect{k}}=0$}
 \left(v^{j}\partial_{j}v^{i}\right)^{i}_{\vect{k}}&=0
 \end{align*}
 \end{block}
 
 \end{frame}
-\subsection{Conclusion topologie fixe}
-\begin{frame}[<+->][shrink]{Algorithme en topologie fixe}
+
+\begin{frame}[<+->]{Algorithme en topologie fixe}
  \begin{block}{Principe}
   \begin{itemize}
    \item<1-> Utiliser une méthode de Runge-Kutta de notre choix.
@@ -627,33 +415,25 @@ v^{j}\partial_{j}v^{i}
    \item Projeter chaque accélération ou chaque vitesse.
   \end{itemize}
  \end{block}
- \begin{block}{Fonction $f$}
- \vspace{-0.5cm}
- \begin{equation*}
-  f(\vect{v})=-(\vect{v}\cdot\vect{\nabla} ) \vect{v}+\frac{\vect{F}}{\rho}+\nu \Delta \vect{v}
-  \end{equation*}
- \end{block}
 
 \begin{block}{Runge-Kutta sur l'accélération}
- \vspace{-0.7cm}
 	\begin{align*}
-	\vect{v}_{n+1}&=\vect{v}_{n}+\sum_{i=1}^{s}b_{i}\vect{k}_{i}\\
-	\vect{k}_{i}&=\Delta t (1+P(\vect{T}_{i}))f\left(\vect{v}_{n}+\sum_{j=1}^{s}a_{ij}\vect{k}_{j}\right)
+	\textstyle\vect{v}_{n+1}&\textstyle=\vect{v}_{n}+\sum_{i=1}^{s}b_{i}\vect{k}_{i}\\
+	\textstyle\vect{k}_{i}&\textstyle=\Delta t (1-P)f(\vect{v}_{n}+\sum_{j=1}^{s}a_{ij}\vect{k}_{j})
 	\end{align*}
 \end{block}
  
 \begin{block}{Runge-Kutta sur la vitesse}
- \vspace{-0.5cm}
 	\begin{align*}
-	\vect{\tilde{v}}_{n+1}&=(1+P(\vect{\tilde{T}}_0))\left(\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i}\right)\\
-	\vect{\tilde{k}}_{i}&=\Delta t f\left((1+P(\vect{\tilde{T}}_{i}))\left(\vect{\tilde{v}}_{n}+\sum_{j=1}^{s}a_{ij}\vect{\tilde{k}}_{j}\right)\right)
+	\textstyle\vect{\tilde{v}}_{n+1}&\textstyle=(1-P)(\vect{\tilde{v}}_{n}+\sum_{i=1}^{s}b_{i}\vect{\tilde{k}}_{i})\\
+	\textstyle\vect{\tilde{k}}_{i}&\textstyle=\Delta t f((1-P)(\vect{\tilde{v}}_{n}+\sum_{j=1}^{s}a_{ij}\vect{\tilde{k}}_{j}))
 	\end{align*}
 \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
- \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
+ \begin{tikzpicture}[node distance=4mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
   \node[below= of init,draw,gray](runginit) {Initialisation};
   \node[below= of runginit,draw,gray](extrap) {Extrapolation};
@@ -677,43 +457,22 @@ v^{j}\partial_{j}v^{i}
  \shorthandon{:;}
 \end{frame}
 
-\begin{frame}[<+->]{Conclusion partielle}
-
-\begin{block}<*>{Ce que nous avons fait}
- \begin{itemize}
-  \item Discrétisation de l'équation sur la grille.
-  \item Méthode de projection pour être à divergence nulle.
-  \item Méthode d'intégration.
- \end{itemize}
-\end{block}
-
-\begin{block}<*>{Ce qu'il reste à faire}
- \begin{itemize}
-  \item Connaître le domaine du problème qui varie au cours du temps.
-  \item Déterminer les conditions aux bords.
- \end{itemize}
-
-\end{block}
-
-\end{frame}
-\subsection{Introduction topologie variable}
+\section{Topologie}
 \begin{frame}[<+->]{Détermination analytique de la topologie}
 
 \begin{block}{Déplacement de la position}
  \begin{equation*}
-  \dot{\vect{x}}=\vect{v}
+  \partial_t\vect{x}=\vect{v}
  \end{equation*}
 \end{block}
 
 \begin{block}<*>{Surface libre}
 \uncover<+->{
-\begin{equation*}
-	\sigma_{ij}=-p \delta_{ij}+\nu\left(\frac{\partial v_{i}}{\partial x_{j}}+\frac{\partial v_{j}}{\partial x_{i}}\right)
-\end{equation*}
- \begin{align*}
-	\sum_{i,j}\sigma_{ij}n_{i}n_{j}&=0\\
-	\sum_{i,j}\sigma_{ij}t^{1}_{i}n_{j}&=0\\
-	\sum_{i,j}\sigma_{ij}t^{2}_{i}n_{j}&=0\\
+\begin{align*}
+	\sigma_{ij}&=-p \delta_{ij}+\nu\left(\frac{\partial v_{i}}{\partial x_{j}}+\frac{\partial v_{j}}{\partial x_{i}}\right)\\
+	\textstyle\sum_{i,j}\sigma_{ij}n_{i}n_{j}&=0\\
+	\textstyle\sum_{i,j}\sigma_{ij}t^{1}_{i}n_{j}&=0\\
+	\textstyle\sum_{i,j}\sigma_{ij}t^{2}_{i}n_{j}&=0
 \end{align*}
 }
 \uncover<+->{
@@ -726,31 +485,7 @@ v^{j}\partial_{j}v^{i}
  
 \end{frame}
 
-\begin{frame}{Détermination analytique de la topologie (suite)}
- \begin{block}{Inflow}
- \uncover<+->{
- \begin{align*}
-\nabla p(\vect{x},t)&=f(\vect{v}(\vect{x},t))\\
-\partial_t \vect{v}&=f(\vect{v})-\vect{\nabla}p=0
-\end{align*}
-}
-\uncover<+->{
-Autre méthode:
-\begin{align*}
- \nabla p(\vect{x},t)&=0\\
- \partial_t \vect{v}&=0
-\end{align*}
-}
-\end{block}
-\begin{block}{Remarque}
-\uncover<+->{
-Nous allons considérer des inflows fixes.
-}
-\end{block}
-
-\end{frame}
-\subsection{Discrétisation des particules}
-\begin{frame}[<+->][shrink]{Discrétisation}
+\begin{frame}[<+->]{Discrétisation}
 
 \begin{block}{Chose nécessaire}
  \begin{itemize}
@@ -764,14 +499,16 @@ Nous allons considérer des inflows fixes.
  \vect{v}_{surf}&=B\vect{v}_{int}
 \end{align*}
  \end{itemize}
+ \end{block}
 
-\end{block}
+\end{frame}
 
+\begin{frame}[<+->]{Discrétisation}
 \begin{block}{Particule}
  On discrétise l'équation avec des particules.
  Et on interpole la vitesse de la grille sur les particules pour résoudre:
    \begin{equation*}
-   \dot{\vect{x}}=\vect{v}_{I}(\vect{x})
+   \partial_{t}\vect{x}=\vect{v}_{I}(\vect{x})
   \end{equation*}
 \end{block}
 \begin{block}{Imposition des conditions aux bords}
@@ -785,48 +522,28 @@ Ces points fantômes sont obtenus par des méthodes d'extrapolations.
 
 \end{frame}
 
-\begin{frame}[<+->][shrink]{Intégration}
+\begin{frame}[<+->]{Intégration}
  \begin{block}{Équations}
   \begin{align*}
-    \dot{\vect{v}}_{int}&=(1+P)f(\vect{v})\\
-    \dot{\vect{x}}&=\vect{v}_{I}(\vect{x})\\
+    \partial_t\vect{v}_{int}&=(1+P)f(\vect{v})\\
+    \partial_t\vect{x}&=\vect{v}_{I}(\vect{x})\\
      p_{ext}&=A\vect{v}_{int}\\
  \vect{v}_{ext}&=B\vect{v}_{int}
   \end{align*}
  \end{block}
- \begin{block}{Splitting}
- \begin{enumerate}[<*>]
-  \item \begin{equation*}
-         \dot{\vect{v}}=(1+P)f(\vect{v})
-        \end{equation*}
-\item 
-	\begin{equation*}
-	\dot{\vect{x}}=\vect{v}_{I}(\vect{x})
-	\end{equation*}
- \end{enumerate}
- \end{block}
+ 
 \begin{block}<*>{Une équation différentielle}
-  \uncover<+->{
  \begin{align*}
   \vect{v}_{ext}&=B\vect{v}_{int}\\
-  \dot{\vect{v}}_{ext}&\approx B\dot{\vect{v}}_{int}
+  \partial_t\vect{v}_{ext}&\approx B\partial_t\vect{v}_{int}=B(1+P)f(\vect{v})
  \end{align*}
- }
- \uncover<+->{
- Problème: $B$ dépend de la topologie.
-  \begin{align*}
-    \dot{\vect{v}}_{int}&=(1+P)f(\vect{v})\\
-    \dot{\vect{x}}&=\vect{v}_{I}(\vect{x})\\
- \dot{\vect{v}}_{ext}&=B\dot{\vect{v}}_{int}=B(1+P)f(\vect{v})
-  \end{align*}
-  }
 \end{block}
 
 \end{frame}
 
 \begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
- \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
+ \begin{tikzpicture}[node distance=4mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
   \node[below= of init,draw](runginit) {Initialisation};
   \node[below= of runginit,draw](extrap) {Extrapolation};
@@ -850,82 +567,6 @@ Ces points fantômes sont obtenus par des méthodes d'extrapolations.
  \shorthandon{:;}
 \end{frame}
 
-\begin{frame}{Cas ou le $\delta$ de Dirac est important}
-
-
-\begin{figure}
-\only<1>{\subcaptionbox*{$t_0$}{%
-\includegraphics[scale=0.6]{multiple_part_error_1}%
- }
- \subcaptionbox*{}{
-\scalebox{0.6}{
-\begin{tikzpicture}
-  \begin{axis}[xtick=\empty,ytick=\empty, extra x ticks={0.5,1,1.5,2,2.5},
-extra x tick style={grid=major},
-extra x tick labels={\alert{$t_0$},$t_{int}$,$t_1$,$t_{f}$,$t_2$ },
-xlabel={$t$},
-ylabel={$v$}
-]
-   \addplot[domain=0:1,red] {x^3};
-   \addplot[domain=1:2] {-(x-2)^2+3};
-   \addplot[domain=1:2,red] {-(x-2)^2+2};
-   \addplot[domain=2:3,red] {3*x-4+(x-2)^2};
-   \addplot[domain=2:3] {3*x-3+(x-2)^2};
-  \end{axis}
-
- \end{tikzpicture}
- }
-}
-}
-\only<2>{\subcaptionbox*{$t_1$}{%
-\includegraphics[scale=0.6]{multiple_part_error_2}%
- }
- \subcaptionbox*{}{
-\scalebox{0.6}{
-\begin{tikzpicture}
-  \begin{axis}[xtick=\empty,ytick=\empty, extra x ticks={0.5,1,1.5,2,2.5},
-extra x tick style={grid=major},
-extra x tick labels={$t_0$,$t_{int}$,\alert{$t_1$},$t_{f}$,$t_2$ },
-xlabel={$t$},
-ylabel={$v$}
-]
-   \addplot[domain=0:1,red] {x^3};
-   \addplot[domain=1:2] {-(x-2)^2+3};
-   \addplot[domain=1:2,red] {-(x-2)^2+2};
-   \addplot[domain=2:3,red] {3*x-4+(x-2)^2};
-   \addplot[domain=2:3] {3*x-3+(x-2)^2};
-  \end{axis}
-
- \end{tikzpicture}
- }
-}
-}
-\only<3>{\subcaptionbox*{$t_2$}{%
-\includegraphics[scale=0.6]{multiple_part_error_3}%
- }
-\subcaptionbox*{}{
-\scalebox{0.6}{
-\begin{tikzpicture}
-  \begin{axis}[xtick=\empty,ytick=\empty, extra x ticks={0.5,1,1.5,2,2.5},
-extra x tick style={grid=major},
-extra x tick labels={$t_0$,$t_{int}$,$t_1$,$t_{f}$,\alert{$t_2$} },
-xlabel={$t$},
-ylabel={$v$}
-]
-   \addplot[domain=0:1,red] {x^3};
-   \addplot[domain=1:2] {-(x-2)^2+3};
-   \addplot[domain=1:2,red] {-(x-2)^2+2};
-   \addplot[domain=2:3,red] {3*x-4+(x-2)^2};
-   \addplot[domain=2:3] {3*x-3+(x-2)^2};
-  \end{axis}
-
- \end{tikzpicture}
- }
-}
-}
-\end{figure}
-\end{frame}
-\subsection{Extrapolation}
 \begin{frame}[<+->]{Extrapolation}
  
  \begin{block}<*>{Méthode}
@@ -958,122 +599,33 @@ ylabel={$v$}
 
 \begin{frame}{En 2d plan vertical ou horizontal}
 
-\begin{block}{Schéma}
-\vspace{-1cm}
 \directlua{dofile('plane_extrapolation.lua')}
-\end{block}
-\vspace{-1cm}
-\begin{block}{Équations}
+
 \begin{equation*}
  \frac{\partial v_{1}}{\partial x_{2}}+\frac{\partial v_{2}}{\partial x_{1}}=0
  \end{equation*}
  \begin{align*}
-  0&=\frac{v^{1}_{i+\frac{1}{2},j+1}-v^{1}_{i+\frac{1}{2},j}}{\Delta x_{2}}+\frac{v^{2}_{i+1,j+\frac{1}{2}}-v^{2}_{i,j+\frac{1}{2}}}{\Delta x_{1}}\\
-  0&=\frac{v^{1}_{i+\frac{1}{2},j}-v^{1}_{i-\frac{1}{2}},j}{\Delta x_{1}}+\frac{v^{2}_{i,j+\frac{1}{2}}-v^{2}_{i,j-\frac{1}{2}}}{\Delta x_2}\\
-  0&=\frac{v^{1}_{i+\frac{3}{2},j}-v^{1}_{i+\frac{1}{2}},j}{\Delta x_{1}}+\frac{v^{2}_{i+1,j+\frac{1}{2}}-v^{2}_{i,j-\frac{1}{2}}}{\Delta x_2}
+  0&\textstyle=\frac{v^{1}_{i+\frac{1}{2},j+1}-v^{1}_{i+\frac{1}{2},j}}{\Delta x_{2}}+\frac{v^{2}_{i+1,j+\frac{1}{2}}-v^{2}_{i,j+\frac{1}{2}}}{\Delta x_{1}}\\
+  0&\textstyle=\frac{v^{1}_{i+\frac{1}{2},j}-v^{1}_{i-\frac{1}{2},j}}{\Delta x_{1}}+\frac{v^{2}_{i,j+\frac{1}{2}}-v^{2}_{i,j-\frac{1}{2}}}{\Delta x_2}\\
+  0&\textstyle=\frac{v^{1}_{i+\frac{3}{2},j}-v^{1}_{i+\frac{1}{2},j}}{\Delta x_{1}}+\frac{v^{2}_{i+1,j+\frac{1}{2}}-v^{2}_{i,j-\frac{1}{2}}}{\Delta x_2}
  \end{align*}
 
-\end{block}
 
 \end{frame}
 
 \begin{frame}{En 2d plan diagonal}
- \begin{block}{Schéma}
-\vspace{-1cm}
 \directlua{dofile('plane_45_extrapolation.lua')}
-\end{block}
-\begin{block}{Équations}
+
  \begin{equation*}
   \frac{\partial v_{1}}{\partial x_{1}}-\frac{\partial v_{2}}{\partial x_{2}}=0
  \end{equation*}
- \begin{align*}
-  v^{1}_{i+\frac{1}{2},j}&=v^{1}_{i-\frac{1}{2},j}\\
-  v^{2}_{i,j+\frac{1}{2}}&=v^{2}_{i,j-\frac{1}{2}}
- \end{align*}
-\end{block}
-
-\end{frame}
-
-\begin{frame}[shrink]{En 3d plan vertical ou horizontal}
  
-\begin{align*}
-	\frac{\partial v_{1}}{\partial x_{2}}+\frac{\partial v_{2}}{\partial x_{1}}&=0\\
-	\frac{\partial v_{3}}{\partial x_{2}}+\frac{\partial v_{2}}{\partial x_{3}}&=0
-\end{align*}
-\begin{align*}
-	0&=\frac{v^{1}_{i+\frac{1}{2},j+1,k}-v^{1}_{i+\frac{1}{2},j,k+\frac{1}{2}}}{\Delta x_{2}}+\frac{v^{2}_{i+1,j+\frac{1}{2},k}-v^{2}_{i,j+\frac{1}{2},k}}{\Delta x_{1}}\\
-	0&=\frac{v^{3}_{i,j+1,k+\frac{1}{2}}-v^{3}_{i,j,k+\frac{1}{2}}}{\Delta x_{2}}+\frac{v^{2}_{i,j+\frac{1}{2},k+1}-v^{2}_{i,j+\frac{1}{2},k}}{\Delta x_{3}}
-\end{align*}
-\begin{align*}
-	0&=\frac{v^{1}_{i+\frac{1}{2},j,k}-v^{1}_{i-\frac{1}{2},j,k}}{\Delta x_{1}}+\frac{v^{2}_{i,j+\frac{1}{2},k}-v^{2}_{i,j-\frac{1}{2},k}}{\Delta x_2} +\frac{v^{3}_{i,j,k+\frac{1}{2}}-v^{3}_{i,j,k-\frac{1}{2}}}{\Delta x_{3}}\\
- 	0&=\frac{v^{1}_{i+\frac{3}{2},j,k}-v^{1}_{i+\frac{1}{2},j,k}}{\Delta x_{1}}+\frac{v^{2}_{i+1,j+\frac{1}{2},k}-v^{2}_{i,j-\frac{1}{2},k}}{\Delta x_2}+\frac{v^{3}_{i+\frac{1}{2},j,k+\frac{1}{2}}-v^{3}_{i+\frac{1}{2},j,k-\frac{1}{2}}}{\Delta x_{3}}\\
- 	0&=\frac{v^{1}_{i+\frac{1}{2},j,k+1}-v^{1}_{i-\frac{1}{2},j,k+1}}{\Delta x_{1}}+\frac{v^{2}_{i,j+\frac{1}{2},k+1}-v^{2}_{i,j-\frac{1}{2},k+1}}{\Delta x_2}+\frac{v^{3}_{i,j,k+\frac{3}{2}}-v^{3}_{i,j,k+\frac{1}{2}}}{\Delta x_{3}}\\
-\end{align*}
-\vspace{2cm}
+
+
 \end{frame}
 
-\begin{frame}[shrink]{En 3d plan diagonal sur 2 axes}
-\begin{align*}
-	0&=\frac{\partial v_{1}}{\partial x_{1}}-\frac{\partial v_{2}}{\partial x_{2}}\\
-	0&=\frac{\partial v_{1}}{\partial x_{3}}+\frac{\partial v_{3}}{\partial x_{1}}+\frac{\partial v_{2}}{\partial x_{3}}+\frac{\partial v_{3}}{\partial x_{2}}
-\end{align*}
-\begin{equation*}
-	0=\frac{v^{1}_{i+\frac{1}{2},j,k}-v^{1}_{i-\frac{1}{2},j,k}}{\Delta x_{1}}-\frac{v^{2}_{i,j+\frac{1}{2},k}-v^{2}_{i,j-\frac{1}{2},k}}{\Delta x_{2}}
-\end{equation*}
+\begin{frame}[<+->]{Extrapolations}
 
-\begin{align*}
-	0&=\frac{v^{1}_{i+\frac{1}{2},j,k}-v^{1}_{i-\frac{1}{2},j,k}}{\Delta x_{1}}+\frac{v^{2}_{i,j+\frac{1}{2},k}-v^{2}_{i,j-\frac{1}{2},k}}{\Delta x_2}\\
-	&\qquad+\frac{v^{3}_{i,j,k+\frac{1}{2}}-v^{3}_{i,j,k-\frac{1}{2}}}{\Delta x_{3}}
-\end{align*}
-\end{frame}
-
-\begin{frame}[shrink]{En 3d plan diagonal sur 3 axes}
-\begin{align*}
-	0&=2\frac{\partial u_{1}}{\partial x_{1}}-2\frac{\partial u_{2}}{\partial x_{2}}+\frac{\partial u_{3}}{\partial x_{1}}+\frac{\partial u_{1}}{\partial x_{3}}-\frac{\partial u_{3}}{\partial x_{2}}-\frac{\partial u_{2}}{\partial x_{3}}\\
-	0&=2\frac{\partial u_{3}}{\partial x_{3}}-2\frac{\partial u_{2}}{\partial x_{2}}+\frac{\partial u_{1}}{\partial x_{3}}+	\frac{\partial u_{3}}{\partial x_{1}}-\frac{\partial u_{1}}{\partial x_{2}}-\frac{\partial u_{2}}{\partial x_{1}}
-\end{align*}
-
-\begin{equation*}
- A\begin{pmatrix}
-   v^{1}_{i+\frac{1}{2},j,k}\\
-   v^2_{i,j+\frac{1}{2},k}\\
-   v^{3}_{i,j,k+\frac{1}{2}}
-  \end{pmatrix}=b
-\end{equation*}
-
-\begin{align*}
- b_3&=\frac{v^{1}_{i-\frac{1}{2},j,k}}{\Delta x_1}+\frac{v^{2}_{i,j-\frac{1}{2},k}}{\Delta x_2}+\frac{v^{3}_{i,j,k-\frac{1}{2}}}{\Delta x_3}\\
- b_2&=2\frac{v^{3}_{i,j,k-\frac{1}{2}}}{\Delta x_3}-2s_2\frac{v^{2}_{i,j-s_2\frac{1}{2},k}}{\Delta x_2}
-	-\frac{v^{3}_{i,j,k-\frac{1}{2}}-v^{3}_{i-1,j,k+\frac{1}{2}}-v^{3}_{i-1,j,k-\frac{1}{2}}}{2\Delta x_1}\\
-	&\qquad -\frac{v^1_{i-\frac{1}{2},j,k}-v^{1}_{i+\frac{1}{2},j,k-1}-v^{1}_{i-\frac{1}{2},j,k-1}}{2\Delta x_3}
-	+\frac{v^{1}_{i-\frac{1}{2},j,k}-v^{1}_{i+\frac{1}{2},j-1,k}-v^{1}_{i-\frac{1}{2},j-1,k}}{2\Delta x_2}\\
-	&\qquad +\frac{v^2_{i,j-\frac{1}{2},k}-v^{2}_{i-1,j+\frac{1}{2},k}-v^{2}_{i-1,j-\frac{1}{2},k}}{2\Delta x_1}\\
-	b_1&=2\frac{v^{1}_{i-\frac{1}{2},j,k}}{\Delta x_1}-2\frac{v^{2}_{i,j-\frac{1}{2},k}}{\Delta x_2}
-	-\frac{v^{3}_{i,j,k+\frac{1}{2}}+v^{3}_{i,j,k-\frac{1}{2}}-v^{3}_{i-1,j,k+\frac{1}{2}}-v^{3}_{i-1,j,k-\frac{1}{2}}}{2\Delta x_1}\\
-	&\qquad -\frac{v^1_{i-\frac{1}{2},j,k}-v^{1}_{i+\frac{1}{2},j,k-1}-v^{1}_{i-\frac{1}{2},j,k-1}}{2\Delta x_3}
-	+\frac{v^{3}_{i,j,k-\frac{1}{2}}-v^{3}_{i,j-1,k+\frac{1}{2}}-v^{3}_{i,j-1,k-\frac{1}{2}}}{2\Delta x_2}\\
-	&\qquad +\frac{v^2_{i,j-\frac{1}{2},k}-v^{2}_{i,j+\frac{1}{2},k-1}-v^{2}_{i,j-\frac{1}{2},k-1}}{2\Delta x_3}
-\end{align*}
-
-\begin{equation*}
- A=\begin{pmatrix}
-    \frac{2}{\Delta x_1}+\frac{1}{2\Delta x_3}&-\frac{2}{\Delta x_2}-\frac{1}{2\Delta x_3}&\frac{1}{2\Delta x_1}-\frac{1}{2\Delta x_2}\\
-    \frac{1}{2\Delta x_3}-\frac{1}{2\Delta x_2}&-\frac{2}{\Delta x_2}-\frac{1}{2\Delta x_1}&\frac{2}{\Delta x_3}+\frac{1}{2\Delta x_1}\\
-    \frac{1}{\Delta x_1}&\frac{1}{\Delta x_2}&\frac{1}{\Delta x_3}
-   \end{pmatrix}
-\end{equation*}
-\end{frame}
-
-\begin{frame}[<+->][shrink]{Extrapolations}
-\begin{block}<*>{Extrapolations à la surface}
-
-\begin{enumerate}
- \item On met les vitesses à la surface et à l'extérieur à NAN.
- \item On extrapole le plus possible avec les cas vus précédemment.
- \item On extrapole avec une méthode générique les valeurs encore à NAN jusqu'à une certaine profondeur.
-\end{enumerate}
-
-\end{block}
 \begin{block}<*>{Extrapolation générique pour la surface}
 \begin{enumerate}
  \item On extrapole les vitesses inconnues de la surface par moyenne des vitesses intérieures voisines.
@@ -1112,7 +664,7 @@ S'il y a plusieurs plans comme cela on somme.
 
 \begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
- \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
+ \begin{tikzpicture}[node distance=4mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
   \node[below= of init,draw](runginit) {Initialisation};
   \node[below= of runginit,draw,red](extrap) {Extrapolation};
@@ -1136,7 +688,6 @@ S'il y a plusieurs plans comme cela on somme.
  \shorthandon{:;}
 \end{frame}
 
-\subsection{Interpolation}
 
 \begin{frame}[<+->]{Interpolation}
 \begin{block}{Raison}
@@ -1162,97 +713,27 @@ S'il y a plusieurs plans comme cela on somme.
 
 \end{frame}
 
-\subsection{Initialisation}
 
-\begin{frame}[<+->][shrink]{Initialisation}
+\begin{frame}[<+->]{Initialisation}
  
- \begin{block}{But}
+ \begin{block}{Utilité}
   Obtenir la nouvelle topologie de la position des particules.
   On utilise une variable  nommée layer pour indiquer la distance de la surface.
  \end{block}
- \begin{block}{Mise à zero}
-  La variable layer est mise à $-1$ partout.
- \end{block}
- 
- \begin{block}{Détections des cellules de fluide}
-  La cellule dans laquelle se trouve chaque particule est calculée. La cellule est indiquée comme fluide et son layer mis à $0$.
- \end{block}
- 
-  \begin{block}{Création de particule supplémentaire}
-  Création de particule supplémentaire si nécessaire.
- \end{block}
- 
- \begin{block}{Enlever le flag fluide}
-  Les cellules avec un layer de $-1$ deviennent air.
- \end{block}
- 
- \begin{block}{Étendre la variable layer}
-  On crée une couche d'une certaine distance autour du fluide et indiquons dans la variable layer la distance.
- \end{block}
 
- \begin{block}{Suppression}
-  On supprime les cellules non utilisées.
- \end{block}
-
- \begin{block}{Pas de temps idéal}
-  On calcul le pas de temps idéal tel qu'une particule ne peut se déplacer que d'une fraction de la distance totale.
- \end{block}
-\begin{block}{Variante}
- On demande des particules qu'à la surface du fluide pas à l'intérieur.
-\end{block}
-
-
-\end{frame}
-
-
-
-\subsection{Conclusion}
-\begin{frame}{Résumé de la méthode}
- \begin{block}{Initialisation avant méthode de Runge-Kutta}
-  \begin{enumerate}
-   \item On trouve les cellules qui ont une particule en elles.
-   \item On génére des cellules vides autour du fluide pour stocker les vitesses d'extrapolations.
-   \item On crée une variable layer pour connaître la distance hors du fluide.
-   \item On calcule le pas de temps optimal
-  \end{enumerate}
-
- \end{block}
-
-  \begin{block}{Initialisation avant itération de Runge-Kutta}
-  \begin{enumerate}
-   \item On trouve les cellules qui ont une particule en elles.
-   \item On génére des cellules vides autour du fluide pour stocker les vitesses d'extrapolations.
-   \item On crée une variable layer pour connaître la distance hors du fluide.
-  \end{enumerate}
-
- \end{block}
-
- 
-\end{frame}
-
-\begin{frame}{Résumé de la méthode (suite)}
- \begin{block}{Extrapolation}
-  \begin{enumerate}
-   \item On extrapole les conditions aux bords.
-   \item On extrapole à l'extérieur du fluide.
-  \end{enumerate}
-
- \end{block}
- \begin{block}{Calcul de l'accéleration}
-  \begin{enumerate}
-   \item On calcul l'accélération par la discrétisation.
-   \item On projette pour être à divergence nulle.
-  \end{enumerate}
-
+ \begin{block}{Pas de temps idéal (condition CFL)}
+  On calcul le pas de temps idéal tel qu'une particule ne peut se déplacer que d'une fraction de la distance d'une cellule.
  \end{block}
 
 
 \end{frame}
+
+
 
 
 \begin{frame}[fragile]{Schéma de l'algorithme}
 \shorthandoff{:;}
- \begin{tikzpicture}[node distance=5mm,line width=0.5mm]
+ \begin{tikzpicture}[node distance=4mm,line width=0.5mm]
   \node[draw](init)  {Initialisation};
   \node[below= of init,draw](runginit) {Initialisation};
   \node[below= of runginit,draw](extrap) {Extrapolation};
@@ -1276,28 +757,19 @@ S'il y a plusieurs plans comme cela on somme.
  \shorthandon{:;}
 \end{frame}
 
-\subsection{Résultat numérique}
+\section{Résultat numérique}
 
 \begin{frame}{Jet latéral}
 \begin{block}{Particulaire}
  \begin{align*}
 	v_{x}&=v_{0}\\
-	v_{y}&=-\frac{g}{2}(t-t_0)^2
-\end{align*}
-\end{block}
-
-\begin{block}{Trajectoire}
-\begin{align*}
+	v_{y}&=-\frac{g}{2}(t-t_0)^2\\
 	x&=v_{0}(t-t_0)\\
 	y&=y_0-\frac{g}{2}(t-t_0)^2
 \end{align*}
-
-\begin{equation*}
-	t-t_{0}=\frac{x}{v_{0}}
-\end{equation*}
 \end{block}
 
-\begin{block}{Cartesienne}
+\begin{block}{Cartésienne}
 \begin{align*}
 	v_{x}&=v_{0}\\
 	v_{y}&=-\frac{g}{2}\frac{x^2}{v_{0}}
@@ -1305,406 +777,23 @@ S'il y a plusieurs plans comme cela on somme.
 \end{block}
 \end{frame}
 
-\begin{frame}{Jet d'eau}
- 
+\begin{frame}{Jet latéral}
+\includegraphics[width=0.8\textwidth]{plot_10__1_293.jpg}
 \end{frame}
 
-\section{Smoothed Particle hydrodynamics}
-\subsection{Introduction}
-\begin{frame}[<+->]{Idée}
-\begin{itemize}
-\item On utilise la version particulaire des équations de Navier-Stokes
-  \begin{align*}
-\vect{\nabla} \cdot \vect{u}_{\lambda}(t)&=0\\
-\frac{d \vect{u}_{\lambda}(t)}{d t}&=-\vect{\nabla} p(\vect{\xi}_{\lambda}(t),t)+\frac{\vect{F}(\vect{\xi}_{\lambda}(t),t)}{\rho(\vect{x},t)}+\nu \Delta \vect{u}_{\lambda}(t)
- \end{align*}
- \item On discrétise la vitesse sur les particules.
- \item C'est basé sur la théorie des interpolants.
- \item On peut résoudre un système linéaire pour l'incompressibilité.
- \item On peut utiliser un ansatz pour la pression.
-\end{itemize}
- 
+\begin{frame}{Jet latéral}
+\includegraphics[width=0.8\textwidth]{plot_10__2_293.jpg}
 \end{frame}
 
-\begin{frame}[<+->][shrink]{Théorie des interpolants}
-\begin{block}{Propriété de $\delta$}
-  \begin{equation*}
- A(\vect{r})=\int_{\Omega} A(\vect{r}')\delta(\vect{r}-\vect{r}')d\vect{r}'
- \end{equation*}
-\end{block}
-
-\begin{block}{Approximation}
-\begin{equation*}
- <A(\vect{r})>=\int_{\Omega} A(\vect{r}')W_h(\vect{r}-\vect{r}')d\vect{r}'
- \end{equation*}
-\end{block}
-
-\begin{block}{Précision}
- \begin{align*}
-  A(\vect{r}')&=A(\vect{r})+(\vect{r}'-\vect{r})\nabla A(\vect{r})+O(||\vect{r}-\vect{r}'||^2)\\
-  <A(\vect{r})>&=A(\vect{r})\int_{\Omega}w_{h}(\vect{r}-\vect{r}',h)d\vect{r}'+\nabla A(\vect{r})\int_{\Omega}(\vect{r}'-\vect{r})w_{h}(\vect{r}-\vect{r}')d\vect{r}'+O(|\vect{r}-\vect{r}'|^2)\\
-  &=A(\vect{r})\int_{\Omega} w_{h}(|\vect{r}-\vect{r}'|)d\vect{r}'+O(h^2)\\
-  &=A(\vect{r})+O(h^2)\\
- \end{align*}
-\end{block}
-
-\begin{block}<*>{Condition de $w$}
-\begin{itemize}
- \item Converge vers $\delta$.
- \item Normalisé.
- \item Symétrie sphérique.
-\end{itemize}
-\end{block}
-
- 
-\end{frame}
-\subsection{Discrétisation}
-\begin{frame}[<+->]{Discrétisation du kernel}
- 
- \begin{block}{Discrétisation}
- \begin{equation*}
-  A(\vect{r})=\sum _{b}V_{b}A_bw_{h}(\vect{r}-\vect{r}_b)+O(h)
-  \end{equation*}
- \end{block}
-
- \begin{block}{Densité et masse}
- \begin{equation*}
-  V_{b}=\frac{m_{b}}{\rho_{b}}
- \end{equation*}
- \end{block}
- 
- \begin{block}{Densité}
-  \begin{equation*}
-   \rho(\vect{r})=\sum_b \frac{m_b}{\rho_{b}}\rho_{b}w_{h}(\vect{r}-\vect{r}_b)=\sum_b m_bw_{h}(\vect{r}-\vect{r}_b)
-  \end{equation*}
- \end{block}
+\begin{frame}{Jet latéral et Jet d'eau}
 
 \end{frame}
-
-\begin{frame}[<+->]{Choix du kernel}
-\begin{block}{Gausienne}
-\begin{equation*}
- \frac{1}{(\sqrt{\pi} h)^3}e^{-9\frac{||\vect{v}||^2}{h^2}}
-\end{equation*}
-\end{block}
-
-\begin{block}{Spline d'ordre 5}
-\begin{equation*}
-     s=3\left|\left|\frac{\vect{v}}{h}\right|\right|
-\end{equation*}
-\small
-\begin{equation*}
-     w(s)=\frac{1}{120\pi h^3} \begin{cases} (3-s)^5-6(2-s)^5+15(1-s)^5 & \text{si $s<1$}\\
-   (3-s)^5-6(2-s)^5& \text{si $s<2$}\\
-   (3-s)^5& \text{si $s<3$}\\
-   0& \text{si $s\geq 3$} \end{cases}
-   \end{equation*}
-\end{block}
-\end{frame}
-\begin{frame}{Plot du kernel}
- \includegraphics[width=\textwidth]{kernel.png}
-\end{frame}
-
-\begin{frame}[<+->][shrink]{Dérivée}
- \begin{block}{Intégration par partie}
- \begin{align*}
-  <\vect{\nabla} A(\vect{r})>&=\int_{\Omega} \nabla A(\vect{r}')w_{h}(\vect{r}-\vect{r}')d\vect{r}'+O(h^2)\\
-  &=-\int_{\Omega} A(\vect{r}')\nabla w_{h}(\vect{r}-\vect{r}')dr'+O(h^2)
- \end{align*}
-\end{block}
-\begin{block}{Discrétisation}
-\begin{equation*}
- \vect{\nabla} A(\vect{r}_a)=\sum_{b}A_b\frac{m_b}{\rho_b}\nabla_a w_{h}(\vect{r}_a-\vect{r}_b)
- \end{equation*}
-\end{block}
-\begin{block}{Variante}
- \begin{align*}
-  \rho\vect{\nabla} A&=\vect{\nabla}(\rho A)-A\vect{\nabla} \rho\\
-  \vect{\nabla} A(\vect{r}_a)&=\frac{1}{\rho_a}\sum_{b}m_b \left(A_b-A_a\right) \vect{\nabla}_a w_{h}(\vect{r}_a-\vect{r}_b)
- \end{align*}
-\begin{align*}
- \vect{\nabla} A&=\rho\vect{\nabla}(\frac{A}{\rho})+\frac{1}{\rho}A\vect{\nabla} \frac{1}{\rho}\\
- \vect{\nabla} A(\vect{r}_a)&=\rho_a\sum_{b} m_b\left(\frac{A_b}{\rho_b^2}+\frac{A_a}{\rho_a^2}\right) \vect{\nabla}_a w_{h}(\vect{r}_a-\vect{r}_b)
-\end{align*}
-
-\end{block}
-
-
-\end{frame}
-
-\begin{frame}[<+->]{Autre dérivée}
- \begin{block}{Divergence}
-  On obtient les formules pour la divergence de façon similaire que pour le gradient.
- \end{block}
-
- \begin{block}{Gradient variante}
- \begin{equation*}
-  \vect{\nabla} \phi_{i}=\sum_{j}\frac{\vect{e}_{ij}}{r_{ij}}\left(\phi_{i}-\phi_{j}\right)
-  \end{equation*}
- \end{block}
-
-\end{frame}
-
-\begin{frame}[<+->]{Smoothing function}
- \begin{block}{Définition}
- \begin{equation*}
-  \xi(\vect{r})=\frac{w(\vect{r}-\vect{r}_{i},h)}{\sum_{b} w(\vect{r}-\vect{r}_b)}=\frac{w_{i}(\vect{r})}{\sigma(\vect{r})}
-  \end{equation*}
- \end{block}
-\begin{block}{Volume}
- \begin{equation*}
-  V_{i}=\int \xi_{i}(\vect{r}) d\vect{r}=\int \frac{1}{\sigma(\vect{r})}w(\vect{r}-\vect{r}_i)dr\approx \frac{1}{\sigma_i}
- \end{equation*}
-
-\end{block}
-\begin{block}{Moyenne}
- \begin{equation*}
-  <A(\vect{r})>=\frac{1}{V}\int \xi_{i}(\vect{r})A(\vect{r})d\vect{r}\approx \sigma_{i}\int \xi_{i}(\vect{r})A(\vect{r})d\vect{r}
- \end{equation*}
-
-\end{block}
-
-\begin{block}{Densité}
- \begin{equation*}
-  \rho=\frac{m}{V}=m\sigma
- \end{equation*}
-\end{block}
-
-\begin{block}{Masse initiale}
-\begin{equation*}
- m=\frac{\rho_0}{\sigma}
-\end{equation*}
-\end{block}
-\end{frame}
-
-\begin{frame}[<+->]{Dérivée en smoothing function}
-\begin{block}{Gradient}
- \begin{equation*}
-  \vect{\nabla} A=\sigma_{a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{1}{2}\left(A_a+A_b\right)\vect{\nabla} w
- \end{equation*}
-
-\end{block}
-
-\begin{block}{Laplacien}
-\begin{equation*}
- \Delta A=\sigma_{a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{A_a-A_b}{r_{ab}}\frac{\partial w}{\partial r_{ab}}
-\end{equation*}
-
-\end{block}
-\end{frame}
-\subsection{Incompressibilité}
-\begin{frame}[<+->]{Équations de Navier-Stokes}
- 
-\begin{align*}
-\vect{\nabla} \cdot \vect{u}_{\lambda}(t)&=0\\
-\rho\frac{d \vect{u}_{\lambda}(t)}{d t}&=-\vect{\nabla} p(\vect{\xi}_{\lambda}(t),t)+\vect{F}(\vect{\xi}_{\lambda}(t),t)+\mu \Delta \vect{u}_{\lambda}(t)
-\end{align*}
-
-\begin{block}<2->{Faiblement compressible}
-\begin{align*}
- p&=B\left(\left(\frac{\rho}{\rho_{0}}\right)^\gamma-1\right)\\
- \gamma&=7\\
- B&=\frac{\rho_0 c_s^2}{\gamma}
- \end{align*}
-\end{block}
-
-\begin{block}<*>{Exactement incompressible}
- \begin{enumerate}
-  \item<3-> Projeter la vitesse pour être à divergence nulle.
-  \item<4-> Obtenir une densité égale à la densité voulue $\rho_0$.
- \end{enumerate}
- \uncover<5->{
-\begin{equation*}
- \frac{\dot{\rho}}{\rho}=\nabla \cdot \vect{u}
-\end{equation*}
-}
-\end{block}
-
-\end{frame}
-
-\begin{frame}[<+->]{Avantage et défaut}
- \begin{block}<*>{Faiblement compressible}
-  \begin{itemize}
-   \plusitem Pas de système linéaire à résoudre.
-   \moinsitem Convergence dépend de l'intégrateur en temps et des paramètres.
-   \moinsitem Le choix des paramètres dépend du problème.
-  \end{itemize}
-
- \end{block}
- 
- \begin{block}<*>{Exactement incompressible}
- \begin{itemize}
-  \plusitem Divergence nulle exacte.
-  \moinsitem Système linéaire à résoudre.
-  \moinsitem Système linéaire en général pas symétrique ni défini positif.
- \end{itemize}
-  
- \end{block}
-
-\end{frame}
-\subsection{Conservation}
-\begin{frame}[<+->][shrink]{Loi de conservation}
-\begin{block}{Quantité de mouvement}
- \begin{align*}
-  \vect{P}&=\sum_{i} m_i\vect{v}_{i}\\
-  \dot{\vect{P}}&=\sum_{i} m_i\vect{a}_{i}\\
-  &=\sum_{i}m_{i} \left(-\frac{1}{\rho_{i}}\vect{\nabla} p+\nu \Delta \vect{v}\right)\\
-  \intertext{Antisymétrie}
-  &=0
- \end{align*}
-
-\end{block}
-
-\begin{block}{Moment cinétique}
- \begin{align*}
-  \vect{M}&=\sum_{i}\vect{x}_{i}\times m_{i}\vect{v}_{i}\\
-  \dot{\vect{M}}&=\sum_{i}\left(\vect{v}_{i}\times m_{i}\vect{v}_{i}+x_{i}\times m_{i}\vect{a}_{i}\right)\\
-  &=\sum_{i}\vect{x}_{i}\times m_{i}\left(-\frac{1}{\rho_{i}}\vect{\nabla} p+\nu \Delta \vect{v}\right)\\
-  &=\sum_{a,b}\left(\vect{x}_{a}-\vect{x}_{b}\right)\times \vect{A}_{ab}
- \end{align*}
-
-\end{block}
-
- 
-\end{frame}
-\subsection{Algorithme}
-\begin{frame}[<+->][shrink]{Algorithme faiblement incompressible}
-\begin{block}{Créer particule initiale}
-	\begin{enumerate}
-		\item<+-> Placer des particules avec position et vitesse initiale.
-		\item<+-> Choisir la masse des particules de sorte que la densité soit bonne.
-		\begin{enumerate}
-			\item La densité est donnée par:
-			\begin{equation*}
-			\sigma_{a}=\sum_{b}w_{ab}
-			\end{equation*}
-			\item La masse est donnée par:
-			\begin{equation*}
-			m_a=\frac{\rho_{0}}{\sigma_{a}}
-			\end{equation*}
-		\end{enumerate}
-	\end{enumerate}
-\end{block}
-\begin{block}{Pour tout pas de temps}
-	\begin{enumerate}
-		\item Intégrer les équations de Navier-Stokes. Pour chaque étage:
-		\begin{enumerate}
-			\item Calculer la densité:
-			\begin{equation*}
-			\sigma_{a}=\sum_{b}w_{ab}
-			\end{equation*}
-			\item Calculer la pression:
-			\begin{equation*}
-			p=B \left[\left(\frac{m_{a}\sigma_{a}}{\rho_{0}}\right)^{\gamma}-1\right]
-			\end{equation*}
-			\item Calculer l'accélération:
-			\begin{equation*}
-			\vect{a}_a=-\frac{\vect{\nabla} p}{m_{a}\sigma_{a}}+\vect{g}+\nu \Delta \vect{v}_{a}
-			\end{equation*}
-			\item Aller au prochain pas de temps avec par exemple:
-			\begin{align*}
-			\vect{x}^{n+1}_{a}&=\vect{x}^{n}_{a}+\vect{v}^{n}_a\Delta t\\
-			\vect{v}^{n+1}_{a}&=\vect{v}^{n}_{a}+\vect{a}^{n}_{a}\Delta t
-			\end{align*}
-		\end{enumerate}
-	\end{enumerate}
-\end{block}
-\end{frame}
- 
- \begin{frame}[<*>][shrink]{Algorithme incompressible}
-\begin{block}{Créer particule initiale}
-	\begin{enumerate}
-		\item Placer des particules avec position et vitesse initiale.
-		\item Choisir la masse des particules de sorte que la densité soit bonne.
-		\begin{enumerate}
-			\item La densité est donnée par:
-			\begin{equation*}
-			\sigma_{a}=\sum_{b}w_{ab}
-			\end{equation*}
-			\item La masse est donnée par:
-			\begin{equation*}
-			m_a=\frac{\rho_{0}}{\sigma_{a}}
-			\end{equation*}
-		\end{enumerate}
-	\end{enumerate}
-\end{block}
-\end{frame}
-
- \begin{frame}[<*>][shrink]{Algorithme incompressible (suite)}
-\begin{block}{Pour tout pas de temps}
-	\begin{enumerate}
-		\item Intégrer les équations de Navier-Stokes sans pression.  Pour chaque étage:
-		\begin{enumerate}
-			\item Calculer la densité:
-			\begin{equation*}
-			\sigma_{a}=\sum_{b}w_{ab}
-			\end{equation*}
-			\item Calculer l'accélération:
-			\begin{equation*}
-			\vect{a}_a=\vect{g}+\nu \Delta v_{a}
-			\end{equation*}
-			\item Aller au prochain pas de temps avec par exemple:
-			\begin{align*}
-			\vect{x}^{n+1}_{a}&=\vect{x}^{n}_{a}+\vect{v}^{n}_a\Delta t\\
-			\vect{v}^{n+1}_{a}&=\vect{v}^{n}_{a}+\vect{a}^{n}_{a}\Delta t
-			\end{align*}
-		\end{enumerate}
-		\item Corriger la vitesse et la position.
-		\begin{enumerate}
-			\item Calculer la densité:
-			\begin{equation*}
-			\sigma_{a}=\sum_{b}w_{ab}
-			\end{equation*}
-			\item Corriger la position:
-			\begin{enumerate}
-				\item Résoudre $p$ dans l'équation linéaire:
-				\begin{equation*}
-				\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{1}{r_{ab}}\frac{p_a-p_b}{m_a\sigma_{a}-m_{b}\sigma_{b}} =\frac{1}{2}\frac{\rho^{0}-m_{a}\sigma_{a}}{\rho_{0}\sigma_{a}}
-				\end{equation*}
-				\item Correction à:
-				\begin{equation*}
-				\vect{x}^{n+1}_{a}=\vect{x}^{*n+1}_{a}-\frac{1}{m_a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{\rho_{a}p_{b}+\rho_{b}p_{a}}{\rho_a+\rho_b}\vect{e}_{ab}
-				\end{equation*}
-			\end{enumerate}
-			\item Calculer la densité:
-				\begin{equation*}
-				\sigma_{a}=\sum_{b}w_{ab}
-				\end{equation*}
-			\item Corriger la vitesse:
-			\begin{enumerate}
-				\item Résoudre $p$ dans l'équation linéaire:
-				\begin{equation*}
-				\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{1}{r_{ab}}\frac{p_a-p_b}{m_a\sigma_{a}-m_{b}\sigma_{b}} =\frac{1}{4}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\left(v_{a}+v_b\right)\cdot \vect{e}_{ab}
-				\end{equation*}
-				\item Corriger la vitesse:
-				\begin{equation*}
-				\vect{v}^{n+1}_{a}=\vect{v}^{*n+1}_{a}-\frac{1}{m_a}\sum_{b}\left(\frac{1}{\sigma_{a}^2}+\frac{1}{\sigma_{b}^2}\right)\frac{\partial w}{\partial r_{ab}}\frac{\rho_{a}p_{b}+\rho_{b}p_{a}}{\rho_a+\rho_b}\vect{e}_{ab}
-				\end{equation*}
-			\end{enumerate}
-		\end{enumerate}
-	\end{enumerate}
-\end{block}
- \end{frame}
 
  \section{Conclusion}
- \subsection{Conclusion}
 
-\begin{frame}[<+->]{Avantage de SPH et MAC}
+\begin{frame}[<+->]{Avantage et défaut}
  
- \begin{block}<*>{SPH}
-  \begin{itemize}
-   \plusitem Terme de convection exact.
-   \moinsitem Correction de pression plus dure à faire exactement.
-   \plusitem Loi de conservation intéressante.
-   \moinsitem Justification et preuve de convergence plus dures.
-   \moinsitem Système linéaire difficil à résoudre.
-   \moinsitem Plus de voisin à traiter.
-   \plusitem Indépendant du choix des axes.
-  \end{itemize}
 
- \end{block}
-
- \begin{block}<*>{MAC}
   \begin{itemize}
    \plusitem Méthode de discrétisation bien connu.
    \plusitem Système linéaire facil à résoudre.
@@ -1713,7 +802,6 @@ S'il y a plusieurs plans comme cela on somme.
    \moinsitem Dépendant du choix des axes.
   \end{itemize}
 
- \end{block}
 
  
 \end{frame}
@@ -1730,19 +818,10 @@ S'il y a plusieurs plans comme cela on somme.
    \item Éviter le problème de saut dans les conditions aux bords.
   \end{itemize}
   \end{block}
-
-\begin{block}{SPH}
-\begin{itemize}
- \item Réconcilier vitesse et précision.
- \item Rendre plus rigoureux la méthode.
- \item Écrire une version parallèle du code.
- \end{itemize}
-\end{block}
-
  
 \end{frame}
 
-\begin{frame}[shrink]{Remerciements}
+\begin{frame}{Remerciements}
 
 \begin{block}{Personne}
 
@@ -1750,16 +829,18 @@ S'il y a plusieurs plans comme cela on somme.
  \item[Prof. Martin Gander:] Pour m'avoir suivi dans ce travail ainsi que pour son cours d'analyse numérique.
  \item[Dr. Felix Kwok:] Pour m'avoir suivi dans ce travail et pour les tps et exercices.
  \item[Prof. Peter Wittwer:] Pour les cours de mathématiques et physique.
- \item[Reto, Norma, Roland, Tamara:] Pour me soutenir et les bons moments passés ensemble.
+ \item[Reto, Norma, Roland, Tamara, Bruno, François:] Pour me soutenir et les bons moments passés ensemble.
 \end{description}
  \end{block}
+ \end{frame}
  
+ \begin{frame}{Remerciements}
  \begin{block}{Logiciel}
   \begin{description}
-   \item[lua\LaTeX:] Pour l'écriture du rapport.
-   \item[gcc:] Pour compiler mon code c++11.
-   \item[valgrind:] Pour la détection des fuites memoires et autre érreurs de memoire.
-   \item[vtk:] Pour l'exportation des données.
+   \item[Lua\LaTeX:] Pour l'écriture du rapport.
+   \item[Gcc:] Pour compiler mon code c++11.
+   \item[Valgrind:] Pour la détection des fuites memoires et autre érreurs de memoire.
+   \item[Vtk:] Pour l'exportation des données.
    \item[Paraview:] Pour la visualisation des données.
    \item[Umfpacks:] Comme solveur linéaire directe.
    \item[Pyamg:] Comme solveur linéaire itératif.
