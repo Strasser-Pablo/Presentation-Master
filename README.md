@@ -5,5 +5,5 @@ Presentation done at master defence.
 
 To compile:
 
-  lualatex beamer.tex
+	lualatex beamer.tex
 
