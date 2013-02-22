@@ -317,7 +317,7 @@ En résolvant l'équation de Navier-Stokes par une méthode de Runge-Kutta, on e
 \end{block}
 \begin{block}{Dérivée}
  \begin{align*}
-  \partial_x a_i&=\frac{a_{i+1}-a_{i-1}}{\Delta x}
+  \partial_x a_i&=\frac{a_{i+1}-a_{i-1}}{\Delta x}\\
   \vect{\nabla} \cdot \vect{v}_{i,j}&=\frac{v^{x}_{i+1,j}-v^{x}_{i-1,j}}{\Delta x}+\frac{v^{y}_{i+1,j}-v^{y}_{i-1,j}}{\Delta y}
 \end{align*}
 \end{block}
@@ -411,7 +411,7 @@ v^{j}\partial_{j}v^{i}
  \begin{block}{Principe}
   \begin{itemize}
    \item<1-> Utiliser une méthode de Runge-Kutta de notre choix.
-   \item Evaluer l'accéleration sur une ``staggered grid''.
+   \item Evaluer l'accéleration sur une grille décalée.
    \item Projeter chaque accélération ou chaque vitesse.
   \end{itemize}
  \end{block}
@@ -491,7 +491,7 @@ v^{j}\partial_{j}v^{i}
  \begin{itemize}
   \item<0-> Résoudre:
   \begin{equation*}
-   \dot{\vect{x}}=\vect{v}
+   \partial_t\vect{x}=\vect{v}
   \end{equation*}
   \item Imposer les conditions aux bords variables:
    \begin{align*}
